@@ -117,38 +117,60 @@ h1.hl .br { flex-basis: 100%; height: 0; }
 .sample-note b { font-weight: 500; color: var(--ink); }
 html.no-notes .sample-note { display: none; }
 
-/* ---------- work: stacked full-viewport cards, clean product films ---------- */
-.work { position: relative; z-index: 4; margin-top: -100vh; margin-top: -100svh; overflow-x: clip; }
-.work-intro { position: relative; background: var(--paper); border-radius: 28px 28px 0 0; box-shadow: 0 -30px 60px -44px rgba(0,0,0,.35); padding-block: 132px 24px; }
-.work-intro h2 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: clamp(44px, 6vw, 88px); line-height: 1; letter-spacing: -.035em; }
-.proj { position: sticky; top: 0; height: 100vh; height: 100svh; background: var(--paper); }
-.proj + .proj { border-radius: 28px 28px 0 0; box-shadow: 0 -30px 60px -44px rgba(0,0,0,.35); }
-.pcard { height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 22px; padding-block: 96px 28px; }
-.prow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px; align-items: end; }
-.prow h3 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: clamp(28px, 2.6vw, 40px); line-height: 1.08; letter-spacing: -.025em; text-wrap: balance; max-width: 22ch; }
-.prow .role { margin: 10px 0 0; font-size: 15px; color: var(--ink-2); }
-.pstats { display: flex; align-items: flex-end; gap: 34px; }
-.pst b { display: block; font-weight: 500; font-size: clamp(30px, 2.8vw, 42px); line-height: 1; letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
-.pst span { display: block; margin-top: 6px; font-size: 13px; color: var(--ink-2); max-width: 17ch; line-height: 1.35; }
-.go { display: inline-flex; gap: 6px; text-decoration: none; }
-.go .t { background: var(--ink); color: var(--paper); border-radius: 999px; height: 46px; padding: 0 20px; display: grid; place-items: center; font-size: 14.5px; font-weight: 500; white-space: nowrap; }
-.go .a { width: 46px; height: 46px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; transition: transform .4s cubic-bezier(.2,.8,.2,1); }
-.go .a svg { width: 15px; height: 15px; }
-.go:hover .a { transform: rotate(45deg); }
-.fstage { position: relative; display: block; min-height: 0; border-radius: 22px; overflow: hidden; background: var(--bg0); transition: background-color .7s ease; text-decoration: none; color: #16161A; isolation: isolate; }
+/* ---------- work: one pinned grid, projects move through it ---------- */
+.work { position: relative; z-index: 4; margin-top: -100vh; margin-top: -100svh; height: 420vh; --grid: #EAEAE6; --t0: 92px; --hh: 78px; --ih: 136px; --bp: 26px; will-change: transform; }
+.wpin { position: sticky; top: 0; height: 100vh; height: 100svh; background: var(--paper); overflow: hidden; }
+.wgrid { position: relative; height: 100%; border-left: 1px solid var(--grid); border-right: 1px solid var(--grid); }
+.gl { position: absolute; left: 50%; width: 100vw; height: 1px; translate: -50% 0; background: var(--grid); }
+.h1 { top: var(--t0); } .h2 { top: calc(var(--t0) + var(--hh)); } .h3 { top: calc(var(--t0) + var(--hh) + var(--ih)); } .h4 { bottom: var(--bp); }
+.nd { position: absolute; width: 7px; height: 7px; background: var(--sky-d); z-index: 3; margin-top: -3px; }
+.nd.l { left: -4px; } .nd.r { right: -4px; }
+.nd.n1 { top: var(--t0); } .nd.n2 { top: calc(var(--t0) + var(--hh)); } .nd.n3 { top: calc(var(--t0) + var(--hh) + var(--ih)); } .nd.n4 { bottom: calc(var(--bp) - 4px); margin-top: 0; }
+.g { position: absolute; left: 0; right: 0; }
+.g-head { top: var(--t0); height: var(--hh); display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 0 28px; }
+.g-head h2 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: clamp(30px, 3.2vw, 46px); line-height: 1; letter-spacing: -.03em; }
+.g-idx { display: flex; gap: 4px; }
+.g-idx button { white-space: nowrap; display: inline-flex; align-items: center; gap: 9px; border: 0; background: transparent; padding: 8px 12px; cursor: pointer; font-size: 14px; color: var(--ink-3); transition: color .25s; }
+.g-idx button i { width: 7px; height: 7px; background: var(--line); transition: background .25s, transform .3s cubic-bezier(.2,1.4,.4,1); }
+.g-idx button:hover { color: var(--ink); }
+.g-idx button.on { color: var(--ink); } .g-idx button.on i { background: var(--sky-d); transform: scale(1.3); }
+.g-info { top: calc(var(--t0) + var(--hh)); height: var(--ih); }
+.info { position: absolute; inset: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto 272px; align-items: stretch; }
+.info[aria-hidden="true"] { pointer-events: none; }
+.it { padding: 24px 28px; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+.it h3 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: clamp(26px, 2.4vw, 36px); line-height: 1.1; letter-spacing: -.025em; }
+.ln { display: block; overflow: hidden; padding-bottom: .06em; margin-bottom: -.06em; }
+.ln > span, .it .role > span { display: block; will-change: transform; }
+.it .role { margin: 10px 0 0; font-size: 14.5px; color: var(--ink-2); overflow: hidden; }
+.ist { display: flex; align-items: center; gap: 0; }
+.pst { padding: 0 30px; border-left: 1px solid var(--grid); height: 100%; display: flex; flex-direction: column; justify-content: center; min-width: 158px; }
+.pst b { font-weight: 500; font-size: clamp(30px, 2.9vw, 44px); line-height: 1; letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
+.pst span { margin-top: 8px; font-size: 13px; line-height: 1.35; color: var(--ink-2); max-width: 16ch; }
+.cta { position: relative; display: flex; flex-direction: column; justify-content: space-between; padding: 22px 24px; border-left: 1px solid var(--grid); text-decoration: none; color: var(--ink); overflow: hidden; }
+.cta::before { content: ""; position: absolute; inset: 0; background-color: var(--sky-l); background-image: repeating-conic-gradient(var(--sky-d) 0 25%, var(--sky-l) 0 50%); background-size: 4px 4px; clip-path: inset(100% 0 0 0); transition: clip-path .4s steps(7); }
+.cta:hover::before, .cta:focus-visible::before { clip-path: inset(0 0 0 0); }
+.cta > * { position: relative; }
+.cta .t { font-size: 16px; font-weight: 500; letter-spacing: -.01em; }
+.cta .a { align-self: flex-end; width: 46px; height: 46px; background: var(--ink); color: var(--paper); display: grid; place-items: center; }
+.cta .a svg { width: 16px; height: 16px; transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+.cta:hover .a svg, .cta:focus-visible .a svg { transform: rotate(45deg); }
+.cta:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+.g-stage { top: calc(var(--t0) + var(--hh) + var(--ih)); bottom: var(--bp); overflow: hidden; }
+.track { position: absolute; inset: 0; perspective: 1800px; }
+.fstage { position: absolute; inset: 0; display: block; overflow: hidden; background: var(--bg0); transition: background-color .6s ease; text-decoration: none; color: #16161A; will-change: transform; transform-origin: 50% 50%; }
+.fstage:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
 .box { position: absolute; left: 50%; top: 50%; width: 960px; height: 540px; transform: translate(-50%, -50%) scale(var(--s, 1)); font-family: var(--f-sans); }
 .fstage.narrow .box { width: 600px; height: 750px; }
-.js .proj .rv { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .9s cubic-bezier(.2,.8,.2,1); }
-.js .proj.in .rv { opacity: 1; transform: none; }
-.proj .rv:nth-child(2) { transition-delay: .08s; }
+#ring { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 7; pointer-events: none; display: block; image-rendering: pixelated; }
+.call .t { transition: background .25s; } .call:hover .t { background: var(--sky-d); }
 
 /* ---------- film primitives (design-box px) ---------- */
-.scene { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 48px; visibility: hidden; opacity: 0; transform: scale(.985) translateY(6px); filter: blur(4px);
-  transition: opacity .32s ease, transform .5s cubic-bezier(.2,.8,.2,1), filter .32s ease, visibility 0s linear .32s; }
-.scene.on { visibility: visible; opacity: 1; transform: none; filter: none; transition: opacity .45s ease .14s, transform .7s cubic-bezier(.2,.8,.2,1) .14s, filter .45s ease .14s, visibility 0s; }
+.scene { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; visibility: hidden; opacity: 0; transform: scale(.97); filter: blur(6px);
+  transition: opacity .22s ease, transform .4s cubic-bezier(.4,0,.2,1), filter .22s ease, visibility 0s linear .22s; }
+.scene[data-in="zoom"] { transform: scale(1.14); } .scene[data-in="up"] { transform: translateY(46px); } .scene[data-in="left"] { transform: translateX(70px); }
+.scene.on { visibility: visible; opacity: 1; transform: none; filter: none; transition: opacity .3s ease .08s, transform .55s cubic-bezier(.16,1,.3,1) .08s, filter .3s ease .08s, visibility 0s; }
+.cam { flex: none; transform-style: preserve-3d; will-change: transform; }
 .scene.reset * { transition: none !important; animation: none !important; }
-.narrow .scene { flex-direction: column; gap: 22px; }
-.narrow .scale-n { transform: scale(.66); }
 .card { background: #fff; border-radius: 16px; box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 24px 50px -24px rgba(0,0,0,.25); padding: 26px; position: relative; color: #16161A; }
 .chip { font-style: normal; font-size: 11.5px; font-weight: 600; padding: 4px 9px; border-radius: 999px; white-space: nowrap; }
 .chip.ok { background: #DDF1E4; color: #1B7A47; } .chip.wt { background: #FFF1CC; color: #8A6514; } .chip.no { background: #FDE0DD; color: #C23127; }
@@ -180,11 +202,10 @@ html.no-notes .sample-note { display: none; }
 /* ---------- healthcare: rebuilt from the Figma screens ---------- */
 [data-film="health"] { --ui: #007F73; }
 .cq { width: 858px; height: 560px; flex: none; background: #F1F2F7; border-radius: 14px; overflow: hidden; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 40px 80px -40px rgba(0,0,0,.35), 0 0 0 1px rgba(0,0,0,.06);
-  font-family: "Inter", "Geist", system-ui, sans-serif; font-size: 9.6px; color: #1F1F24; display: grid; grid-template-rows: 40px 1fr; transform: scale(.88); }
-.narrow .cq { transform: scale(.66); }
+  font-family: "Inter", "Geist", system-ui, sans-serif; font-size: 9.6px; color: #1F1F24; display: grid; grid-template-rows: 40px 1fr; }
 .cq svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .cq-top { background: linear-gradient(90deg, #43B1A5 0%, #25A26C 45%, #8CCD94 100%); display: flex; align-items: center; gap: 12px; padding: 0 14px; color: #fff; }
-.cq-logo { width: 66px; height: 14px; border-radius: 8px; background: rgba(255,255,255,.75); filter: blur(4px); margin-right: auto; }
+.cq-logo { width: 74px; height: 20px; margin-right: auto; background: radial-gradient(closest-side, rgba(255,255,255,.8), rgba(255,255,255,.45) 55%, rgba(255,255,255,0)); }
 .cq-top svg { width: 14px; height: 14px; }
 .cq-top .id { font-size: 9.4px; letter-spacing: .02em; }
 .cq-av { width: 24px; height: 24px; border-radius: 50%; background: #fff; color: #005091; display: grid; place-items: center; font-size: 10.5px; }
@@ -198,7 +219,7 @@ html.no-notes .sample-note { display: none; }
 .cq-todo b { display: block; margin: 0 auto 5px; width: 40px; padding: 5px 0; background: #007F73; color: #fff; border-radius: 3px; font-weight: 500; }
 .cq-main { padding: 14px 18px 0; min-width: 0; position: relative; }
 .cq-crumb { display: flex; align-items: center; gap: 14px; height: 22px; font-size: 9.4px; color: #3B3B40; }
-.cq-crumb .lk { color: #005091; } .cq-crumb .sp { margin-left: auto; }
+.cq-crumb a { color: #005091; } .cq-crumb .cq-gap { margin-left: auto; }
 .cq-pr { display: flex; flex-direction: column; gap: 4px; font-weight: 600; } .cq-pr i { display: block; width: 92px; height: 2px; background: #DDE2EA; } .cq-pr i em { display: block; width: 25%; height: 100%; background: #005091; }
 .cq-la { color: #3B3B40; }
 .cq-wrap { display: grid; grid-template-columns: 46px 1fr; gap: 10px; margin-top: 10px; height: 470px; }
@@ -252,7 +273,7 @@ html.no-notes .sample-note { display: none; }
 .cq-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
 .cq-panel { background: #fff; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,.08); padding: 12px 14px; }
 .cq-ph { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 10px; border-bottom: 1px solid #E8EAED; margin: 0 -14px 6px; padding-inline: 14px; }
-.cq-ph b { font-size: 13.6px; font-weight: 500; } .cq-ph .lk { font-size: 8.8px; color: #005091; }
+.cq-ph b { font-size: 13.6px; font-weight: 500; } .cq-ph a { font-size: 8.8px; color: #005091; }
 .cq-todo-r { display: flex; align-items: center; gap: 10px; padding: 8px 6px; margin: 0 -6px; border-radius: 4px; font-size: 9.6px; transition: background .2s; }
 .cq-todo-r .n { width: 18px; height: 18px; border-radius: 50%; background: #5C6BC0; color: #fff; display: grid; place-items: center; font-size: 9px; flex: none; }
 .cq-todo-r .cq-chip { margin-left: auto; font-size: 7.6px; padding: 3px 7px; }
@@ -297,62 +318,10 @@ html.no-notes .sample-note { display: none; }
 .k1 .g1, .k2 .g2, .k3 .g3, .k4 .g4, .k5 .g5, .k6 .g6 { opacity: 1; transform: none; }
 .k7 [data-c="sv"] { background: #00695F; }
 
-/* ---------- staffcare ---------- */
-[data-film="staff"] { --ui: #E52421; }
-.rb { background: #E52421; color: #fff; height: 40px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; font-size: 13px; } .rb b { font-weight: 600; }
-.scr.old { background: #F2F2F2; }
-.ob { background: #3A3A40; color: #fff; padding: 10px 12px; font-weight: 600; font-size: 12px; }
-.otabs { display: flex; background: #fff; border-bottom: 1px solid #DDD; } .otabs span { flex: 1; text-align: center; padding: 7px 0; font-size: 10px; border-right: 1px solid #DDD; } .otabs .on { background: #5A5A62; color: #fff; }
-.ogrid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 8px; }
-.ogrid span { background: #fff; display: flex; align-items: center; gap: 7px; padding: 6px; font-size: 9.5px; border: 1px solid #E6E6E6; } .ogrid i { width: 22px; height: 22px; border-radius: 3px; background: var(--c); flex: none; }
-.trk { text-align: center; font-size: 9px; color: #55555D; padding: 7px 0; }
-.wel { margin: 0 10px; border: 1.5px solid #F2B7B4; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; }
-.wel p { margin: 0; } .wel .tm { margin-top: 4px; color: #E52421; } .wel .tm b { font-size: 22px; font-weight: 700; letter-spacing: -.02em; font-variant-numeric: tabular-nums; } .wel small { color: #8A8A92; font-size: 8.5px; }
-.cob { width: 62px; height: 62px; border-radius: 50%; background: #E52421; color: #fff; display: grid; place-items: center; font-weight: 600; font-size: 10px; box-shadow: 0 0 0 7px #FBD9D7; transition: all .3s; flex: none; text-align: center; }
-.cob em { font-style: normal; } .k1 .cob { transform: scale(.9); } .k2 .cob { background: #8A8A92; box-shadow: 0 0 0 7px #E6E6EA; transform: none; } .k2 .cob em { font-size: 0; } .k2 .cob em::before { content: "Checked out"; font-size: 9px; } .k2 .wel .tm { color: #8A8A92; }
-.shd { margin: 12px 12px 6px; font-weight: 600; font-size: 11.5px; }
-.qt { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 0 10px; } .qt span { border: 1px solid #E6E6EA; border-radius: 8px; padding: 8px; display: flex; flex-direction: column; gap: 5px; font-size: 10px; } .qt i { width: 18px; height: 18px; border-radius: 5px; background: #FDE3E1; border: 1.5px solid #E52421; }
-.up { margin: 0 10px; border-radius: 8px; overflow: hidden; border: 1px solid #E6E6EA; } .up .uh { background: #E9ECFB; padding: 7px 10px; display: flex; justify-content: space-between; } .up .uh span { color: #2F6BE0; font-size: 9px; } .up p { margin: 6px 10px; } .up .vd { display: block; margin: 0 10px 8px; text-align: center; border: 1px solid #E6E6EA; border-radius: 6px; padding: 6px; color: #E52421; }
-.tabbar { position: absolute; left: 0; right: 0; bottom: 0; height: 42px; border-top: 1px solid #EEE; background: #fff; display: flex; } .tabbar span { flex: 1; display: grid; place-items: center; font-size: 9px; color: #9A9AA2; } .tabbar .on { color: #E52421; font-weight: 600; }
-.big4 { display: grid; grid-template-columns: repeat(2, 170px); gap: 14px; }
-.big4 .tl4 { background: #fff; border-radius: 16px; padding: 18px; height: 120px; display: flex; flex-direction: column; justify-content: space-between; font-size: 17px; font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 20px 40px -24px rgba(0,0,0,.3); opacity: 0; transform: translateY(14px) scale(.94); transition: opacity .3s, transform .5s cubic-bezier(.2,1.4,.4,1), background .2s, color .2s; }
-.big4 .tl4 i { width: 40px; height: 40px; border-radius: 11px; background: #FDE3E1; border: 2px solid #E52421; }
-.k1 .t1, .k2 .t2, .k3 .t3, .k4 .t4 { opacity: 1; transform: none; } .k5 .t2 { background: #E52421; color: #fff; } .k5 .t2 i { background: #fff; border-color: #fff; }
-.map { position: absolute; left: 0; right: 0; top: 62px; bottom: 0; background: #EEF0EC; overflow: hidden; }
-.map .rdh, .map .rdv { position: absolute; background: #fff; box-shadow: 0 0 0 1px #E1E3DE; } .map .rdh { left: -10%; right: -10%; height: 10px; } .map .rdv { top: -10%; bottom: -10%; width: 10px; } .map .blk { position: absolute; background: #DCE7D3; border-radius: 3px; }
-.pin { position: absolute; width: 22px; height: 22px; margin: -22px 0 0 -11px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg) scale(0); background: var(--c); transition: transform .4s cubic-bezier(.2,1.6,.4,1); box-shadow: 0 4px 8px rgba(0,0,0,.25); }
-.pin::after { content: ""; position: absolute; left: 7px; top: 7px; width: 8px; height: 8px; border-radius: 50%; background: #fff; } .k1 .p1, .k2 .p2, .k3 .p3 { transform: rotate(-45deg) scale(1); }
-.me { position: absolute; width: 14px; height: 14px; margin: -7px; border-radius: 50%; background: #2F6BE0; box-shadow: 0 0 0 4px #fff, 0 0 0 16px rgba(47,107,224,.18); }
-.sheet { position: absolute; left: 0; right: 0; bottom: 0; background: #fff; border-radius: 16px 16px 0 0; box-shadow: 0 -10px 30px rgba(0,0,0,.12); padding: 10px 12px 14px; transform: translateY(100%); transition: transform .5s cubic-bezier(.2,1,.3,1); }
-.sheet::before { content: ""; display: block; width: 34px; height: 4px; border-radius: 2px; background: #DDD; margin: 0 auto 10px; } .k4 .sheet { transform: none; }
-.cnt { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; } .cnt span { border: 1px solid #EEE; border-radius: 8px; padding: 6px 7px; font-size: 8.5px; color: #6B6B72; } .cnt b { display: block; font-size: 15px; color: #16161A; } .cnt span:nth-child(1) b { color: #1B7A47; } .cnt span:nth-child(3) b { color: #2F6BE0; }
-.tk { margin-top: 8px; border-radius: 8px; background: #F6F6F8; padding: 8px 10px; display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; align-items: center; } .tk span { color: #6B6B72; font-size: 9px; grid-column: 1; } .tk em { font-style: normal; grid-row: 1 / 3; grid-column: 2; background: #E52421; color: #fff; border-radius: 6px; padding: 6px 9px; font-size: 9.5px; transition: transform .12s; } .k5 .tk em { transform: scale(.92); }
-.exp { width: 480px; display: grid; gap: 14px; }
-.es { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.es span { background: #fff; border-radius: 14px; padding: 14px; font-size: 13px; color: #6B6B72; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 16px 32px -22px rgba(0,0,0,.3); opacity: 0; transform: translateY(10px); transition: opacity .3s, transform .45s cubic-bezier(.2,1.3,.4,1); }
-.es b { font-size: 24px; color: #16161A; letter-spacing: -.02em; font-variant-numeric: tabular-nums; } .es .e3 { border: 2px solid #3DBE77; } .es .e3 b { color: #1B7A47; } .k1 .e1, .k2 .e2, .k3 .e3 { opacity: 1; transform: none; }
-.el { background: #fff; border-radius: 14px; padding: 6px 16px; box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 16px 32px -22px rgba(0,0,0,.3); }
-.er { display: grid; grid-template-columns: 30px 1fr auto 70px; gap: 12px; align-items: center; padding: 11px 0; border-bottom: 1px solid #F0F0F0; font-size: 14px; opacity: 0; transform: translateX(-10px); transition: opacity .3s, transform .45s cubic-bezier(.2,1.2,.4,1); }
-.er:last-child { border-bottom: 0; } .er > i { width: 30px; height: 30px; border-radius: 8px; background: #FDE3E1; } .er small { display: block; color: #8A8A92; font-size: 11.5px; } .er > b:last-child { text-align: right; } .k4 .x1, .k5 .x2, .k6 .x3 { opacity: 1; transform: none; }
-.form { padding: 10px 12px; } .form p { margin: 9px 0 5px; font-weight: 600; font-size: 10px; }
-.fin { height: 30px; border: 1px solid #DCDCE0; border-radius: 6px; display: flex; align-items: center; padding: 0 9px; font-size: 11px; } .fin.ev { height: 52px; border-style: dashed; justify-content: center; color: #9A9AA2; }
-.addb { position: absolute; left: 12px; right: 12px; bottom: 16px; height: 34px; border-radius: 7px; background: #E52421; color: #fff; display: grid; place-items: center; font-weight: 600; font-size: 11px; transition: transform .12s, filter .2s; } .k1 .addb { transform: scale(.95); filter: brightness(.88); }
-.snack { position: absolute; left: 12px; right: 12px; bottom: 60px; background: #16161A; color: #fff; border-radius: 8px; padding: 9px 11px; font-size: 10.5px; opacity: 0; transform: translateY(10px); transition: opacity .3s, transform .4s cubic-bezier(.2,1.3,.4,1); } .k2 .snack { opacity: 1; transform: none; }
+[data-done] .cq-td, [data-done] .cq-toast { opacity: 1; transform: none; }
 
-/* ---------- adani one ---------- */
+/* ---------- adani one (components) ---------- */
 [data-film="adani"] { --ui: #2E6BD6; }
-.adn { background: #F4F6FA; }
-.jh { height: 108px; background: linear-gradient(180deg, #2B1E4F 0%, #8E3F72 55%, #F08A5D 100%); color: #fff; padding: 14px 14px 0; position: relative; overflow: hidden; }
-.jh::after { content: ""; position: absolute; left: -10%; right: -10%; bottom: -14px; height: 40px; background: radial-gradient(circle at 20% 100%, #1B1230 30%, transparent 31%), radial-gradient(circle at 55% 100%, #1B1230 22%, transparent 23%), radial-gradient(circle at 85% 100%, #1B1230 34%, transparent 35%); }
-.jh b { display: block; margin-top: 18px; font-size: 18px; letter-spacing: -.01em; }
-.fc { margin: -24px 10px 0; position: relative; z-index: 2; background: #fff; border-radius: 12px; padding: 10px 11px; box-shadow: 0 10px 24px -14px rgba(0,0,0,.35); transform: translateY(14px); opacity: 0; transition: opacity .35s, transform .5s cubic-bezier(.2,1.2,.4,1); } .k1 .fc { opacity: 1; transform: none; }
-.fr { display: flex; align-items: center; gap: 5px; font-size: 18px; } .fr b { font-weight: 700; } .fr em { font-style: normal; font-size: 8px; background: #FFD21F; padding: 2px 4px; border-radius: 3px; font-weight: 700; }
-.fr .lane { flex: 1; height: 0; border-top: 1.5px dashed #B5B5BC; position: relative; margin: 0 4px; }
-.fr .lane i { position: absolute; top: -7px; left: 0; width: 13px; height: 13px; background: #2E6BD6; clip-path: polygon(0 35%, 60% 35%, 30% 0, 50% 0, 90% 35%, 100% 50%, 90% 65%, 50% 100%, 30% 100%, 60% 65%, 0 65%); transition: left 1.6s cubic-bezier(.4,0,.2,1); } .k2 .fr .lane i { left: calc(100% - 13px); }
-.fr2, .fr3 { display: flex; justify-content: space-between; margin-top: 8px; } .fr2 small { display: block; color: #8A8A92; font-size: 8.5px; } .fr2 span { font-weight: 600; font-size: 11px; } .fr3 { color: #55555D; font-size: 9.5px; padding-top: 7px; border-top: 1px solid #EEE; }
-.tls { padding: 12px 12px 0 26px; position: relative; } .tls::before { content: ""; position: absolute; left: 15px; top: 14px; bottom: -40px; border-left: 1.5px dashed #B5C7EA; }
-.tls .ti { position: relative; font-size: 13px; margin: 6px 0 8px; } .tls .ti i { position: absolute; left: -15px; top: 4px; width: 9px; height: 9px; border-radius: 50%; background: #2E6BD6; }
-.tls .tc { background: #fff; border-radius: 10px; padding: 9px 10px; border: 1px solid #E6E9F2; } .tls .tc small { display: block; color: #6B6B72; margin: 3px 0 6px; } .tls .tc em { font-style: normal; color: #2E6BD6; font-weight: 600; }
 .w420 { width: 420px; } .w380 { width: 380px; }
 .tlc { position: relative; padding: 22px 24px 22px 54px; } .tlc .rail { position: absolute; left: 30px; top: 36px; bottom: 50px; width: 2px; background: #E1E6F2; } .tlc .rail em { position: absolute; left: 0; right: 0; top: 0; height: 0; background: #2E6BD6; transition: height 1s cubic-bezier(.4,0,.2,1); } .k2 .tlc .rail em { height: 50%; }
 .tli { position: relative; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; padding: 14px 0; }
@@ -373,15 +342,110 @@ html.no-notes .sample-note { display: none; }
 .off .oi { width: 62px; height: 62px; border-radius: 14px; background: #FFE9D6; grid-row: 2 / 4; grid-column: 2; display: grid; place-items: center; font-size: 30px; font-weight: 700; } .off .bn { color: #2E6BD6; font-weight: 600; font-size: 14px; transition: transform .12s; display: inline-block; }
 .k1 .o1 { opacity: 1; transform: none; } .k2 .o1 .bn { transform: scale(.92); } .k3 .o2 { opacity: 1; transform: none; } .o2 .oi { background: #E3EDFC; color: #2E6BD6; }
 .narrow .offs, .narrow .exp { width: 520px; }
+/* ---------- phones (shared) ---------- */
+.sp { width: 262px; height: 548px; border-radius: 40px; background: #111113; padding: 8px; box-shadow: 0 50px 80px -36px rgba(0,0,0,.45), 0 0 0 1px rgba(0,0,0,.12); flex: none; }
+.ss { position: relative; width: 100%; height: 100%; border-radius: 32px; background: #fff; overflow: hidden; font-family: "Inter", "Geist", system-ui, sans-serif; font-size: 10px; color: #1C1C21; }
+.ss svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sig { display: inline-flex; align-items: flex-end; gap: 1.5px; height: 8px; } .sig i { width: 2.5px; background: currentColor; border-radius: 1px; } .sig i:nth-child(1) { height: 3px; } .sig i:nth-child(2) { height: 4.5px; } .sig i:nth-child(3) { height: 6px; } .sig i:nth-child(4) { height: 8px; }
+.wifi { width: 12px; height: 9px; } .bat { display: inline-block; width: 17px; height: 8px; border: 1.2px solid currentColor; border-radius: 2.5px; padding: 1px; vertical-align: middle; } .bat i { display: block; width: 80%; height: 100%; background: currentColor; border-radius: 1px; } .bat.w i { width: 100%; }
+/* staffcare */
+[data-film="staff"] { --ui: #E52421; }
+.sh-h { background: #E52421; color: #fff; padding: 9px 16px 12px; }
+.sb { display: flex; justify-content: space-between; align-items: center; font-size: 10.5px; font-weight: 600; padding: 0 6px; } .sbr { display: inline-flex; align-items: center; gap: 5px; }
+.sh-r { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; } .sh-r b { font-size: 15px; font-weight: 600; }
+.hb { display: inline-flex; flex-direction: column; gap: 2.5px; } .hb i { width: 14px; height: 1.8px; background: #fff; border-radius: 1px; }
+.tr { width: 22px; height: 22px; border-radius: 50%; background: #fff; color: #E52421; display: grid; place-items: center; font-size: 10px; font-weight: 700; }
+.trk { margin: 0; text-align: center; font-size: 9px; color: #3B3B40; padding: 8px 0; border-bottom: 1px solid #EEE; } .trk span { color: #1C1C21; }
+.wel { margin: 10px 10px 0; border: 1.5px solid #E52421; border-radius: 10px; padding: 11px 12px; display: flex; align-items: center; justify-content: space-between; }
+.wel p { margin: 0; } .wn { font-size: 10.5px; } .wn b { font-weight: 700; }
+.tm { margin-top: 3px !important; color: #E52421; font-size: 10px; } .tm b { font-size: 25px; font-weight: 700; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.wel small { color: #6B6B72; font-size: 8px; }
+.cob { width: 64px; height: 64px; border-radius: 50%; background: #E52421; color: #fff; display: grid; place-items: center; font-weight: 600; font-size: 10.5px; box-shadow: 0 0 0 8px #FAD4D2; transition: all .3s; flex: none; text-align: center; }
+.cob em { font-style: normal; } .k1 .cob { transform: scale(.88); } .k2 .cob { background: #8A8A92; box-shadow: 0 0 0 8px #E6E6EA; transform: none; } .k2 .cob em { font-size: 0; } .k2 .cob em::before { content: "Checked Out"; font-size: 9.5px; } .k2 .tm { color: #8A8A92; }
+.shd { margin: 14px 12px 8px; font-weight: 600; font-size: 12.5px; }
+.qt { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 10px; }
+.qt span { border: 1px solid #E4E4E8; border-radius: 8px; padding: 9px 10px; display: flex; flex-direction: column; gap: 6px; font-size: 10px; box-shadow: 0 1px 2px rgba(0,0,0,.04); transition: background .2s, border-color .2s, transform .15s; }
+.qt svg { width: 17px; height: 17px; color: #2F6BE0; }
+.k1 [data-c="q2"] { background: #EEF3FF; border-color: #2F6BE0; transform: scale(.96); }
+.up { margin: 0 10px; border-radius: 8px; overflow: hidden; border: 1px solid #E4E4E8; padding-bottom: 8px; }
+.up .uh { background: #DFE5FB; padding: 7px 10px; display: flex; align-items: center; gap: 6px; } .up .uh svg { width: 12px; height: 12px; } .up .uh b { font-size: 11px; } .up .uh span { margin-left: auto; color: #2F6BE0; font-size: 7.5px; }
+.up p { margin: 7px 10px 0; font-size: 9.5px; } .up small { display: block; margin: 6px 10px 0; color: #8A8A92; font-size: 7.5px; } .up .ut { margin-top: 2px; font-weight: 700; font-size: 11px; }
+.mapw { position: absolute; left: 0; right: 0; top: 70px; bottom: 0; overflow: hidden; }
+.mapsvg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.mdate { position: absolute; left: 50%; top: 14px; translate: -50% 0; background: #fff; border-radius: 6px; padding: 6px 10px; font-size: 10px; box-shadow: 0 2px 6px rgba(0,0,0,.12); display: flex; align-items: center; gap: 8px; }
+.mdate i { width: 10px; height: 10px; border: 1.5px solid #E52421; border-radius: 2px; }
+.mref { position: absolute; right: 52px; top: 13px; width: 26px; height: 26px; border-radius: 6px; background: #fff; color: #E52421; display: grid; place-items: center; font-size: 13px; font-weight: 700; box-shadow: 0 2px 6px rgba(0,0,0,.12); }
+.mloc { position: absolute; right: 14px; bottom: 120px; width: 26px; height: 26px; border-radius: 50%; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.15); }
+.mloc::after { content: ""; position: absolute; inset: 8px; border-radius: 50%; border: 1.5px solid #555; }
+.rdraw { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1); } .k1 .rdraw { stroke-dashoffset: 0; }
+.mpin { transform-box: fill-box; transform-origin: 50% 50%; transform: scale(0); transition: transform .45s cubic-bezier(.2,1.6,.4,1); } .k2 .mpin { transform: none; }
+.halo { transform-box: fill-box; transform-origin: center; animation: halo 1.8s ease-out infinite; } @keyframes halo { from { transform: scale(.4); opacity: .35; } to { transform: scale(1.3); opacity: 0; } }
+.msheet { position: absolute; left: 0; right: 0; bottom: 0; background: #fff; border-radius: 16px 16px 0 0; padding: 8px 12px 14px; box-shadow: 0 -8px 24px rgba(0,0,0,.12); transform: translateY(100%); transition: transform .55s cubic-bezier(.16,1,.3,1); }
+.k3 .msheet { transform: none; }
+.grab { display: block; width: 34px; height: 4px; border-radius: 2px; background: #DDD; margin: 0 auto 9px; }
+.mh { background: #DFE5FB; border-radius: 6px; padding: 7px 9px; display: flex; align-items: center; gap: 6px; } .mh svg { width: 12px; height: 12px; } .mh b { font-size: 11.5px; } .mh span { margin-left: auto; font-size: 8px; color: #2F6BE0; }
+.ma { margin: 7px 2px; font-size: 9px; color: #55555D; }
+.mb { display: grid; grid-template-columns: 1fr 1.4fr; gap: 6px; } .mb span { height: 28px; border-radius: 6px; border: 1px solid #DDD; display: grid; place-items: center; font-size: 10px; font-weight: 600; } .mb .pri { background: #E52421; border-color: #E52421; color: #fff; }
+.pair { display: flex; gap: 56px; }
+.ba { display: flex; gap: 70px; align-items: flex-end; }
+.bc { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.tagb { font-family: var(--f-sans); font-size: 14px; font-weight: 600; background: #16161A; color: #fff; padding: 7px 14px; border-radius: 999px; } .tagb.a { background: #E52421; }
+.ss.old { background: #F2F2F2; } .ob { background: #3A3A40; color: #fff; padding: 30px 12px 10px; font-weight: 600; font-size: 12px; }
+.otabs { display: flex; background: #fff; border-bottom: 1px solid #DDD; } .otabs span { flex: 1; text-align: center; padding: 7px 0; font-size: 9.5px; border-right: 1px solid #DDD; } .otabs .on { background: #5A5A62; color: #fff; }
+.ogrid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 8px; } .ogrid span { background: #fff; display: flex; align-items: center; gap: 7px; padding: 6px; font-size: 9px; border: 1px solid #E6E6E6; } .ogrid i { width: 22px; height: 22px; border-radius: 3px; background: var(--c); flex: none; }
+.es { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 12px 10px 4px; }
+.es span { border: 1px solid #E4E4E8; border-radius: 8px; padding: 8px; display: flex; flex-direction: column; gap: 4px; opacity: 0; transform: translateY(8px); transition: opacity .25s, transform .4s cubic-bezier(.2,1.3,.4,1); }
+.es small { font-size: 8px; color: #6B6B72; } .es b { font-size: 13px; font-variant-numeric: tabular-nums; } .es .e3 { border-color: #3DBE77; background: #F1FBF5; } .es .e3 b { color: #1B7A47; }
+.k1 .e1, .k2 .e2, .k3 .e3 { opacity: 1; transform: none; }
+.edate { text-align: center; margin: 10px 0 4px; font-size: 9.5px; }
+.er { display: grid; grid-template-columns: 24px 1fr auto 44px; gap: 8px; align-items: center; padding: 10px 12px; border-bottom: 1px solid #F0F0F0; font-size: 10px; opacity: 0; transform: translateX(-10px); transition: opacity .25s, transform .4s cubic-bezier(.2,1.2,.4,1); }
+.er > i { width: 24px; height: 24px; border-radius: 6px; background: #FDE3E1; } .er small { display: block; color: #8A8A92; font-size: 7.5px; } .er > b:last-child { text-align: right; } .er .chip { font-size: 7.5px; padding: 3px 6px; }
+.k4 .x1, .k5 .x2, .k6 .x3 { opacity: 1; transform: none; }
+.addb { position: absolute; left: 12px; right: 12px; bottom: 16px; height: 34px; border-radius: 7px; background: #E52421; color: #fff; display: grid; place-items: center; font-weight: 600; font-size: 11px; }
+/* adani one: My Journey */
+.sp.ad .ss { background: #F5F6F8; }
+.aj-scroll { transition: transform 1.3s cubic-bezier(.65,0,.35,1); } .k1 .aj-scroll { transform: translateY(-300px); }
+.aj-hero { position: relative; height: 154px; overflow: hidden; color: #fff; background: linear-gradient(172deg, #2D6BC0 0%, #5D97DD 38%, #A8C8EE 72%, #DCE8F6 100%); }
+.wing { position: absolute; right: -30px; top: 30px; width: 240px; height: 70px; background: linear-gradient(180deg, #FFFFFF, #C5CFDA); clip-path: polygon(0 62%, 100% 0, 100% 34%, 6% 100%); opacity: .95; }
+.asb { position: relative; display: flex; justify-content: space-between; align-items: center; padding: 10px 16px 0; font-size: 9px; font-weight: 600; } .asb > span { display: inline-flex; align-items: center; gap: 4px; }
+.ajt { position: relative; margin: 14px 0 0 14px; font-size: 16px; font-weight: 700; display: flex; gap: 12px; align-items: center; } .ajt span { font-size: 18px; font-weight: 400; }
+.aj-card { position: relative; margin: 0 10px; background: #fff; border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 0 0 1px rgba(0,0,0,.04); padding: 12px; }
+.aj-card.fl { margin-top: -62px; }
+.fr { display: flex; align-items: center; gap: 5px; } .fr b { font-size: 17px; font-weight: 500; } .fr em { font-style: normal; font-size: 7.5px; font-weight: 700; background: #FFD21F; padding: 3px 4px; border-radius: 2px; transition: transform .35s cubic-bezier(.2,1.6,.4,1); }
+.k2 .fr em { transform: scale(1.25); }
+.lane { flex: 1; position: relative; height: 1px; background: repeating-linear-gradient(90deg, #A0A0A8 0 3px, transparent 3px 6px); margin: 0 6px; }
+.lane .pl { position: absolute; left: 0; top: -5px; width: 11px; height: 11px; background: #3B3B40; clip-path: polygon(0 40%, 55% 40%, 30% 0, 48% 0, 85% 40%, 100% 50%, 85% 60%, 48% 100%, 30% 100%, 55% 60%, 0 60%); transition: left 1.3s cubic-bezier(.4,0,.2,1); }
+.k1 .lane .pl { left: calc(100% - 11px); }
+.fr2 { display: flex; justify-content: space-between; margin-top: 10px; font-size: 11.5px; } .fr2 small { display: block; font-size: 7.5px; color: #6B6B72; margin-bottom: 2px; } .fr2 .r { text-align: right; }
+.fr3 { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid #EEE; font-size: 9.5px; } .fr3 .ig { display: inline-block; width: 12px; height: 12px; border-radius: 2px; background: #2E4FA8; vertical-align: -2px; margin-right: 5px; }
+.fr4 { display: flex; justify-content: space-between; margin-top: 10px; padding-top: 9px; border-top: 1px solid #EEE; font-size: 9.5px; }
+.aj-card.rt { margin-top: 10px; display: flex; align-items: center; gap: 10px; } .rt b { font-size: 14px; font-weight: 500; } .rt small { display: block; font-size: 8px; color: #55555D; margin-top: 2px; } .rt .pr { margin-left: auto; text-align: right; } .rt .chev { font-size: 14px; }
+.aj-ban { height: 82px; margin-top: 16px; position: relative; display: flex; align-items: center; padding-left: 12px; color: #fff; background: linear-gradient(170deg, #2E2238 0%, #7C4A5A 45%, #D98A6A 80%, #F3C08F 100%); overflow: hidden; }
+.aj-ban::after { content: ""; position: absolute; left: 30%; top: 22px; width: 220px; height: 36px; background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.15)); clip-path: polygon(0 70%, 100% 0, 100% 35%, 5% 100%); }
+.aj-ban b { position: relative; z-index: 1; font-size: 14px; }
+.aj-sec { display: flex; align-items: center; gap: 9px; padding: 14px 14px 8px; } .aj-sec i { width: 7px; height: 7px; border-radius: 50%; background: #2E6BD6; } .aj-sec b { font-size: 13.5px; font-weight: 500; } .aj-sec .car { margin-left: auto; }
+.aj-tl { margin-left: 17px; padding: 0 10px 0 14px; border-left: 1.5px dashed #B9C9E8; display: grid; gap: 10px; }
+.aj-cab { background: #fff; border: 1px solid #E6E9F2; border-radius: 8px; padding: 10px 10px 0; display: grid; grid-template-columns: 1fr 34px; gap: 6px; }
+.aj-cab b { font-size: 10px; font-weight: 600; line-height: 1.3; } .aj-cab small { display: block; margin-top: 6px; font-size: 8.5px; color: #3B3B40; line-height: 1.4; }
+.cabi { width: 34px; height: 34px; border-radius: 6px; background: #F1F3F6 linear-gradient(transparent 55%, #D6DCE6 55% 70%, transparent 70%); position: relative; }
+.cabi::after { content: ""; position: absolute; left: 6px; top: 12px; width: 22px; height: 9px; border-radius: 4px 6px 2px 2px; background: #E9EEF5; border: 1.5px solid #3A5A9C; }
+.cabi.p::after { border-color: #B3367A; }
+.bn { grid-column: 1 / -1; margin: 6px -10px 0; padding: 8px 10px; border-top: 1px solid #EEE; display: flex; justify-content: space-between; font-size: 9.5px; transition: background .2s; }
+.k2 [data-c="bn"] { background: #EEF3FD; color: #2E6BD6; }
+
 @media (max-width: 860px) {
-  .pcard { padding-block: 78px 16px; gap: 16px; }
-  .prow { grid-template-columns: minmax(0, 1fr); gap: 14px; }
-  .pstats { gap: 22px; flex-wrap: wrap; }
-  .go .t { height: 40px; font-size: 13.5px; padding: 0 16px; } .go .a { width: 40px; height: 40px; }
-  .work-intro { padding-block: 96px 8px; }
-  .fstage { border-radius: 16px; }
+  .work { --t0: 74px; --hh: 54px; --ih: 214px; --bp: 12px; }
+  .g-head { padding: 0 16px; } .g-head h2 { font-size: 26px; }
+  .g-idx button { padding: 6px 6px; font-size: 12px; gap: 6px; }
+  .info { grid-template-rows: auto 1fr; }
+  .it { grid-column: 1 / -1; padding: 16px 16px 10px; } .it h3 { font-size: 23px; } .it .role { font-size: 13px; margin-top: 6px; }
+  .ist { border-top: 1px solid var(--grid); } .pst { padding: 10px 16px; min-width: 0; } .pst:first-child { border-left: 0; } .pst b { font-size: 26px; } .pst span { font-size: 11.5px; }
+  .info { grid-template-columns: minmax(0, 1fr) 76px; }
+  .cta { border-top: 1px solid var(--grid); padding: 10px; justify-content: center; align-items: center; } .cta .a { width: 40px; height: 40px; align-self: center; }
+  .cta .t { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 }
-@media (prefers-reduced-motion: reduce) { .js .proj .rv { opacity: 1; transform: none; transition: none; } .scene { transition: none; } }
+@media (max-width: 600px) { .g-idx { gap: 0; } .g-idx button { font-size: 0; gap: 0; padding: 10px 7px; } .g-idx button i { width: 9px; height: 9px; } .g-head h2 { white-space: nowrap; } }
+@media (prefers-reduced-motion: reduce) { .scene { transition: none; } .halo { animation: none; } }
 
 /* ---------- sample controls ---------- */
 .ctrl { position: fixed; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); translate: -50% 0; z-index: 40; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center;
@@ -470,17 +534,29 @@ html.no-notes .sample-note { display: none; }
   </section>
 
   <section class="work" id="work" aria-labelledby="workTitle">
-      <div class="work-intro"><div class="wrap"><h2 id="workTitle">Selected work</h2></div></div>
-        <article class="proj">
-          <div class="wrap pcard">
-            <div class="prow">
-              <div class="rv"><h3>Helping 1.4M+ doctors carry their professional history</h3><p class="role">Capgemini · Offshore design track lead · team of 6 · 10 months</p></div>
-              <div class="pstats rv"><div class="pst"><b>84%</b><span>Task success, up from 56%</span></div><div class="pst"><b>9%</b><span>Drop-off, down from 30%</span></div>
-                <a class="go" href="https://kaliyugg.framer.website/healthcare" target="_blank" rel="noopener"><span class="t">Read the case study</span><span class="a"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a></div>
-            </div>
-            <a class="fstage" href="https://kaliyugg.framer.website/healthcare" target="_blank" rel="noopener" data-film="health" style="--bg0:#E8EEF4" aria-label="Credentialing case study. Animated preview of the real screens: the dashboard, the hospital affiliations flow, the design system, and the saved records.">
-              <div class="box" aria-hidden="true">              <div class="scene" data-bg="#E8EEF4">
-                <div class="cq">
+    <div class="wpin">
+      <div class="wrap wgrid">
+        <div class="g g-head"><h2 id="workTitle">Selected work</h2><nav class="g-idx" aria-label="Projects"><button type="button" data-i="0" class="on"><i></i>Credentialing</button><button type="button" data-i="1"><i></i>Staffcare</button><button type="button" data-i="2"><i></i>Adani One</button></nav></div>
+        <div class="g g-info">
+          <article class="info" data-i="0" aria-hidden="false">
+            <div class="it"><h3><span class="ln"><span>Helping 1.4M+ doctors</span></span><span class="ln"><span>carry their professional history</span></span></h3><p class="role"><span>Capgemini · Offshore design track lead · 10 months</span></p></div>
+            <div class="ist"><div class="pst"><b data-v="84%">84%</b><span>Task success, up from 56%</span></div><div class="pst"><b data-v="9%">9%</b><span>Drop-off, down from 30%</span></div></div>
+            <a class="cta" href="https://kaliyugg.framer.website/healthcare" target="_blank" rel="noopener" tabindex="0"><span class="t">Read the case study</span><span class="a"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a>
+          </article>
+          <article class="info" data-i="1" aria-hidden="true">
+            <div class="it"><h3><span class="ln"><span>A field app that keeps up</span></span><span class="ln"><span>with staff on the move</span></span></h3><p class="role"><span>Zero Designs · UX design intern · 2024</span></p></div>
+            <div class="ist"><div class="pst"><b data-v="1:20">1:20</b><span>Minutes navigating, down from 3:45</span></div><div class="pst"><b data-v="+50%">+50%</b><span>Task success in testing</span></div></div>
+            <a class="cta" href="https://kaliyugg.framer.website/staffcare" target="_blank" rel="noopener" tabindex="-1"><span class="t">Read the case study</span><span class="a"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a>
+          </article>
+          <article class="info" data-i="2" aria-hidden="true">
+            <div class="it"><h3><span class="ln"><span>One calm timeline</span></span><span class="ln"><span>for anxious flyers</span></span></h3><p class="role"><span>Adani Digital Labs · UX design intern · 2023</span></p></div>
+            <div class="ist"><div class="pst"><b data-v="3.1">3.1</b><span>Anxiety score, down from 7.2</span></div><div class="pst"><b data-v="8s">8s</b><span>To find the gate, down from 30s</span></div></div>
+            <a class="cta" href="https://kaliyugg.framer.website/adani" target="_blank" rel="noopener" tabindex="-1"><span class="t">Read the case study</span><span class="a"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a>
+          </article>
+        </div>
+        <div class="g g-stage"><div class="track">
+          <a class="fstage" href="https://kaliyugg.framer.website/healthcare" target="_blank" rel="noopener" data-film="health" data-i="0" style="--bg0:#E8EEF4" aria-label="Credentialing case study. Animated preview of the real screens: the provider dashboard, adding a hospital affiliation, the design system, and the saved records." tabindex="0">
+            <div class="box" aria-hidden="true"><div class="scene" data-bg="#E8EEF4" data-in="zoom"><div class="cam" data-b=".88" data-bn=".66"><div class="cq">
                   <div class="cq-top"><i class="cq-logo"></i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5M12 16.5h.01"/></svg><span class="id">XXXX ID: #######</span><span class="cq-av">OP</span></div>
                   <div class="cq-body">
                     <div class="cq-nav">
@@ -520,15 +596,12 @@ html.no-notes .sample-note { display: none; }
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div class="scene" data-bg="#F4F0E8">
-                <div class="cq">
+                </div></div></div><div class="scene" data-bg="#F4F0E8" data-in="up"><div class="cam" data-b=".88" data-bn=".66"><div class="cq">
                   <div class="cq-top"><i class="cq-logo"></i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5M12 16.5h.01"/></svg><span class="id">XXXX ID: #######</span><span class="cq-av">OP</span></div>
                   <div class="cq-body">
                     <div class="cq-nav"><span class="cq-ni"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9h-6v-6H9v6H3z"/></svg>Home</span><span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"/></svg>Alerts</span><span class="cq-ni on dot"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M9 6V4h6v2M12 10v6M9 13h6"/></svg>Profile</span><span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Locations</span><span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></svg>Documents</span><span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>Authorizations</span><span class="cq-todo"><b>##%</b>To-Do Status</span></div>
                     <div class="cq-main">
-                      <div class="cq-crumb"><span><span class="lk">Home</span> &nbsp;›&nbsp; Profile</span><span class="sp"></span><span class="cq-pr">Progress: 15%<i><em></em></i></span><span class="cq-la">Last Attested: --/--/--</span></div>
+                      <div class="cq-crumb"><span><span class="lk">Home</span> &nbsp;›&nbsp; Profile</span><span class="cq-gap"></span><span class="cq-pr">Progress: 15%<i><em></em></i></span><span class="cq-la">Last Attested: --/--/--</span></div>
                       <div class="cq-wrap">
                         <div class="cq-steps"><span class="chev">›</span><span class="ln"></span><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="c"></i><i></i><i></i><i></i></div>
                         <div class="cq-card">
@@ -547,10 +620,7 @@ html.no-notes .sample-note { display: none; }
                   </div>
                   <span class="cq-fab"><svg viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2M4 14h3v5H5a1 1 0 0 1-1-1zM20 14h-3v5h2a1 1 0 0 0 1-1z"/></svg></span>
                   
-                </div>
-              </div>
-              <div class="scene" data-bg="#F3F1EC">
-                <div class="ds scale-n">
+                </div></div></div><div class="scene" data-bg="#F3F1EC" data-in="zoom"><div class="cam" data-b=".9" data-bn=".66"><div class="ds">
                   <div class="ds-col">
                     <div class="ds-p g1"><span class="ds-l">Buttons</span><div class="ds-row"><span class="cq-btn"><span>ADD HOSPITAL AFFILIATION</span><i>▾</i></span></div><div class="ds-row"><span class="cq-back">‹ &nbsp;BACK</span><span class="cq-save" data-c="sv">SAVE &amp; CONTINUE &nbsp;›</span></div></div>
                     <div class="ds-p g2"><span class="ds-l">Status chips</span><div class="ds-row"><i class="cq-chip a">Active</i><i class="cq-chip p">Pending</i><i class="cq-chip r">Required</i><i class="cq-chip s">Suggested</i></div></div>
@@ -566,15 +636,12 @@ html.no-notes .sample-note { display: none; }
                     </div>
                     <div class="ds-p g6"><span class="ds-l">Feedback</span><div class="cq-toast"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 10"/></svg><span>Hospital Affiliation added<br>Successfully</span><span class="x">✕</span></div></div>
                   </div>
-                </div>
-              </div>
-              <div class="scene" data-bg="#E9F1EE">
-                <div class="cq">
+                </div></div></div><div class="scene" data-bg="#E9F1EE" data-in="fade"><div class="cam" data-b=".88" data-bn=".66"><div class="cq">
                   <div class="cq-top"><i class="cq-logo"></i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5M12 16.5h.01"/></svg><span class="id">XXXX ID: #######</span><span class="cq-av">OP</span></div>
                   <div class="cq-body">
                     <div class="cq-nav"><span class="cq-ni"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9h-6v-6H9v6H3z"/></svg>Home</span><span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"/></svg>Alerts</span><span class="cq-ni on dot"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M9 6V4h6v2M12 10v6M9 13h6"/></svg>Profile</span><span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Locations</span><span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></svg>Documents</span><span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>Authorizations</span><span class="cq-todo"><b>##%</b>To-Do Status</span></div>
                     <div class="cq-main">
-                      <div class="cq-crumb"><span><span class="lk">Home</span> &nbsp;›&nbsp; Profile</span><span class="sp"></span><span class="cq-pr">Progress: 15%<i><em></em></i></span><span class="cq-la">Last Attested: --/--/--</span></div>
+                      <div class="cq-crumb"><span><span class="lk">Home</span> &nbsp;›&nbsp; Profile</span><span class="cq-gap"></span><span class="cq-pr">Progress: 15%<i><em></em></i></span><span class="cq-la">Last Attested: --/--/--</span></div>
                       <div class="cq-wrap">
                         <div class="cq-steps"><span class="chev">›</span><span class="ln"></span><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="c"></i><i></i><i></i><i></i></div>
                         <div class="cq-card">
@@ -593,144 +660,216 @@ html.no-notes .sample-note { display: none; }
                   </div>
                   <span class="cq-fab"><svg viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2M4 14h3v5H5a1 1 0 0 1-1-1zM20 14h-3v5h2a1 1 0 0 0 1-1z"/></svg></span>
                   <div class="cq-toast"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 10"/></svg><span>Hospital Affiliation added<br>Successfully</span><span class="x">✕</span></div>
-                </div>
-              </div>
-              <div class="scene" data-bg="#0B5E54">
-                <div class="metric" style="--a:56%;--b:84%"><p>Task success</p><div class="big"><span class="from">56%</span><span class="ar">→</span><b data-n="m">56%</b></div><div class="mb"><em></em></div><p class="sub">Drop-off fell from 30% to 9%</p></div>
-              </div>
-
-              </div>
-            </a>
-          </div>
-        </article>
-        <article class="proj">
-          <div class="wrap pcard">
-            <div class="prow">
-              <div class="rv"><h3>A field app that keeps up with staff on the move</h3><p class="role">Zero Designs · UX design intern · 2024</p></div>
-              <div class="pstats rv"><div class="pst"><b>1:20</b><span>Minutes navigating, down from 3:45</span></div><div class="pst"><b>+50%</b><span>Task success in testing</span></div>
-                <a class="go" href="https://kaliyugg.framer.website/staffcare" target="_blank" rel="noopener"><span class="t">Read the case study</span><span class="a"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a></div>
-            </div>
-            <a class="fstage" href="https://kaliyugg.framer.website/staffcare" target="_blank" rel="noopener" data-film="staff" style="--bg0:#F7E3E0" aria-label="Staffcare case study. Animated preview rebuilt from the real app: the old grid home, the new home and check-out, quick tasks, the task map, expenses and adding an expense.">
-              <div class="box" aria-hidden="true">
-              <div class="scene" data-bg="#F7E3E0">
-                <div class="lab"><b>Before</b>Fourteen buttons, all equally loud</div>
-                <div class="ph"><div class="scr old">
-                  <div class="ob">VAYAK StaffCare</div>
-                  <div class="otabs"><span class="on">Main</span><span>Extra</span><span>Report</span><span>Other</span></div>
-                  <div class="ogrid">
-                    <span data-c="o1"><i style="--c:#2BB673"></i>Start day</span><span><i style="--c:#8E44AD"></i>Start visit</span>
-                    <span><i style="--c:#F39C12"></i>Area visit</span><span data-c="o2"><i style="--c:#3498DB"></i>My expenses</span>
-                    <span><i style="--c:#E74C3C"></i>My sales</span><span><i style="--c:#27AE60"></i>Collections</span>
-                    <span data-c="o3"><i style="--c:#F1C40F"></i>Order list</span><span><i style="--c:#7F8C8D"></i>Tasks</span>
-                    <span><i style="--c:#E84393"></i>View party</span><span><i style="--c:#16A085"></i>Complaints</span>
-                    <span><i style="--c:#2980B9"></i>Stock</span><span><i style="--c:#C0392B"></i>Tour plan</span>
-                    <span><i style="--c:#D35400"></i>Leave</span><span><i style="--c:#8E44AD"></i>Person detail</span>
+                </div></div></div><div class="scene" data-bg="#E9F1EE" data-in="zoom" data-done="1"><div class="cam" data-b=".88" data-bn=".66"><div class="cq">
+                  <div class="cq-top"><i class="cq-logo"></i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5M12 16.5h.01"/></svg><span class="id">XXXX ID: #######</span><span class="cq-av">OP</span></div>
+                  <div class="cq-body">
+                    <div class="cq-nav"><span class="cq-ni"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9h-6v-6H9v6H3z"/></svg>Home</span><span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"/></svg>Alerts</span><span class="cq-ni on dot"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M9 6V4h6v2M12 10v6M9 13h6"/></svg>Profile</span><span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Locations</span><span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></svg>Documents</span><span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>Authorizations</span><span class="cq-todo"><b>##%</b>To-Do Status</span></div>
+                    <div class="cq-main">
+                      <div class="cq-crumb"><span><span class="lk">Home</span> &nbsp;›&nbsp; Profile</span><span class="cq-gap"></span><span class="cq-pr">Progress: 15%<i><em></em></i></span><span class="cq-la">Last Attested: --/--/--</span></div>
+                      <div class="cq-wrap">
+                        <div class="cq-steps"><span class="chev">›</span><span class="ln"></span><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="c"></i><i></i><i></i><i></i></div>
+                        <div class="cq-card">
+                          <div class="cq-h"><h4>Hospital Affiliations</h4><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg></div>
+                          <div class="cq-row"><p>If there are hospitals where you have current or pending admitting privileges, current or pending arrangements, or a different non-admitting affiliation, enter them below.</p><span class="cq-btn" data-c="add"><span>ADD HOSPITAL AFFILIATION</span><i>▾</i></span></div>
+                          <div class="cq-tabs"><span>ADMITTING PRIVILEGES</span><span>ADMITTING ARRANGEMENTS</span><span class="on">NON-ADMITTING AFFILIATIONS</span><span>AMBULATORY SURGERY CENTERS</span></div>
+                          <p class="cq-info">If you are affiliated with a hospital, but you cannot admit. This may be called "courtesy" or "consulting" privileges at some hospitals. Please also enter in pending non-admitting hospital affiliations.</p>
+                          <div class="cq-tools"><span>‹› &nbsp;AUTO-RESIZE</span><span>▥ &nbsp;COLUMNS</span><span>☰ &nbsp;FILTERS</span><span class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>Search</span></div>
+                          <div class="cq-tr cq-th"><span>Name</span><span>Location</span><span>Description</span><span>Status</span><span></span></div>
+                          <div class="cq-tr cq-td r1"><span>Abbeville General Hospital</span><span>Abbeville<small>LA</small></span><span class="ds">Previously served as adjunct faculty for clinical psychology rotation. wingardium. Sc...</span><span><i class="cq-chip a">Active</i></span><span class="act"><svg class="ed" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg><svg class="del" viewBox="0 0 24 24"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/></svg></span></div><div class="cq-tr cq-td r2"><span>Abbeville General Hospital</span><span>Abbeville<small>LA</small></span><span class="ds">Previously served as adjunct faculty for clinical psychology rotation. wingardium. Sc...</span><span><i class="cq-chip a">Active</i></span><span class="act"><svg class="ed" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg><svg class="del" viewBox="0 0 24 24"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/></svg></span></div><div class="cq-tr cq-td r3"><span>Abbeville General Hospital</span><span>Abbeville<small>LA</small></span><span class="ds">Previously served as adjunct faculty for clinical psychology rotation. wingardium. Sc...</span><span><i class="cq-chip p">Pending</i></span><span class="act"><svg class="ed" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg><svg class="del" viewBox="0 0 24 24"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/></svg></span></div>
+                          <div class="cq-foot"><span>Rows per page: &nbsp;10 ▾</span><span>1-2 of 2</span><span class="pg">‹ ›</span></div>
+                          <div class="cq-act"><span class="cq-back">‹ &nbsp;BACK</span><span class="cq-save">SAVE &amp; CONTINUE &nbsp;›</span></div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div></div>
-              </div>
-              <div class="scene" data-bg="#FBEDEA">
-                <div class="lab"><b>After</b>Built around the next task</div>
-                <div class="ph"><div class="scr">
-                  <div class="rb"><span>☰</span><b>Home</b><span>文</span></div>
-                  <div class="trk">Location tracking started at 08:00</div>
-                  <div class="wel"><div><p>Welcome <b>Aakash</b></p><p class="tm"><b data-n="tm">01:00:28</b> hrs</p><small>Punched in at 8:00 a.m.</small></div><span class="cob" data-c="co"><em>Check out</em></span></div>
-                  <p class="shd">Quick tasks</p>
-                  <div class="qt"><span><i></i>Tasks</span><span><i></i>Expenses</span><span><i></i>Leave</span><span><i></i>Chat</span></div>
-                  <p class="shd">Upcoming tasks</p>
-                  <div class="up"><div class="uh"><b>Park</b><span>Scheduled</span></div><p>● Due in 3 hrs · 6:00 PM</p><span class="vd">View details</span></div>
-                  <div class="tabbar"><span>Home</span><span class="on">+ Tasks</span><span>Dashboard</span><span>Other</span></div>
-                </div></div>
-              </div>
-              <div class="scene" data-bg="#F6EEDC">
-                <div class="big4"><span class="tl4 t1"><i></i>Tasks</span><span class="tl4 t2" data-c="ex"><i></i>Expenses</span><span class="tl4 t3"><i></i>Leave</span><span class="tl4 t4"><i></i>Chat</span></div>
-              </div>
-              <div class="scene" data-bg="#FBEDEA">
-                <div class="lab"><b>Map-first</b>Tasks where they actually happen</div>
-                <div class="ph"><div class="scr">
-                  <div class="rb"><span>☰</span><b>Tasks</b><span>⟳</span></div>
-                  <div class="trk">12.03.2024</div>
-                  <div class="map">
-                    <i class="blk" style="left:8%;top:8%;width:30%;height:18%"></i><i class="blk" style="left:58%;top:40%;width:34%;height:16%"></i><i class="blk" style="left:12%;top:62%;width:26%;height:14%"></i>
-                    <i class="rdh" style="top:30%"></i><i class="rdh" style="top:58%;transform:rotate(-8deg)"></i><i class="rdv" style="left:44%"></i><i class="rdv" style="left:76%;transform:rotate(6deg)"></i>
-                    <span class="me" style="left:46%;top:44%"></span>
-                    <span class="pin p1" style="left:26%;top:28%;--c:#2BB673"></span><span class="pin p2" style="left:72%;top:22%;--c:#2F6BE0"></span><span class="pin p3" style="left:62%;top:52%;--c:#E52421"></span>
-                    <div class="sheet"><div class="cnt"><span><b>2</b>Completed</span><span><b>0</b>Overdue</span><span><b>1</b>Scheduled</span></div><div class="tk"><b>Park</b><span>Due in 3 hrs · 2.4 km</span><em data-c="go">Go to map</em></div></div>
-                  </div>
-                </div></div>
-              </div>
-              <div class="scene" data-bg="#F6EEDC">
-                <div class="exp">
-                  <div class="es"><span class="e1">Pending<b>₹20</b></span><span class="e2">Declined<b>₹0</b></span><span class="e3">Reimbursed<b data-n="re">₹0</b></span></div>
-                  <div class="el">
-                    <div class="er x1"><i></i><div><b>Petrol</b><small>12 Mar · Surat site project</small></div><em class="chip ok">Approved</em><b>₹400</b></div>
-                    <div class="er x2"><i></i><div><b>Hotel</b><small>12 Mar · Surat site project</small></div><em class="chip wt">Pending</em><b>₹1,000</b></div>
-                    <div class="er x3"><i></i><div><b>Lunch</b><small>12 Mar · Surat site project</small></div><em class="chip no">Rejected</em><b>₹300</b></div>
-                  </div>
-                </div>
-              </div>
-              <div class="scene" data-bg="#FBEDEA">
-                <div class="lab"><b>Two taps</b>Log it and keep moving</div>
-                <div class="ph"><div class="scr">
-                  <div class="rb"><span>☰</span><b>Expense</b><span></span></div>
-                  <div class="form"><p>Title</p><div class="fin"><span data-t="ti"></span></div><p>Amount</p><div class="fin"><span data-t="am"></span></div><p>Expense type</p><div class="fin">Travel ▾</div><p>Evidence</p><div class="fin ev">+ Add evidence</div></div>
-                  <div class="snack">Expense added · ₹240 pending approval</div>
-                  <span class="addb" data-c="add">Add expense</span>
-                </div></div>
-              </div>
+                  <span class="cq-fab"><svg viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2M4 14h3v5H5a1 1 0 0 1-1-1zM20 14h-3v5h2a1 1 0 0 0 1-1z"/></svg></span>
+                  <div class="cq-toast"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 10"/></svg><span>Hospital Affiliation added<br>Successfully</span><span class="x">✕</span></div>
+                </div></div></div><div class="scene" data-bg="#0B5E54" data-in="zoom"><div class="cam" data-b="1" data-bn="1"><div class="metric" style="--a:56%;--b:84%"><p>Task success</p><div class="big"><span class="from">56%</span><span class="ar">→</span><b data-n="m">56%</b></div><div class="mb"><em></em></div><p class="sub">Drop-off fell from 30% to 9%</p></div></div></div></div>
             
-              </div>
-            </a>
-          </div>
-        </article>
-        <article class="proj">
-          <div class="wrap pcard">
-            <div class="prow">
-              <div class="rv"><h3>One calm timeline for anxious flyers</h3><p class="role">Adani Digital Labs · UX design intern · 2023</p></div>
-              <div class="pstats rv"><div class="pst"><b>3.1</b><span>Anxiety score, down from 7.2</span></div><div class="pst"><b>8s</b><span>To find the gate, down from 30s</span></div>
-                <a class="go" href="https://kaliyugg.framer.website/adani" target="_blank" rel="noopener"><span class="t">Read the case study</span><span class="a"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a></div>
-            </div>
-            <a class="fstage" href="https://kaliyugg.framer.website/adani" target="_blank" rel="noopener" data-film="adani" style="--bg0:#ECE8FA" aria-label="Adani One case study. Animated preview rebuilt from the real app: the journey card, the travel timeline, live gate details, offers at the right moment, and the result.">
-              <div class="box" aria-hidden="true">
-              <div class="scene" data-bg="#ECE8FA">
-                <div class="lab"><b>One timeline</b>The whole trip, in the order it happens</div>
-                <div class="ph"><div class="scr adn">
-                  <div class="jh"><span>‹ Back</span><b>My Journey</b></div>
-                  <div class="fc"><div class="fr"><b>BOM</b><em>T1</em><span class="lane"><i></i></span><b>GOI</b><em>T2</em></div><div class="fr2"><span><small>Departure</small>06:00 PM</span><span style="text-align:right"><small>Arrival</small>07:15 PM</span></div><div class="fr3"><span>IndiGo · 6E 6562</span><span>8th July, Sat</span></div></div>
-                  <div class="tls"><div class="ti"><i></i><b>Before you board</b></div><div class="tc"><b>Enjoy cab booking</b><small>Smooth city-to-airport rides</small><em>Book now ›</em></div><div class="ti"><i></i><b>Depart from Mumbai</b></div></div>
-                </div></div>
-              </div>
-              <div class="scene" data-bg="#FCEBDD">
-                <div class="card w420 tlc">
-                  <span class="rail"><em></em></span>
-                  <div class="tli q1"><i></i><div><b>Before you board</b><small>Cab booked · web check-in done</small></div></div>
-                  <div class="tli q2"><i></i><div><b>Depart from Mumbai</b><small>Your flight departs at 6:00 PM</small></div><em class="nowc">Now</em></div>
-                  <div class="tli q3"><i></i><div><b>After you land</b><small>Baggage, cabs and weather in Goa</small></div></div>
-                </div>
-              </div>
-              <div class="scene" data-bg="#E3EEFB">
-                <div class="card w380 gate">
-                  <p class="ct">Gate details</p>
-                  <div class="gv"><span class="g0">Gate —</span><span class="g1"><b>Gate 2</b></span></div>
-                  <p class="gu">Updated just now</p>
-                  <div class="brd"><span>Boarding in</span><b data-n="bd">26 min</b></div>
-                  <span class="cdk">Check details ›</span>
-                </div>
-              </div>
-              <div class="scene" data-bg="#ECE8FA">
-                <div class="offs">
-                  <div class="card off o1"><span class="ol">At the airport</span><div><b>Hungry? Explore our F&amp;B options</b><small>Treat your taste buds to an unforgettable experience</small></div><span class="oi">🍜</span><span class="bn" data-c="bn">Book now ›</span></div>
-                  <div class="card off o2"><span class="ol">After you land</span><div><b>Baggage collection</b><small>Collect your bag at Goa Airport from belt</small></div><span class="oi">4</span></div>
-                </div>
-              </div>
-              <div class="scene" data-bg="#3D3290">
-                <div class="metric" style="--a:72%;--b:31%"><p>Travel anxiety score</p><div class="big"><span class="from">7.2</span><span class="ar">→</span><b data-n="m">7.2</b></div><div class="mb"><em></em></div><p class="sub">Time to find the gate: 30s down to 8s</p></div>
-              </div>
+          </a>
+          <a class="fstage" href="https://kaliyugg.framer.website/staffcare" target="_blank" rel="noopener" data-film="staff" data-i="1" style="--bg0:#F6E7DC" aria-label="Staffcare case study. Animated preview of the real app: the home screen and check-out, quick tasks, the task map with a route, before and after, and expenses." tabindex="-1">
+            <div class="box" aria-hidden="true"><div class="scene" data-bg="#F6E7DC" data-in="zoom"><div class="cam" data-b=".92" data-bn=".62"><div class="pair"><div class="sp"><div class="ss"><div class="sh-h"><div class="sb"><span>9:00</span><span class="sbr"><span class="sig"><i></i><i></i><i></i><i></i></span><svg class="wifi" viewBox="0 0 16 12"><path d="M1 4.5a10 10 0 0 1 14 0M3.5 7a6.5 6.5 0 0 1 9 0M6 9.5a3 3 0 0 1 4 0"/></svg><span class="bat"><i></i></span></span></div><div class="sh-r"><span class="hb"><i></i><i></i><i></i></span><b>Home</b><span class="tr">文</span></div></div>
+  <p class="trk">Location Tracking started at 08:00 <span>⟳</span></p>
+  <div class="wel"><div><p class="wn">Welcome <b>Aakash</b></p><p class="tm"><b >01:00:28</b> Hrs</p><small>Punched in at 8:00 a.m</small></div>
+    <span class="cob" data-c="co"><em>Check Out</em></span></div>
+  <p class="shd">Quick Tasks</p>
+  <div class="qt"><span data-c="q1"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 14l1.7 1.7L15 12"/></svg>Tasks</span><span data-c="q2"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="15" height="10" rx="2"/><path d="M6 7V5h15v10h-3"/><circle cx="10.5" cy="12" r="2"/></svg>Expenses</span><span><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Leave</span><span><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>Chat</span></div>
+  <p class="shd">Upcoming Tasks</p>
+  <div class="up"><div class="uh"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg><b>Park</b><span>Scheduled &nbsp;|&nbsp; Not yet Invoiced</span></div><p>• Due in 3 Hrs</p><small>Scheduled Time</small><p class="ut">6:00 PM</p></div>
+</div></div><div class="sp"><div class="ss"><div class="sh-h"><div class="sb"><span>9:00</span><span class="sbr"><span class="sig"><i></i><i></i><i></i><i></i></span><svg class="wifi" viewBox="0 0 16 12"><path d="M1 4.5a10 10 0 0 1 14 0M3.5 7a6.5 6.5 0 0 1 9 0M6 9.5a3 3 0 0 1 4 0"/></svg><span class="bat"><i></i></span></span></div><div class="sh-r"><span class="hb"><i></i><i></i><i></i></span><b>Tasks</b><span class="tr">文</span></div></div>
+  <div class="mapw"><svg class="mapsvg" viewBox="0 0 260 470" preserveAspectRatio="xMidYMid slice">
+  <rect width="260" height="470" fill="#EAEAE8"/>
+  <g fill="#DADAD7">
+    <rect x="8" y="10" width="44" height="34" rx="2"/><rect x="62" y="6" width="36" height="40" rx="2"/><rect x="108" y="14" width="40" height="30" rx="2"/><rect x="160" y="8" width="46" height="36" rx="2"/>
+    <rect x="12" y="62" width="40" height="44" rx="2"/><rect x="62" y="58" width="44" height="34" rx="2"/><rect x="116" y="60" width="34" height="46" rx="2"/>
+    <rect x="10" y="124" width="46" height="36" rx="2"/><rect x="66" y="112" width="36" height="44" rx="2"/><rect x="150" y="128" width="40" height="40" rx="2"/><rect x="204" y="118" width="46" height="34" rx="2"/>
+    <rect x="14" y="182" width="36" height="40" rx="2"/><rect x="62" y="176" width="40" height="30" rx="2"/><rect x="170" y="190" width="40" height="44" rx="2"/><rect x="218" y="170" width="34" height="40" rx="2"/>
+    <rect x="10" y="246" width="44" height="40" rx="2"/><rect x="150" y="256" width="36" height="34" rx="2"/><rect x="196" y="250" width="44" height="40" rx="2"/>
+    <rect x="12" y="310" width="40" height="44" rx="2"/><rect x="64" y="318" width="42" height="34" rx="2"/><rect x="118" y="312" width="38" height="42" rx="2"/><rect x="168" y="306" width="36" height="40" rx="2"/>
+    <rect x="16" y="376" width="44" height="40" rx="2"/><rect x="72" y="380" width="40" height="36" rx="2"/><rect x="126" y="372" width="44" height="42" rx="2"/>
+  </g>
+  <path d="M-10 196 L270 380" stroke="#fff" stroke-width="14"/>
+  <path d="M120 -10 L60 480" stroke="#fff" stroke-width="7"/>
+  <path d="M-10 108 L270 92" stroke="#fff" stroke-width="6"/>
+  <path d="M200 480 L262 300" stroke="#F2D27D" stroke-width="40"/>
+  <ellipse cx="216" cy="96" rx="18" ry="22" fill="#CFE6BF" stroke="#E6C64E" stroke-width="2"/>
+  <rect x="226" y="52" width="10" height="14" fill="#BFE3AE"/><rect x="236" y="40" width="10" height="12" fill="#BFE3AE"/>
+  <ellipse cx="128" cy="96" rx="4" ry="8" fill="none" stroke="#9CCB8A" stroke-width="1.5"/>
+  <g fill="#A3456E" font-family="Inter, Geist, sans-serif" font-size="9" font-weight="500">
+    <text x="18" y="74">za Hospital</text><text x="96" y="236">Shreeji Children</text><text x="104" y="247">Hospital</text>
+  </g>
+  <path d="M28 54h8M32 50v8" stroke="#C0306B" stroke-width="2.4"/>
+  <path d="M112 214h8M116 210v8" stroke="#C0306B" stroke-width="2.4"/>
+  <g fill="#E07A2A" font-family="Inter, Geist, sans-serif" font-size="9" font-weight="500"><text x="122" y="356" transform="rotate(22 122 356)">Jalaram Parotha house</text></g>
+  <path d="M168 338v12M172 338v12M170 338v5" stroke="#E07A2A" stroke-width="1.6"/>
+  <mask id="rmask1"><path class="rdraw" d="M118 232 L150 262 L170 252 L184 214 L190 176" stroke="#fff" stroke-width="6" fill="none" pathLength="1"/></mask>
+  <path d="M118 232 L150 262 L170 252 L184 214 L190 176" stroke="#E52421" stroke-width="2.4" stroke-dasharray="3 4" fill="none" mask="url(#rmask1)"/>
+  <circle class="halo" cx="118" cy="232" r="26" fill="#2F6BE0" opacity=".16"/>
+  <circle cx="118" cy="232" r="6" fill="#2F6BE0" stroke="#fff" stroke-width="2.5"/>
+  <g class="mpin"><circle cx="190" cy="172" r="9" fill="#2F6BE0" stroke="#fff" stroke-width="2"/><text x="190" y="175.5" text-anchor="middle" fill="#fff" font-size="10" font-weight="700" font-family="Inter, sans-serif">3</text></g>
+</svg>
+    <div class="mdate">12.03.2024 <i></i></div><span class="mref">⟳</span>
+    <span class="mloc"></span>
+    <div class="msheet"><span class="grab"></span><div class="mh"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg><b>Sebastian</b><span>In Progress</span></div><p class="ma">Shreeji Children Hospital · 1.2 km</p><div class="mb"><span>Call</span><span class="pri" data-c="nav">Navigate</span></div></div>
+  </div>
+</div></div></div></div></div><div class="scene" data-bg="#F7E6E1" data-in="up"><div class="cam" data-b=".9" data-bn="1"><div class="sp"><div class="ss"><div class="sh-h"><div class="sb"><span>9:00</span><span class="sbr"><span class="sig"><i></i><i></i><i></i><i></i></span><svg class="wifi" viewBox="0 0 16 12"><path d="M1 4.5a10 10 0 0 1 14 0M3.5 7a6.5 6.5 0 0 1 9 0M6 9.5a3 3 0 0 1 4 0"/></svg><span class="bat"><i></i></span></span></div><div class="sh-r"><span class="hb"><i></i><i></i><i></i></span><b>Home</b><span class="tr">文</span></div></div>
+  <p class="trk">Location Tracking started at 08:00 <span>⟳</span></p>
+  <div class="wel"><div><p class="wn">Welcome <b>Aakash</b></p><p class="tm"><b data-n="tm">01:00:28</b> Hrs</p><small>Punched in at 8:00 a.m</small></div>
+    <span class="cob" data-c="co"><em>Check Out</em></span></div>
+  <p class="shd">Quick Tasks</p>
+  <div class="qt"><span data-c="q1"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 14l1.7 1.7L15 12"/></svg>Tasks</span><span data-c="q2"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="15" height="10" rx="2"/><path d="M6 7V5h15v10h-3"/><circle cx="10.5" cy="12" r="2"/></svg>Expenses</span><span><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Leave</span><span><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>Chat</span></div>
+  <p class="shd">Upcoming Tasks</p>
+  <div class="up"><div class="uh"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg><b>Park</b><span>Scheduled &nbsp;|&nbsp; Not yet Invoiced</span></div><p>• Due in 3 Hrs</p><small>Scheduled Time</small><p class="ut">6:00 PM</p></div>
+</div></div></div></div><div class="scene" data-bg="#F3EADF" data-in="zoom"><div class="cam" data-b=".9" data-bn="1"><div class="sp"><div class="ss"><div class="sh-h"><div class="sb"><span>9:00</span><span class="sbr"><span class="sig"><i></i><i></i><i></i><i></i></span><svg class="wifi" viewBox="0 0 16 12"><path d="M1 4.5a10 10 0 0 1 14 0M3.5 7a6.5 6.5 0 0 1 9 0M6 9.5a3 3 0 0 1 4 0"/></svg><span class="bat"><i></i></span></span></div><div class="sh-r"><span class="hb"><i></i><i></i><i></i></span><b>Home</b><span class="tr">文</span></div></div>
+  <p class="trk">Location Tracking started at 08:00 <span>⟳</span></p>
+  <div class="wel"><div><p class="wn">Welcome <b>Aakash</b></p><p class="tm"><b >01:00:28</b> Hrs</p><small>Punched in at 8:00 a.m</small></div>
+    <span class="cob" data-c="co"><em>Check Out</em></span></div>
+  <p class="shd">Quick Tasks</p>
+  <div class="qt"><span data-c="q1"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 14l1.7 1.7L15 12"/></svg>Tasks</span><span data-c="q2"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="15" height="10" rx="2"/><path d="M6 7V5h15v10h-3"/><circle cx="10.5" cy="12" r="2"/></svg>Expenses</span><span><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Leave</span><span><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>Chat</span></div>
+  <p class="shd">Upcoming Tasks</p>
+  <div class="up"><div class="uh"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg><b>Park</b><span>Scheduled &nbsp;|&nbsp; Not yet Invoiced</span></div><p>• Due in 3 Hrs</p><small>Scheduled Time</small><p class="ut">6:00 PM</p></div>
+</div></div></div></div><div class="scene" data-bg="#F6E3E3" data-in="left"><div class="cam" data-b=".9" data-bn="1"><div class="sp"><div class="ss"><div class="sh-h"><div class="sb"><span>9:00</span><span class="sbr"><span class="sig"><i></i><i></i><i></i><i></i></span><svg class="wifi" viewBox="0 0 16 12"><path d="M1 4.5a10 10 0 0 1 14 0M3.5 7a6.5 6.5 0 0 1 9 0M6 9.5a3 3 0 0 1 4 0"/></svg><span class="bat"><i></i></span></span></div><div class="sh-r"><span class="hb"><i></i><i></i><i></i></span><b>Tasks</b><span class="tr">文</span></div></div>
+  <div class="mapw"><svg class="mapsvg" viewBox="0 0 260 470" preserveAspectRatio="xMidYMid slice">
+  <rect width="260" height="470" fill="#EAEAE8"/>
+  <g fill="#DADAD7">
+    <rect x="8" y="10" width="44" height="34" rx="2"/><rect x="62" y="6" width="36" height="40" rx="2"/><rect x="108" y="14" width="40" height="30" rx="2"/><rect x="160" y="8" width="46" height="36" rx="2"/>
+    <rect x="12" y="62" width="40" height="44" rx="2"/><rect x="62" y="58" width="44" height="34" rx="2"/><rect x="116" y="60" width="34" height="46" rx="2"/>
+    <rect x="10" y="124" width="46" height="36" rx="2"/><rect x="66" y="112" width="36" height="44" rx="2"/><rect x="150" y="128" width="40" height="40" rx="2"/><rect x="204" y="118" width="46" height="34" rx="2"/>
+    <rect x="14" y="182" width="36" height="40" rx="2"/><rect x="62" y="176" width="40" height="30" rx="2"/><rect x="170" y="190" width="40" height="44" rx="2"/><rect x="218" y="170" width="34" height="40" rx="2"/>
+    <rect x="10" y="246" width="44" height="40" rx="2"/><rect x="150" y="256" width="36" height="34" rx="2"/><rect x="196" y="250" width="44" height="40" rx="2"/>
+    <rect x="12" y="310" width="40" height="44" rx="2"/><rect x="64" y="318" width="42" height="34" rx="2"/><rect x="118" y="312" width="38" height="42" rx="2"/><rect x="168" y="306" width="36" height="40" rx="2"/>
+    <rect x="16" y="376" width="44" height="40" rx="2"/><rect x="72" y="380" width="40" height="36" rx="2"/><rect x="126" y="372" width="44" height="42" rx="2"/>
+  </g>
+  <path d="M-10 196 L270 380" stroke="#fff" stroke-width="14"/>
+  <path d="M120 -10 L60 480" stroke="#fff" stroke-width="7"/>
+  <path d="M-10 108 L270 92" stroke="#fff" stroke-width="6"/>
+  <path d="M200 480 L262 300" stroke="#F2D27D" stroke-width="40"/>
+  <ellipse cx="216" cy="96" rx="18" ry="22" fill="#CFE6BF" stroke="#E6C64E" stroke-width="2"/>
+  <rect x="226" y="52" width="10" height="14" fill="#BFE3AE"/><rect x="236" y="40" width="10" height="12" fill="#BFE3AE"/>
+  <ellipse cx="128" cy="96" rx="4" ry="8" fill="none" stroke="#9CCB8A" stroke-width="1.5"/>
+  <g fill="#A3456E" font-family="Inter, Geist, sans-serif" font-size="9" font-weight="500">
+    <text x="18" y="74">za Hospital</text><text x="96" y="236">Shreeji Children</text><text x="104" y="247">Hospital</text>
+  </g>
+  <path d="M28 54h8M32 50v8" stroke="#C0306B" stroke-width="2.4"/>
+  <path d="M112 214h8M116 210v8" stroke="#C0306B" stroke-width="2.4"/>
+  <g fill="#E07A2A" font-family="Inter, Geist, sans-serif" font-size="9" font-weight="500"><text x="122" y="356" transform="rotate(22 122 356)">Jalaram Parotha house</text></g>
+  <path d="M168 338v12M172 338v12M170 338v5" stroke="#E07A2A" stroke-width="1.6"/>
+  <mask id="rmask2"><path class="rdraw" d="M118 232 L150 262 L170 252 L184 214 L190 176" stroke="#fff" stroke-width="6" fill="none" pathLength="1"/></mask>
+  <path d="M118 232 L150 262 L170 252 L184 214 L190 176" stroke="#E52421" stroke-width="2.4" stroke-dasharray="3 4" fill="none" mask="url(#rmask2)"/>
+  <circle class="halo" cx="118" cy="232" r="26" fill="#2F6BE0" opacity=".16"/>
+  <circle cx="118" cy="232" r="6" fill="#2F6BE0" stroke="#fff" stroke-width="2.5"/>
+  <g class="mpin"><circle cx="190" cy="172" r="9" fill="#2F6BE0" stroke="#fff" stroke-width="2"/><text x="190" y="175.5" text-anchor="middle" fill="#fff" font-size="10" font-weight="700" font-family="Inter, sans-serif">3</text></g>
+</svg>
+    <div class="mdate">12.03.2024 <i></i></div><span class="mref">⟳</span>
+    <span class="mloc"></span>
+    <div class="msheet"><span class="grab"></span><div class="mh"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg><b>Sebastian</b><span>In Progress</span></div><p class="ma">Shreeji Children Hospital · 1.2 km</p><div class="mb"><span>Call</span><span class="pri" data-c="nav">Navigate</span></div></div>
+  </div>
+</div></div></div></div><div class="scene" data-bg="#F3EADF" data-in="fade"><div class="cam" data-b=".76" data-bn=".56"><div class="ba"><div class="bc"><b class="tagb">Before</b><div class="sp"><div class="ss old">
+  <div class="ob">VAYAK StaffCare</div>
+  <div class="otabs"><span class="on">Main</span><span>Extra</span><span>Report</span><span>Other</span></div>
+  <div class="ogrid"><span><i style="--c:#2BB673"></i>Start day</span><span><i style="--c:#8E44AD"></i>Start visit</span><span><i style="--c:#F39C12"></i>Area visit</span><span><i style="--c:#3498DB"></i>My expenses</span><span><i style="--c:#E74C3C"></i>My sales</span><span><i style="--c:#27AE60"></i>Collections</span><span><i style="--c:#F1C40F"></i>Order list</span><span><i style="--c:#7F8C8D"></i>Tasks</span><span><i style="--c:#E84393"></i>View party</span><span><i style="--c:#16A085"></i>Complaints</span><span><i style="--c:#2980B9"></i>Stock</span><span><i style="--c:#C0392B"></i>Tour plan</span><span><i style="--c:#D35400"></i>Leave</span><span><i style="--c:#8E44AD"></i>Person detail</span></div></div></div></div><div class="bc"><b class="tagb a">After</b><div class="sp"><div class="ss"><div class="sh-h"><div class="sb"><span>9:00</span><span class="sbr"><span class="sig"><i></i><i></i><i></i><i></i></span><svg class="wifi" viewBox="0 0 16 12"><path d="M1 4.5a10 10 0 0 1 14 0M3.5 7a6.5 6.5 0 0 1 9 0M6 9.5a3 3 0 0 1 4 0"/></svg><span class="bat"><i></i></span></span></div><div class="sh-r"><span class="hb"><i></i><i></i><i></i></span><b>Home</b><span class="tr">文</span></div></div>
+  <p class="trk">Location Tracking started at 08:00 <span>⟳</span></p>
+  <div class="wel"><div><p class="wn">Welcome <b>Aakash</b></p><p class="tm"><b >01:00:28</b> Hrs</p><small>Punched in at 8:00 a.m</small></div>
+    <span class="cob" data-c="co"><em>Check Out</em></span></div>
+  <p class="shd">Quick Tasks</p>
+  <div class="qt"><span data-c="q1"><svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 14l1.7 1.7L15 12"/></svg>Tasks</span><span data-c="q2"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="15" height="10" rx="2"/><path d="M6 7V5h15v10h-3"/><circle cx="10.5" cy="12" r="2"/></svg>Expenses</span><span><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Leave</span><span><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>Chat</span></div>
+  <p class="shd">Upcoming Tasks</p>
+  <div class="up"><div class="uh"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg><b>Park</b><span>Scheduled &nbsp;|&nbsp; Not yet Invoiced</span></div><p>• Due in 3 Hrs</p><small>Scheduled Time</small><p class="ut">6:00 PM</p></div>
+</div></div></div></div></div></div><div class="scene" data-bg="#F7E6E1" data-in="up"><div class="cam" data-b=".9" data-bn="1"><div class="sp"><div class="ss"><div class="sh-h"><div class="sb"><span>9:00</span><span class="sbr"><span class="sig"><i></i><i></i><i></i><i></i></span><svg class="wifi" viewBox="0 0 16 12"><path d="M1 4.5a10 10 0 0 1 14 0M3.5 7a6.5 6.5 0 0 1 9 0M6 9.5a3 3 0 0 1 4 0"/></svg><span class="bat"><i></i></span></span></div><div class="sh-r"><span class="hb"><i></i><i></i><i></i></span><b>Expense</b><span class="tr">+</span></div></div>
+  <div class="es"><span class="e1"><small>Pending</small><b>Rs 20</b></span><span class="e2"><small>Declined</small><b>Rs 0</b></span><span class="e3"><small>Reimbursed</small><b data-n="re">Rs 0</b></span></div>
+  <p class="edate">12.03.2024</p>
+  <div class="er x1"><i></i><div><b>Petrol</b><small>March 12, 2024 at 3:30 PM</small></div><em class="chip ok">Approved</em><b>₹400</b></div>
+  <div class="er x2"><i></i><div><b>Hotel</b><small>March 12, 2024 at 4:30 PM</small></div><em class="chip wt">Pending</em><b>₹1000</b></div>
+  <div class="er x3"><i></i><div><b>Lunch</b><small>March 12, 2024 at 5:30 PM</small></div><em class="chip no">Rejected</em><b>₹300</b></div>
+  <span class="addb">Add Expense</span>
+</div></div></div></div><div class="scene" data-bg="#B8231F" data-in="zoom"><div class="cam" data-b="1" data-bn="1"><div class="metric" style="--a:100%;--b:36%"><p>Time spent navigating the app</p><div class="big"><span class="from">3:45</span><span class="ar">→</span><b data-n="m">3:45</b></div><div class="mb"><em></em></div><p class="sub">Task success up 50% in testing</p></div></div></div></div>
             
-              </div>
-            </a>
-          </div>
-        </article>
-    </section>
+          </a>
+          <a class="fstage" href="https://kaliyugg.framer.website/adani" target="_blank" rel="noopener" data-film="adani" data-i="2" style="--bg0:#E4ECF8" aria-label="Adani One case study. Animated preview of the real app: My Journey, the flight card, the travel timeline, live gate details and offers at the right moment." tabindex="-1">
+            <div class="box" aria-hidden="true"><div class="scene" data-bg="#E4ECF8" data-in="zoom"><div class="cam" data-b=".9" data-bn="1"><div class="sp ad"><div class="ss">
+  <div class="aj-scroll">
+    <div class="aj-hero"><div class="asb"><span><span class="sig"><i></i><i></i><i></i><i></i></span> Airtel</span><span>1:20 PM</span><span>100% <span class="bat w"><i></i></span></span></div><div class="wing"></div><p class="ajt"><span>‹</span>My Journey</p></div>
+    <div class="aj-card fl">
+      <div class="fr"><b>BOM</b><em>T1</em><span class="lane"><i class="pl"></i></span><b>GOI</b><em>T2</em></div>
+      <div class="fr2"><span><small>Departure</small>06:00 PM</span><span class="r"><small>Arrival</small>07:15 PM</span></div>
+      <div class="fr3"><span><i class="ig"></i>Indigo &nbsp;|&nbsp; 6E 6562</span><span>8th July, Sat</span></div>
+      <div class="fr4">Check Details <span>›</span></div>
+    </div>
+    <div class="aj-card rt"><div><b>GOI to BOM</b><small>Flights starting from</small></div><div class="pr"><b>₹4,320</b><small>per person</small></div><span class="chev">›</span></div>
+    <div class="aj-ban"><b>Travel Checklist</b></div>
+    <div class="aj-sec"><i></i><b>Before you board</b><span class="car">⌃</span></div>
+    <div class="aj-tl">
+      <div class="aj-cab" data-c="cab"><div><b>Enjoy Cab Booking!<br>Wheels at your Service</b><small>Smooth city-to-airport or airport-to-city cab bookings.</small></div><span class="cabi"></span><p class="bn" data-c="bn">Book Now <span>›</span></p></div>
+      <div class="aj-cab"><div><b>Avail Pranaam:<br>Meet and Greet Service</b><small>Your ultimate airport meet and greet partner for stress-free journeys.</small></div><span class="cabi p"></span><p class="bn">Book Now <span>›</span></p></div>
+    </div>
+  </div>
+</div></div></div></div><div class="scene" data-bg="#EDE8F8" data-in="zoom"><div class="cam" data-b=".9" data-bn="1"><div class="sp ad"><div class="ss">
+  <div class="aj-scroll">
+    <div class="aj-hero"><div class="asb"><span><span class="sig"><i></i><i></i><i></i><i></i></span> Airtel</span><span>1:20 PM</span><span>100% <span class="bat w"><i></i></span></span></div><div class="wing"></div><p class="ajt"><span>‹</span>My Journey</p></div>
+    <div class="aj-card fl">
+      <div class="fr"><b>BOM</b><em>T1</em><span class="lane"><i class="pl"></i></span><b>GOI</b><em>T2</em></div>
+      <div class="fr2"><span><small>Departure</small>06:00 PM</span><span class="r"><small>Arrival</small>07:15 PM</span></div>
+      <div class="fr3"><span><i class="ig"></i>Indigo &nbsp;|&nbsp; 6E 6562</span><span>8th July, Sat</span></div>
+      <div class="fr4">Check Details <span>›</span></div>
+    </div>
+    <div class="aj-card rt"><div><b>GOI to BOM</b><small>Flights starting from</small></div><div class="pr"><b>₹4,320</b><small>per person</small></div><span class="chev">›</span></div>
+    <div class="aj-ban"><b>Travel Checklist</b></div>
+    <div class="aj-sec"><i></i><b>Before you board</b><span class="car">⌃</span></div>
+    <div class="aj-tl">
+      <div class="aj-cab" data-c="cab"><div><b>Enjoy Cab Booking!<br>Wheels at your Service</b><small>Smooth city-to-airport or airport-to-city cab bookings.</small></div><span class="cabi"></span><p class="bn" data-c="bn">Book Now <span>›</span></p></div>
+      <div class="aj-cab"><div><b>Avail Pranaam:<br>Meet and Greet Service</b><small>Your ultimate airport meet and greet partner for stress-free journeys.</small></div><span class="cabi p"></span><p class="bn">Book Now <span>›</span></p></div>
+    </div>
+  </div>
+</div></div></div></div><div class="scene" data-bg="#E4ECF8" data-in="up"><div class="cam" data-b=".9" data-bn="1"><div class="sp ad"><div class="ss">
+  <div class="aj-scroll">
+    <div class="aj-hero"><div class="asb"><span><span class="sig"><i></i><i></i><i></i><i></i></span> Airtel</span><span>1:20 PM</span><span>100% <span class="bat w"><i></i></span></span></div><div class="wing"></div><p class="ajt"><span>‹</span>My Journey</p></div>
+    <div class="aj-card fl">
+      <div class="fr"><b>BOM</b><em>T1</em><span class="lane"><i class="pl"></i></span><b>GOI</b><em>T2</em></div>
+      <div class="fr2"><span><small>Departure</small>06:00 PM</span><span class="r"><small>Arrival</small>07:15 PM</span></div>
+      <div class="fr3"><span><i class="ig"></i>Indigo &nbsp;|&nbsp; 6E 6562</span><span>8th July, Sat</span></div>
+      <div class="fr4">Check Details <span>›</span></div>
+    </div>
+    <div class="aj-card rt"><div><b>GOI to BOM</b><small>Flights starting from</small></div><div class="pr"><b>₹4,320</b><small>per person</small></div><span class="chev">›</span></div>
+    <div class="aj-ban"><b>Travel Checklist</b></div>
+    <div class="aj-sec"><i></i><b>Before you board</b><span class="car">⌃</span></div>
+    <div class="aj-tl">
+      <div class="aj-cab" data-c="cab"><div><b>Enjoy Cab Booking!<br>Wheels at your Service</b><small>Smooth city-to-airport or airport-to-city cab bookings.</small></div><span class="cabi"></span><p class="bn" data-c="bn">Book Now <span>›</span></p></div>
+      <div class="aj-cab"><div><b>Avail Pranaam:<br>Meet and Greet Service</b><small>Your ultimate airport meet and greet partner for stress-free journeys.</small></div><span class="cabi p"></span><p class="bn">Book Now <span>›</span></p></div>
+    </div>
+  </div>
+</div></div></div></div><div class="scene" data-bg="#FCEBDD" data-in="up"><div class="cam" data-b="1" data-bn="1"><div class="card w420 tlc"><span class="rail"><em></em></span>
+  <div class="tli q1"><i></i><div><b>Before you board</b><small>Cab booked · web check-in done</small></div></div>
+  <div class="tli q2"><i></i><div><b>Depart from Mumbai</b><small>Your flight departs at 6:00 PM</small></div><em class="nowc">Now</em></div>
+  <div class="tli q3"><i></i><div><b>After you land</b><small>Baggage, cabs and weather in Goa</small></div></div></div></div></div><div class="scene" data-bg="#E3EEFB" data-in="zoom"><div class="cam" data-b="1" data-bn="1"><div class="card w380 gate"><p class="ct">Gate details</p><div class="gv"><span class="g0">Gate —</span><span class="g1"><b>Gate 2</b></span></div><p class="gu">Updated just now</p><div class="brd"><span>Boarding in</span><b data-n="bd">26 min</b></div><span class="cdk">Check details ›</span></div></div></div><div class="scene" data-bg="#ECE8FA" data-in="left"><div class="cam" data-b="1" data-bn="1"><div class="offs"><div class="card off o1"><span class="ol">At the airport</span><div><b>Hungry? Explore our F&amp;B options</b><small>Treat your taste buds to an unforgettable experience</small></div><span class="oi">🍜</span><span class="bn" data-c="fb">Book now ›</span></div>
+  <div class="card off o2"><span class="ol">After you land</span><div><b>Baggage collection</b><small>Collect your bag at Goa Airport from belt</small></div><span class="oi">4</span></div></div></div></div><div class="scene" data-bg="#3D3290" data-in="zoom"><div class="cam" data-b="1" data-bn="1"><div class="metric" style="--a:72%;--b:31%"><p>Travel anxiety score</p><div class="big"><span class="from">7.2</span><span class="ar">→</span><b data-n="m">7.2</b></div><div class="mb"><em></em></div><p class="sub">Time to find the gate: 30s down to 8s</p></div></div></div></div>
+            
+          </a>
+        </div></div>
+        <span class="gl h1"></span><span class="gl h2"></span><span class="gl h3"></span><span class="gl h4"></span>
+        <i class="nd l n1"></i><i class="nd r n1"></i><i class="nd l n2"></i><i class="nd r n2"></i><i class="nd l n3"></i><i class="nd r n3"></i><i class="nd l n4"></i><i class="nd r n4"></i>
+      </div>
+    </div>
+  </section>
 </main>
 
 
@@ -747,7 +886,7 @@ html.no-notes .sample-note { display: none; }
 
   /* ---------- smooth scroll ---------- */
   let lenis = null;
-  if (!reduce && window.Lenis) { try { lenis = new Lenis({ lerp: 0.1 }); const raf = t => { lenis.raf(t); requestAnimationFrame(raf); }; requestAnimationFrame(raf); } catch (e) { lenis = null; } }
+  if (!reduce && window.Lenis) { try { lenis = new Lenis({ lerp: 0.1 }); window.__lenis = lenis; const raf = t => { lenis.raf(t); requestAnimationFrame(raf); }; requestAnimationFrame(raf); } catch (e) { lenis = null; } }
 
   /* ---------- canvases + the five fills ---------- */
   const sky = document.getElementById('sky'), sx = sky.getContext('2d');
@@ -901,6 +1040,40 @@ html.no-notes .sample-note { display: none; }
   /* ---------- loop ---------- */
   const workEl = document.getElementById('work'), heroStage = document.querySelector('.hero .stage');
   const ease2 = t => t * t * (3 - 2 * t);
+  /* hero to work: the headline's pixel mark opens into a window onto the work grid */
+  const ring = document.createElement('canvas'); ring.id = 'ring'; ring.setAttribute('aria-hidden', 'true'); document.body.appendChild(ring);
+  const rg = ring.getContext('2d'); let RF = null, ringOn = false;
+  function sizeRing() { const d = Math.min(2, devicePixelRatio || 1); ring.width = Math.round(innerWidth * d); ring.height = Math.round(innerHeight * d); rg.setTransform(d, 0, 0, d, 0, 0); rg.imageSmoothingEnabled = false; RF = fillsFor(rg); }
+  sizeRing(); addEventListener('resize', sizeRing);
+  const hsh = (x, y) => { const v = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return v - Math.floor(v); };
+  function portal() {
+    const wt = workEl.offsetTop - scrollY, ov = clamp(1 - wt / H, 0, 1);
+    if (ov > 0 && ov < 1 && !reduce) {
+      const e = inOut(ov);
+      heroStage.style.transform = `scale(${(1 - .06 * e).toFixed(4)})`; heroStage.style.opacity = (1 - .55 * e).toFixed(3);
+      const r = tileEl.getBoundingClientRect(), cw = r.width / 6, ch = r.height / 5;
+      const h0 = { l: r.left + cw * 2, t: r.top + ch, r: r.left + cw * 4, b: r.top + ch * 3 };
+      const L = h0.l * (1 - e), T = h0.t * (1 - e), R = h0.r + (W - h0.r) * e, B = h0.b + (H - h0.b) * e;
+      workEl.style.transform = `translateY(${(-wt).toFixed(1)}px)`;
+      workEl.style.clipPath = `inset(${T.toFixed(1)}px ${(W - R).toFixed(1)}px calc(100% - ${B.toFixed(1)}px) ${L.toFixed(1)}px)`;
+      rg.clearRect(0, 0, W, H); ringOn = true;
+      const cs = Math.max(4, Math.min(24, cw + (24 - cw) * e)), band = 2, fade = smooth(.55, .95, e);
+      const P = [null, new Path2D(), new Path2D(), new Path2D(), new Path2D()];
+      for (let gy = -band; gy < Math.ceil((B - T) / cs) + band; gy++) for (let gx = -band; gx < Math.ceil((R - L) / cs) + band; gx++) {
+        const x = L + gx * cs, y = T + gy * cs;
+        if (x >= L - .5 && x + cs <= R + .5 && y >= T - .5 && y + cs <= B + .5) continue;
+        const out = Math.max(L - x - cs, x - R, T - y - cs, y - B, 0) / cs;
+        const hv = hsh(gx, gy);
+        if (hv < fade || out > band - 1 + (1 - fade) * .5 && hv < .5) continue;
+        P[1 + Math.floor(hsh(gx + 7, gy - 3) * 4)].rect(Math.round(x), Math.round(y), Math.ceil(cs), Math.ceil(cs));
+      }
+      for (let lv = 1; lv <= 4; lv++) { rg.fillStyle = RF[lv]; rg.fill(P[lv]); }
+    } else {
+      workEl.style.transform = ''; workEl.style.clipPath = '';
+      heroStage.style.transform = ov >= 1 ? 'scale(.94)' : ''; heroStage.style.opacity = ov >= 1 ? '.45' : '';
+      if (ringOn) { rg.clearRect(0, 0, W, H); ringOn = false; }
+    }
+  }
   let last = performance.now();
   function frame(now) {
     const dt = Math.min(50, now - last); last = now;
@@ -914,11 +1087,7 @@ html.no-notes .sample-note { display: none; }
       if (!nav.classList.contains('in') && now - loadEnd > 380) nav.classList.add('in');
       nav.classList.toggle('away', m > .01 && m < .995);
     }
-    if (workEl && heroStage) {
-      const ov = clamp(1 - workEl.getBoundingClientRect().top / H, 0, 1);
-      heroStage.style.transform = ov > 0 ? `scale(${(1 - .06 * ease2(ov)).toFixed(4)})` : '';
-      heroStage.style.opacity = ov > 0 ? (1 - .45 * ease2(ov)).toFixed(3) : '';
-    }
+    if (workEl && heroStage) portal();
     if (mode !== 'wait') { applyWords(); drawSky(); drawFx(); }
     requestAnimationFrame(frame);
   }
@@ -960,39 +1129,58 @@ html.no-notes .sample-note { display: none; }
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
   const ease = t => t <= 0 ? 0 : t >= 1 ? 1 : t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const easeIO = t => t <= 0 ? 0 : t >= 1 ? 1 : -(Math.cos(Math.PI * t) - 1) / 2;
 
-  const projs = [...document.querySelectorAll('.proj')];
-  const rio = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } }), { threshold: .25 });
-  projs.forEach(p => rio.observe(p));
-
+  /* ---------- film specs: steps, cursor, counters, camera [t, scale, fx, fy, rx, ry, rz] ---------- */
   const SPEC = {
     health: { cursor: 'arrow', scenes: [
-      { dur: 4.2, steps: [1.0, 1.8, 2.9], cur: [[0, null, .62, .92], [.9, '[data-c=t1]', .45, .5], [1.7, '[data-c=al]', .55, .45], [2.6, '[data-c=qa]', .5, .5], [2.9, '[data-c=qa]', .5, .5, 1], [4.2, '[data-c=qa]', .45, .8]] },
-      { dur: 4.2, steps: [.3, 2.3, 3.2], cur: [[0, null, .6, .92], [2.0, '[data-c=add]', .35, .5], [2.3, '[data-c=add]', .35, .5, 1], [3.0, '[data-c=o2]', .3, .5], [3.3, '[data-c=o2]', .3, .5, 1], [4.2, '[data-c=o2]', .32, .7]] },
-      { dur: 4.8, steps: [.2, .4, .6, .8, 1.0, 1.2, 3.0], cur: [[0, null, .86, .92], [2.6, '[data-c=sv]', .5, .5], [3.0, '[data-c=sv]', .55, .55], [4.8, '[data-c=sv]', .6, .7]] },
-      { dur: 4.6, steps: [.3, .55, .8, 1.3, 3.0], cur: [[0, null, .7, .92], [2.6, '.r3 .ed', .5, .5], [3.0, '.r3 .ed', .5, .55], [4.6, '.r3 .ed', .5, .6]] },
-      { dur: 3.0, steps: [.4], cnt: [[.4, '[data-n=m]', 56, 84, 1.2, { suf: '%' }]] }
+      { dur: 5.0, steps: [2.5, 4.3, 99], cam: [[0, .9, .5, .5, 24, 0, -5], [1.4, 1, .5, .5, 0, 0, 0], [2.1, 2.0, .3, .5], [3.5, 2.0, .3, .56], [4.2, 1.95, .72, .38], [5.0, 2.0, .72, .4]],
+        cur: [[0, null, .6, .9], [2.0, '[data-c=t1]', .5, .5], [2.6, '[data-c=t1]', .58, .55], [3.9, '[data-c=al]', .5, .5], [5.0, '[data-c=al]', .55, .6]] },
+      { dur: 3.6, steps: [.2, 2.2, 2.9], cam: [[0, 1, .5, .5], [1.0, 1, .5, .5], [1.9, 1.85, .76, .27], [3.6, 1.9, .76, .3]],
+        cur: [[0, null, .55, .9], [1.8, '[data-c=add]', .35, .5], [2.2, '[data-c=add]', .35, .5, 1], [2.7, '[data-c=o2]', .3, .5], [2.9, '[data-c=o2]', .3, .5, 1], [3.6, '[data-c=o2]', .35, .7]] },
+      { dur: 2.8, steps: [.1, .2, .3, .4, .5, .6, 1.9], cam: [[0, 1.06, .5, .5, 12, -10, 0], [2.8, 1, .5, .5, 0, 0, 0]],
+        cur: [[0, null, .92, .92], [1.6, '[data-c=sv]', .5, .5], [2.8, '[data-c=sv]', .55, .6]] },
+      { dur: 3.2, steps: [.15, .35, .55, 2.1, 2.8], cam: [[0, 2.0, .55, .62], [1.3, 2.0, .55, .64], [2.2, 1, .5, .5], [3.2, 1, .5, .5]],
+        cur: [[0, null, .8, .9], [2.4, '.r3 .ed', .5, .5], [3.2, '.r3 .ed', .5, .55]] },
+      { dur: 1.8, steps: [], cam: [[0, 1.5, .14, .86], [1.8, 2.6, .14, .9]] },
+      { dur: 2.2, steps: [.3], cnt: [[.3, '[data-n=m]', 56, 84, 1.0, { suf: '%' }]], cam: [[0, 1.08, .5, .5], [2.2, 1, .5, .5]] }
     ] },
     staff: { cursor: 'touch', scenes: [
-      { dur: 2.8, steps: [], cur: [[0, null, .72, .82], [.7, '[data-c=o3]', .5, .5], [1.4, '[data-c=o2]', .5, .5], [2.1, '[data-c=o1]', .5, .5], [2.8, '[data-c=o1]', .6, .7]] },
-      { dur: 3.9, steps: [2.2, 2.5], cnt: [[0, '[data-n=tm]', 3628, 3632, 2.0, { hms: 1 }]], cur: [[0, null, .8, .9], [1.7, '[data-c=co]', .5, .5], [2.2, '[data-c=co]', .5, .5, 1], [3.9, '[data-c=co]', .4, 1.2]] },
-      { dur: 2.8, steps: [.2, .35, .5, .65, 1.9], cur: [[0, null, .78, .88], [1.6, '[data-c=ex]', .5, .5], [1.9, '[data-c=ex]', .5, .5, 1], [2.8, '[data-c=ex]', .6, .7]] },
-      { dur: 3.6, steps: [.3, .55, .8, 1.4, 2.7], cur: [[0, null, .78, .9], [2.3, '[data-c=go]', .5, .5], [2.7, '[data-c=go]', .5, .5, 1], [3.6, '[data-c=go]', .5, .5]] },
-      { dur: 3.4, steps: [.2, .4, .6, 1.2, 1.5, 1.8], cnt: [[.6, '[data-n=re]', 0, 200, 1.0, { pre: '₹' }]] },
-      { dur: 3.8, steps: [2.5, 2.75], type: [[.3, '[data-t=ti]', 'Site visit cab', 16], [1.5, '[data-t=am]', '₹240', 8]], cur: [[0, null, .74, .62], [2.1, '[data-c=add]', .5, .5], [2.5, '[data-c=add]', .5, .5, 1], [3.8, '[data-c=add]', .5, .5]] }
+      { dur: 2.4, steps: [], cam: [[0, .86, .5, .5, 34, 0, -20], [2.4, .98, .5, .5, 24, 0, -14]] },
+      { dur: 3.0, steps: [2.0, 2.3], cnt: [[0, '[data-n=tm]', 3628, 3632, 1.9, { hms: 1 }]], cam: [[0, 1, .5, .5], [.7, 1, .5, .5], [1.5, 1.85, .5, .26], [3.0, 1.9, .5, .26]],
+        cur: [[0, null, .7, .85], [1.6, '[data-c=co]', .5, .5], [2.0, '[data-c=co]', .5, .5, 1], [3.0, '[data-c=co]', .5, .6]] },
+      { dur: 1.9, steps: [1.0], cam: [[0, 1.85, .5, .57], [1.9, 2.1, .5, .57]],
+        cur: [[0, null, .7, .9], [.7, '[data-c=q2]', .5, .5], [1.0, '[data-c=q2]', .5, .5, 1], [1.9, '[data-c=q2]', .5, .55]] },
+      { dur: 3.2, steps: [.3, 1.3, .8], cam: [[0, 1, .5, .5], [1.2, 1, .5, .5], [2.4, 1.8, .62, .42], [3.2, 1.85, .62, .42]] },
+      { dur: 2.4, steps: [], cam: [[0, 1.05, .5, .5], [2.4, 1, .5, .5]] },
+      { dur: 2.6, steps: [.1, .2, .3, .6, .8, 1.0], cnt: [[.3, '[data-n=re]', 0, 200, .8, { pre: 'Rs ' }]], cam: [[0, 1, .5, .5], [1.2, 1, .5, .5], [2.6, 1.45, .5, .5]] },
+      { dur: 2.2, steps: [.3], cnt: [[.3, '[data-n=m]', 225, 80, 1.0, { ms: 1 }]], cam: [[0, 1.08, .5, .5], [2.2, 1, .5, .5]] }
     ] },
     adani: { cursor: 'touch', scenes: [
-      { dur: 3.4, steps: [.3, 1.0] },
-      { dur: 3.2, steps: [.4, .9, 1.6] },
-      { dur: 3.4, steps: [.6, 1.5], cnt: [[2.2, '[data-n=bd]', 26, 25, .1, { suf: ' min' }]] },
-      { dur: 3.8, steps: [.3, 1.5, 2.2], cur: [[0, null, .8, .86], [1.1, '[data-c=bn]', .5, .5], [1.5, '[data-c=bn]', .5, .5, 1], [2.2, '[data-c=bn]', .6, .9], [3.8, null, .82, .9]] },
-      { dur: 3.0, steps: [.4], cnt: [[.4, '[data-n=m]', 7.2, 3.1, 1.2, { dec: 1 }]] }
+      { dur: 2.4, steps: [], cam: [[0, .84, .5, .5, 28, 0, 16], [2.4, 1, .5, .5, 0, 0, 0]] },
+      { dur: 2.6, steps: [.8, 1.0], cam: [[0, 1, .5, .5], [.5, 2.0, .5, .33], [2.6, 2.05, .5, .33]] },
+      { dur: 3.0, steps: [.4, 2.2], cam: [[0, 1, .5, .5], [3.0, 1.06, .5, .5]],
+        cur: [[0, null, .7, .9], [1.9, '[data-c=bn]', .5, .5], [2.2, '[data-c=bn]', .5, .5, 1], [3.0, '[data-c=bn]', .5, .6]] },
+      { dur: 2.4, steps: [.3, .7, 1.2], cam: [[0, 1.08, .5, .5, 10, 0, 0], [2.4, 1, .5, .5, 0, 0, 0]] },
+      { dur: 2.2, steps: [.4, 1.0], cnt: [[1.6, '[data-n=bd]', 26, 25, .1, { suf: ' min' }]], cam: [[0, 1, .5, .5], [2.2, 1.12, .5, .45]] },
+      { dur: 2.6, steps: [.2, 1.2, 1.6], cam: [[0, 1, .5, .5], [2.6, 1.06, .5, .5]],
+        cur: [[0, null, .8, .85], [.9, '[data-c=fb]', .5, .5], [1.2, '[data-c=fb]', .5, .5, 1], [2.6, '[data-c=fb]', .6, .9]] },
+      { dur: 2.2, steps: [.3], cnt: [[.3, '[data-n=m]', 7.2, 3.1, 1.0, { dec: 1 }]], cam: [[0, 1.08, .5, .5], [2.2, 1, .5, .5]] }
     ] }
   };
   const fmt = (v, f) => {
     if (f.hms) { v = Math.floor(v); return [Math.floor(v / 3600), Math.floor(v % 3600 / 60), v % 60].map(n => String(n).padStart(2, '0')).join(':'); }
+    if (f.ms) { v = Math.round(v); return Math.floor(v / 60) + ':' + String(v % 60).padStart(2, '0'); }
     return (f.pre || '') + (f.dec ? v.toFixed(f.dec) : Math.round(v).toLocaleString('en-IN')) + (f.suf || '');
   };
+  function lerpKeys(K, t, n) {
+    if (t <= K[0][0]) return Array.from({ length: n }, (_, j) => K[0][1 + j] ?? 0);
+    for (let i = 1; i < K.length; i++) if (t <= K[i][0]) {
+      const a = K[i - 1], b = K[i], k = easeIO((t - a[0]) / Math.max(.001, b[0] - a[0]));
+      return Array.from({ length: n }, (_, j) => (a[1 + j] ?? 0) + ((b[1 + j] ?? 0) - (a[1 + j] ?? 0)) * k);
+    }
+    const L = K[K.length - 1]; return Array.from({ length: n }, (_, j) => L[1 + j] ?? 0);
+  }
   function keyPos(f, sc, k) {
     if (!k[1]) return [k[2] * f.bw, k[3] * f.bh];
     const e = sc.el.querySelector(k[1]); if (!e) return [f.bw / 2, f.bh / 2];
@@ -1002,17 +1190,27 @@ html.no-notes .sample-note { display: none; }
   function build(stage) {
     const spec = SPEC[stage.dataset.film]; if (!spec) return null;
     const box = stage.querySelector('.box'), els = [...box.querySelectorAll(':scope > .scene')];
-    const scenes = spec.scenes.map((s, i) => ({ ...s, el: els[i], bg: els[i].dataset.bg, on: [], t0: 0 }));
+    const scenes = spec.scenes.map((s, i) => ({ ...s, el: els[i], camEl: els[i].querySelector('.cam'), bg: els[i].dataset.bg, on: [], t0: 0 }));
     let acc = 0; scenes.forEach(s => { s.t0 = acc; acc += s.dur; });
     const cur = document.createElement('div'); cur.className = 'cursor ' + spec.cursor;
     if (spec.cursor === 'arrow') cur.innerHTML = '<svg viewBox="0 0 24 24"><path d="M5 3l14 8-6.2 1.7L10 19z" fill="#111" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>';
     const rip = document.createElement('div'); rip.className = 'rip'; box.appendChild(rip); box.appendChild(cur);
-    return { stage, box, spec, scenes, total: acc, cur, rip, t: 0, active: -1, vis: false };
+    return { stage, box, spec, scenes, total: acc, cur, rip, t: 0, active: -1, play: false };
   }
   function layout(f) {
     const w = f.stage.clientWidth, h = f.stage.clientHeight; if (!w || !h) return;
-    const narrow = w / h < 1.1; f.stage.classList.toggle('narrow', narrow);
+    const narrow = w / h < 1.1; f.stage.classList.toggle('narrow', narrow); f.narrow = narrow;
     f.bw = narrow ? 600 : 960; f.bh = narrow ? 750 : 540; f.s = Math.min(w / f.bw, h / f.bh); f.stage.style.setProperty('--s', f.s.toFixed(4));
+    f.scenes.forEach(s => { const c = s.camEl; if (!c) return; s.cx = c.offsetLeft; s.cy = c.offsetTop; s.cw = c.offsetWidth; s.ch = c.offsetHeight; s.base = parseFloat(narrow ? c.dataset.bn : c.dataset.b) || 1; });
+  }
+  function applyCam(f, s, lt) {
+    if (!s.camEl) return;
+    const K = s.cam || [[0, 1, .5, .5]];
+    const [sc, fx, fy, rx, ry, rz] = lerpKeys(K, lt, 6);
+    const ox = s.cx + fx * s.cw, oy = s.cy + fy * s.ch;
+    const dx = f.bw / 2 - ox, dy = f.bh / 2 - oy;
+    s.camEl.style.transformOrigin = `${(fx * s.cw).toFixed(1)}px ${(fy * s.ch).toFixed(1)}px`;
+    s.camEl.style.transform = `translate(${dx.toFixed(1)}px,${dy.toFixed(1)}px) perspective(1600px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) rotateZ(${rz.toFixed(2)}deg) scale(${(sc * s.base).toFixed(4)})`;
   }
   function enter(f, i) {
     if (f.active >= 0) f.scenes[f.active].el.classList.remove('on');
@@ -1020,17 +1218,13 @@ html.no-notes .sample-note { display: none; }
     s.el.classList.add('reset');
     s.on.forEach((_, k) => s.el.classList.remove('k' + (k + 1))); s.on = [];
     (s.type || []).forEach(([, sel]) => { const e = s.el.querySelector(sel); if (e) { e.textContent = ''; e._t = ''; } });
+    applyCam(f, s, 0);
     void s.el.offsetWidth; s.el.classList.remove('reset'); s.el.classList.add('on');
     f.stage.style.backgroundColor = s.bg;
   }
   function apply(f, s, lt) {
+    applyCam(f, s, lt);
     s.steps.forEach((tt, k) => { const on = lt >= tt; if (s.on[k] !== on) { s.el.classList.toggle('k' + (k + 1), on); s.on[k] = on; } });
-    (s.type || []).forEach(([t0, sel, txt, cps]) => {
-      const e = s.el.querySelector(sel); if (!e) return;
-      const n = clamp(Math.floor((lt - t0) * cps), 0, txt.length), v = lt < t0 ? '' : txt.slice(0, n);
-      if (e._t !== v) { e.textContent = v; e._t = v; }
-      e.classList.toggle('typing', lt > t0 - .4 && n < txt.length);
-    });
     (s.cnt || []).forEach(([t0, sel, a, b, dur, ff]) => {
       const e = s.el.querySelector(sel); if (!e) return;
       const k = ff.hms ? clamp((lt - t0) / dur, 0, 1) : ease(clamp((lt - t0) / dur, 0, 1)), v = fmt(a + (b - a) * k, ff);
@@ -1040,11 +1234,11 @@ html.no-notes .sample-note { display: none; }
     if (!K) { f.cur.style.opacity = 0; f.rip.style.opacity = 0; return; }
     let i = 0; while (i < K.length - 1 && lt > K[i + 1][0]) i++;
     const A = K[i], B = K[Math.min(i + 1, K.length - 1)], pa = keyPos(f, s, A), pb = keyPos(f, s, B);
-    const k = B === A ? 1 : ease(clamp((lt - A[0]) / Math.max(.001, B[0] - A[0]), 0, 1));
+    const k = B === A ? 1 : easeIO(clamp((lt - A[0]) / Math.max(.001, B[0] - A[0]), 0, 1));
     const x = pa[0] + (pb[0] - pa[0]) * k, y = pa[1] + (pb[1] - pa[1]) * k;
     let press = 0, rp = -1;
-    for (const q of K) if (q[4]) { const dd = lt - q[0]; if (dd > -.12 && dd < .18) press = 1; if (dd >= 0 && dd < .5) rp = dd / .5; }
-    f.cur.style.opacity = lt > .5 && lt < s.dur - .3 ? 1 : 0;
+    for (const q of K) if (q[4]) { const dd = lt - q[0]; if (dd > -.12 && dd < .18) press = 1; if (dd >= 0 && dd < .45) rp = dd / .45; }
+    f.cur.style.opacity = lt > .45 && lt < s.dur - .25 ? 1 : 0;
     f.cur.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scale(${press ? .84 : 1})`;
     if (rp >= 0) { f.rip.style.opacity = (1 - rp).toFixed(2); f.rip.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scale(${(.4 + rp * 1.1).toFixed(2)})`; } else f.rip.style.opacity = 0;
   }
@@ -1052,15 +1246,71 @@ html.no-notes .sample-note { display: none; }
   const relayout = () => films.forEach(layout);
   relayout(); addEventListener('resize', relayout);
   (document.fonts ? document.fonts.ready : Promise.resolve()).then(relayout);
-  const vio = new IntersectionObserver(es => es.forEach(e => { const f = films.find(x => x.stage === e.target); if (f) f.vis = e.isIntersecting; }), { threshold: .2 });
-  films.forEach(f => vio.observe(f.stage));
-  if (reduce) { films.forEach(f => { enter(f, 1); apply(f, f.scenes[1], f.scenes[1].dur - .3); f.cur.style.opacity = 0; }); return; }
   films.forEach(f => enter(f, 0));
+
+  /* ---------- pinned work grid: scroll moves projects through it ---------- */
+  const work = document.getElementById('work');
+  const infos = [...work.querySelectorAll('.info')], stages = [...work.querySelectorAll('.fstage')], idx = [...work.querySelectorAll('.g-idx button')];
+  const N = stages.length, REST = .62, MOVE = .78, BLOCK = REST + MOVE;
+  let H = innerHeight, activeI = -1;
+  const sizeWork = () => { H = innerHeight; work.style.height = Math.round(H * (1 + N * REST + (N - 1) * MOVE)) + 'px'; };
+  sizeWork(); addEventListener('resize', () => { sizeWork(); relayout(); });
+  const progress = () => {
+    const y = scrollY - work.offsetTop; if (y <= 0) return 0;
+    const u = y / H, i = Math.min(N - 1, Math.floor(u / BLOCK)), local = u - i * BLOCK;
+    return clamp(local < REST ? i : i + easeIO((local - REST) / MOVE), 0, N - 1);
+  };
+  const statEls = infos.map(inf => [...inf.querySelectorAll('.pst b')]);
+  function countUp(i) {
+    if (reduce) return;
+    const t0 = performance.now();
+    statEls[i].forEach(b => {
+      const v = b.dataset.v, m = v.match(/^(\+?)(\d+)(?::(\d+))?(\.\d+)?(.*)$/); if (!m) return;
+      const tick = now => {
+        const k = ease(clamp((now - t0) / 750, 0, 1));
+        if (m[3] !== undefined) { const tot = (+m[2] * 60 + +m[3]) * k; b.textContent = Math.floor(tot / 60) + ':' + String(Math.round(tot % 60)).padStart(2, '0'); }
+        else { const num = parseFloat(m[2] + (m[4] || '')) * k; b.textContent = m[1] + (m[4] ? num.toFixed(m[4].length - 1) : Math.round(num)) + m[5]; }
+        if (k < 1) requestAnimationFrame(tick); else b.textContent = v;
+      };
+      requestAnimationFrame(tick);
+    });
+  }
+  function renderWork() {
+    const p = progress(), wr = work.getBoundingClientRect(), inView = wr.bottom > 0 && wr.top < H;
+    for (let i = 0; i < N; i++) {
+      const d = i - p, ad = Math.min(1, Math.abs(d));
+      stages[i].style.transform = `translateX(${(d * 104).toFixed(3)}%) rotateY(${(-d * 10).toFixed(2)}deg) scale(${(1 - .16 * ad).toFixed(4)})`;
+      stages[i].style.opacity = (1 - .35 * ad).toFixed(3);
+      const ty = clamp(d * 1.7, -1, 1) * 105;
+      infos[i].querySelectorAll('.ln > span, .role > span').forEach((e, j) => { e.style.transform = `translateY(${(ty * (1 + j * .12)).toFixed(2)}%)`; });
+      const fo = clamp(1 - Math.abs(d) * 2.6, 0, 1);
+      infos[i].querySelectorAll('.ist, .cta').forEach(e => { e.style.opacity = fo.toFixed(3); e.style.transform = `translateY(${(d * 18).toFixed(1)}px)`; });
+      const f = films[i]; if (f) { const was = f.play; f.play = inView && Math.abs(d) < .35; if (f.play && !was && f.active !== 0 && Math.abs(d) < .05) { f.t = 0; enter(f, 0); } }
+    }
+    const a = Math.round(p);
+    if (a !== activeI) {
+      activeI = a;
+      idx.forEach((b, i) => { b.classList.toggle('on', i === a); b.setAttribute('aria-current', i === a ? 'true' : 'false'); });
+      infos.forEach((inf, i) => { inf.setAttribute('aria-hidden', i === a ? 'false' : 'true'); inf.querySelector('.cta').tabIndex = i === a ? 0 : -1; stages[i].tabIndex = i === a ? 0 : -1; });
+      countUp(a);
+    }
+  }
+  idx.forEach((b, i) => b.addEventListener('click', () => {
+    const y = work.offsetTop + (i * BLOCK + REST * .35) * H;
+    if (window.__lenis) window.__lenis.scrollTo(y, { duration: 1.4 }); else scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
+  }));
+
+  if (reduce) {
+    films.forEach(f => { enter(f, 1); apply(f, f.scenes[1], f.scenes[1].dur - .3); f.cur.style.opacity = 0; });
+    const loop = () => { renderWork(); requestAnimationFrame(loop); }; requestAnimationFrame(loop);
+    return;
+  }
   let last = performance.now();
   const tick = now => {
     const dt = Math.min(50, now - last); last = now;
+    renderWork();
     for (const f of films) {
-      if (!f.vis) continue;
+      if (!f.play) continue;
       if (!f.s) layout(f);
       f.t = (f.t + dt / 1000) % f.total;
       let i = 0; while (i < f.scenes.length - 1 && f.t >= f.scenes[i + 1].t0) i++;
