@@ -62,7 +62,9 @@ button { font: inherit; color: inherit; }
 .call:hover .c { transform: rotate(45deg); }
 
 /* ---------- pinned hero ---------- */
-.hero { position: relative; z-index: 2; height: 260vh; }
+.hero { position: relative; z-index: 2; height: 360vh; }
+.hframe { position: absolute; inset: 14px; border: 1px solid #E6E5E1; border-radius: 28px; pointer-events: none; z-index: 1; }
+.hero .stage { transform-origin: 50% 40%; will-change: transform; }
 .stage { position: sticky; top: 0; height: 100vh; height: 100svh; }
 .hero-in { position: absolute; left: 0; right: 0; top: 17vh; display: grid; justify-items: center; text-align: center; padding-inline: 24px; }
 h1.hl { margin: 0; font-family: var(--f-display); font-style: normal; font-weight: 400; font-size: clamp(50px, 8.2vw, 118px); line-height: 1.08; letter-spacing: -.035em; display: grid; }
@@ -115,74 +117,54 @@ h1.hl .br { flex-basis: 100%; height: 0; }
 .sample-note b { font-weight: 500; color: var(--ink); }
 html.no-notes .sample-note { display: none; }
 
-/* ---------- work: Eemon-style grid, pixel stages, rebuilt UI films ---------- */
-.work { position: relative; z-index: 4; background: var(--paper); padding-block: 0 140px; overflow-x: clip; --grid: #ECECEA; }
-.gw { position: relative; border-left: 1px solid var(--grid); border-right: 1px solid var(--grid); }
-.fl { position: relative; height: 1px; }
-.fl::before { content: ""; position: absolute; top: 0; left: 50%; width: 100vw; height: 1px; translate: -50% 0; background: var(--grid); }
-.nd { position: absolute; top: -3px; width: 7px; height: 7px; background: var(--sky-d); z-index: 2; }
-.nd.l { left: -4px; } .nd.r { right: -4px; }
-.wt { padding: 120px 0 96px; text-align: center; }
-.wt h2 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: clamp(48px, 7vw, 104px); line-height: 1; letter-spacing: -.035em; }
-.wt h2 .tile { display: inline-block; width: .5em; height: .42em; margin: 0 .1em; vertical-align: .04em; }
-.wt h2 .tile canvas { width: 100%; height: 100%; display: block; image-rendering: pixelated; }
-.gap { height: 104px; }
-.proj { position: relative; }
-.fstage { position: relative; display: block; aspect-ratio: 16 / 9; max-width: 100%; overflow: hidden; background: var(--bg0); text-decoration: none; color: #111113; transition: background-color .01s; }
-.fstage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; image-rendering: pixelated; pointer-events: none; }
-.fstage .sky { z-index: 0; } .fstage .cut { z-index: 9; }
-.box { position: absolute; left: 50%; top: 50%; width: 960px; height: 540px; transform: translate(-50%, -50%) scale(var(--s, 1)); z-index: 2; font-family: var(--f-sans); }
-.fstage.narrow .box { width: 600px; height: 750px; }
-.bar { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 22px 30px; border-top: 1px solid var(--grid); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
-.bar .nm { color: var(--ink-2); font-weight: 500; }
-.bar .cat { color: var(--acc); font-weight: 600; display: inline-flex; gap: 10px; align-items: center; }
-.bar .cat b { color: var(--ink); font-weight: 500; letter-spacing: .02em; }
-.bar .cat i { width: 7px; height: 7px; background: var(--acc); }
-.det { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, .8fr) minmax(0, .8fr) minmax(0, .85fr); border-top: 1px solid var(--grid); }
-.det > * { min-width: 0; padding: 28px 30px 30px; }
-.det > * + * { border-left: 1px solid var(--grid); }
-.det h3 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: clamp(26px, 2.4vw, 36px); line-height: 1.1; letter-spacing: -.025em; text-wrap: balance; }
-.det .role { margin: 12px 0 0; font-size: 15px; color: var(--ink-2); }
-.det .st b { display: block; font-weight: 500; font-size: clamp(40px, 3.8vw, 58px); line-height: 1; letter-spacing: -.05em; font-variant-numeric: tabular-nums; }
-.det .st span { display: block; margin-top: 10px; font-size: 14px; line-height: 1.4; color: var(--ink-2); }
-.go { display: flex; flex-direction: column; justify-content: space-between; gap: 18px; text-decoration: none; color: var(--ink); position: relative; overflow: hidden; }
-.go::before { content: ""; position: absolute; inset: 0; background-color: var(--sky-l); background-image: repeating-conic-gradient(var(--sky-d) 0 25%, var(--sky-l) 0 50%); background-size: 4px 4px; clip-path: inset(100% 0 0 0); transition: clip-path .35s steps(6); }
-.go:hover::before, .go:focus-visible::before, .proj:has(.fstage:hover) .go::before { clip-path: inset(0 0 0 0); }
-.go > * { position: relative; }
-.go .t { font-size: 17px; font-weight: 500; letter-spacing: -.01em; }
-.go .a { width: 46px; height: 46px; background: var(--ink); color: var(--paper); display: grid; place-items: center; align-self: flex-end; transition: transform .3s cubic-bezier(.2,.8,.2,1); }
-.go .a svg { width: 16px; height: 16px; }
+/* ---------- work: stacked full-viewport cards, clean product films ---------- */
+.work { position: relative; z-index: 4; margin-top: -100vh; margin-top: -100svh; overflow-x: clip; }
+.work-intro { position: relative; background: var(--paper); border-radius: 28px 28px 0 0; box-shadow: 0 -30px 60px -44px rgba(0,0,0,.35); padding-block: 132px 24px; }
+.work-intro h2 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: clamp(44px, 6vw, 88px); line-height: 1; letter-spacing: -.035em; }
+.proj { position: sticky; top: 0; height: 100vh; height: 100svh; background: var(--paper); }
+.proj + .proj { border-radius: 28px 28px 0 0; box-shadow: 0 -30px 60px -44px rgba(0,0,0,.35); }
+.pcard { height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr); gap: 22px; padding-block: 96px 28px; }
+.prow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px; align-items: end; }
+.prow h3 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: clamp(28px, 2.6vw, 40px); line-height: 1.08; letter-spacing: -.025em; text-wrap: balance; max-width: 22ch; }
+.prow .role { margin: 10px 0 0; font-size: 15px; color: var(--ink-2); }
+.pstats { display: flex; align-items: flex-end; gap: 34px; }
+.pst b { display: block; font-weight: 500; font-size: clamp(30px, 2.8vw, 42px); line-height: 1; letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
+.pst span { display: block; margin-top: 6px; font-size: 13px; color: var(--ink-2); max-width: 17ch; line-height: 1.35; }
+.go { display: inline-flex; gap: 6px; text-decoration: none; }
+.go .t { background: var(--ink); color: var(--paper); border-radius: 999px; height: 46px; padding: 0 20px; display: grid; place-items: center; font-size: 14.5px; font-weight: 500; white-space: nowrap; }
+.go .a { width: 46px; height: 46px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; transition: transform .4s cubic-bezier(.2,.8,.2,1); }
+.go .a svg { width: 15px; height: 15px; }
 .go:hover .a { transform: rotate(45deg); }
-.js .proj .rv { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .9s cubic-bezier(.2,.8,.2,1); }
+.fstage { position: relative; display: block; min-height: 0; border-radius: 22px; overflow: hidden; background: var(--bg0); transition: background-color .7s ease; text-decoration: none; color: #16161A; isolation: isolate; }
+.box { position: absolute; left: 50%; top: 50%; width: 960px; height: 540px; transform: translate(-50%, -50%) scale(var(--s, 1)); font-family: var(--f-sans); }
+.fstage.narrow .box { width: 600px; height: 750px; }
+.js .proj .rv { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .9s cubic-bezier(.2,.8,.2,1); }
 .js .proj.in .rv { opacity: 1; transform: none; }
-.proj .det .rv:nth-child(2) { transition-delay: .06s; } .proj .det .rv:nth-child(3) { transition-delay: .12s; } .proj .det .rv:nth-child(4) { transition-delay: .18s; }
-#curtain { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 6; pointer-events: none; display: block; image-rendering: pixelated; }
+.proj .rv:nth-child(2) { transition-delay: .08s; }
 
-/* ---------- film primitives (sizes in design-box px) ---------- */
-.scene { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 48px; visibility: hidden; }
-.scene.on { visibility: visible; }
-.scene.reset, .scene.reset * { transition: none !important; animation: none !important; }
+/* ---------- film primitives (design-box px) ---------- */
+.scene { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 48px; visibility: hidden; opacity: 0; transform: scale(.985) translateY(6px); filter: blur(4px);
+  transition: opacity .32s ease, transform .5s cubic-bezier(.2,.8,.2,1), filter .32s ease, visibility 0s linear .32s; }
+.scene.on { visibility: visible; opacity: 1; transform: none; filter: none; transition: opacity .45s ease .14s, transform .7s cubic-bezier(.2,.8,.2,1) .14s, filter .45s ease .14s, visibility 0s; }
+.scene.reset * { transition: none !important; animation: none !important; }
 .narrow .scene { flex-direction: column; gap: 22px; }
-.card { background: #fff; border-radius: 16px; box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 24px 50px -24px rgba(0,0,0,.28); padding: 26px; position: relative; color: #16161A; }
-.ct { margin: 0 0 16px; font-size: 19px; font-weight: 600; letter-spacing: -.02em; }
-.btn { display: inline-flex; align-items: center; justify-content: center; height: 40px; padding: 0 18px; border-radius: 8px; font-size: 14px; font-weight: 600; transition: transform .12s, filter .2s; }
-.btn.g { background: var(--ui); color: #fff; } .btn.o { border: 1px solid #D9D9DE; color: #45454C; }
+.narrow .scale-n { transform: scale(.66); }
+.card { background: #fff; border-radius: 16px; box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 24px 50px -24px rgba(0,0,0,.25); padding: 26px; position: relative; color: #16161A; }
 .chip { font-style: normal; font-size: 11.5px; font-weight: 600; padding: 4px 9px; border-radius: 999px; white-space: nowrap; }
 .chip.ok { background: #DDF1E4; color: #1B7A47; } .chip.wt { background: #FFF1CC; color: #8A6514; } .chip.no { background: #FDE0DD; color: #C23127; }
 .cursor { position: absolute; left: 0; top: 0; z-index: 8; pointer-events: none; will-change: transform; opacity: 0; transition: opacity .2s; }
-.cursor.arrow { width: 26px; height: 26px; } .cursor.arrow svg { width: 100%; height: 100%; filter: drop-shadow(0 2px 3px rgba(0,0,0,.3)); }
-.cursor.touch { width: 36px; height: 36px; margin: -18px 0 0 -18px; border-radius: 50%; background: rgba(20,20,24,.28); box-shadow: 0 0 0 2.5px rgba(255,255,255,.95), 0 4px 12px rgba(0,0,0,.25); }
-.rip { position: absolute; left: 0; top: 0; width: 54px; height: 54px; margin: -27px 0 0 -27px; border-radius: 50%; border: 2.5px solid var(--ui); z-index: 7; pointer-events: none; opacity: 0; }
+.cursor.arrow { width: 24px; height: 24px; } .cursor.arrow svg { width: 100%; height: 100%; filter: drop-shadow(0 2px 3px rgba(0,0,0,.28)); }
+.cursor.touch { width: 36px; height: 36px; margin: -18px 0 0 -18px; border-radius: 50%; background: rgba(20,20,24,.26); box-shadow: 0 0 0 2.5px rgba(255,255,255,.95), 0 4px 12px rgba(0,0,0,.22); }
+.rip { position: absolute; left: 0; top: 0; width: 50px; height: 50px; margin: -25px 0 0 -25px; border-radius: 50%; border: 2px solid var(--ui); z-index: 7; pointer-events: none; opacity: 0; }
 .typing::after { content: ""; display: inline-block; width: 1.5px; height: 1.05em; background: currentColor; margin-left: 1px; vertical-align: -.15em; animation: car .8s steps(1) infinite; }
 @keyframes car { 50% { opacity: 0; } }
 .lab { width: 250px; display: flex; flex-direction: column; gap: 10px; font-size: 26px; line-height: 1.15; letter-spacing: -.02em; color: #16161A; font-weight: 500; }
 .lab b { align-self: flex-start; font-size: 13px; letter-spacing: .02em; font-weight: 600; background: #16161A; color: #fff; padding: 6px 12px; border-radius: 999px; }
-.narrow .lab { width: auto; align-items: center; text-align: center; font-size: 24px; }
-.narrow .lab b { align-self: center; }
-.ph { width: 236px; height: 492px; border-radius: 36px; background: #121214; padding: 8px; box-shadow: 0 40px 70px -30px rgba(0,0,0,.45), 0 0 0 1px rgba(0,0,0,.1); flex: none; }
+.narrow .lab { width: auto; align-items: center; text-align: center; font-size: 24px; } .narrow .lab b { align-self: center; }
+.ph { width: 236px; height: 492px; border-radius: 36px; background: #121214; padding: 8px; box-shadow: 0 40px 70px -30px rgba(0,0,0,.4), 0 0 0 1px rgba(0,0,0,.1); flex: none; }
 .narrow .ph { width: 262px; height: 548px; border-radius: 40px; }
 .scr { width: 100%; height: 100%; border-radius: 28px; background: #fff; overflow: hidden; position: relative; font-size: 10.5px; color: #1A1A1E; }
-.narrow .scr { border-radius: 34px; font-size: 12.5px; }
+.narrow .scr { border-radius: 32px; font-size: 12px; }
 .metric { text-align: center; color: #fff; }
 .metric p { margin: 0; font-size: 22px; opacity: .8; }
 .metric .big { display: flex; align-items: baseline; justify-content: center; gap: 22px; margin-top: 10px; font-variant-numeric: tabular-nums; }
@@ -190,154 +172,172 @@ html.no-notes .sample-note { display: none; }
 .metric .ar { font-size: 40px; opacity: .6; }
 .metric .big b { font-size: 148px; font-weight: 500; letter-spacing: -.05em; line-height: 1; }
 .metric .sub { margin-top: 18px; font-size: 20px; opacity: .85; }
-.metric .mb { width: 420px; height: 10px; margin: 26px auto 0; background: rgba(255,255,255,.18); position: relative; }
+.metric .mb { width: 420px; height: 6px; border-radius: 3px; overflow: hidden; margin: 26px auto 0; background: rgba(255,255,255,.18); position: relative; }
 .metric .mb em { position: absolute; left: 0; top: 0; bottom: 0; width: var(--a); background: #fff; transition: width 1.2s cubic-bezier(.2,.8,.2,1); }
 .k1 .metric .mb em { width: var(--b); }
 .narrow .metric .big { flex-direction: column; align-items: center; gap: 0; } .narrow .metric .mb { width: 300px; }
 
-/* ---------- healthcare ---------- */
-[data-film="health"] { --ui: #1E7F52; }
-.hx { width: 880px; height: 450px; background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 30px 60px -30px rgba(0,0,0,.35), 0 0 0 1px rgba(0,0,0,.05); display: grid; grid-template-rows: 46px 1fr; font-size: 12.5px; }
-.narrow .hx { width: 560px; height: 600px; }
-.hx-top { background: linear-gradient(90deg, #1E7F52, #33A86E); color: #fff; display: flex; align-items: center; gap: 18px; padding: 0 18px; }
-.hx-brand { font-weight: 600; display: inline-flex; gap: 8px; align-items: center; margin-right: auto; }
-.hx-brand i { width: 18px; height: 18px; border-radius: 5px; background: rgba(255,255,255,.9); }
-.hx-prog { display: inline-flex; gap: 8px; align-items: center; } .hx-prog .pb { width: 90px; height: 5px; background: rgba(255,255,255,.3); border-radius: 3px; overflow: hidden; } .hx-prog .pb em { display: block; width: 15%; height: 100%; background: #fff; }
-.hx-av { width: 28px; height: 28px; border-radius: 50%; background: #fff; color: #1E7F52; display: grid; place-items: center; font-weight: 700; font-size: 11px; }
-.hx-body { display: grid; grid-template-columns: 82px 1fr; min-height: 0; }
-.hx-nav { border-right: 1px solid #EEE; display: flex; flex-direction: column; gap: 4px; padding: 12px 0; }
-.ni { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; color: #6B6B72; padding: 7px 0; }
-.ni i { width: 18px; height: 18px; border-radius: 5px; border: 1.6px solid #9A9AA2; }
-.ni.on { color: #1E7F52; box-shadow: inset 3px 0 0 #1E7F52; } .ni.on i { border-color: #1E7F52; background: #DDF1E4; }
-.narrow .hx-body { grid-template-columns: 64px 1fr; }
-.hx-main { padding: 20px 24px; min-width: 0; }
-.hx-head { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
-.hx-head h4 { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
-.hx-head p { margin: 6px 0 0; color: #6B6B72; max-width: 330px; }
-.hx-add { position: relative; flex: none; }
-.menu { position: absolute; right: 0; top: 46px; width: 230px; background: #fff; border-radius: 10px; box-shadow: 0 16px 40px -12px rgba(0,0,0,.3), 0 0 0 1px rgba(0,0,0,.06); padding: 6px; display: flex; flex-direction: column; z-index: 3;
-  opacity: 0; transform: translateY(-6px) scale(.97); transform-origin: top right; transition: opacity .2s, transform .3s cubic-bezier(.2,1.2,.4,1); }
-.menu span { padding: 9px 10px; border-radius: 6px; font-size: 13px; transition: background .2s; }
-.k1 .menu { opacity: 1; transform: none; }
-.k2 .menu [data-c="o2"] { background: #E6F4EC; color: #1E7F52; font-weight: 600; }
-.k1 [data-c="add"] { filter: brightness(.88); }
-.hx-tabs { display: flex; gap: 22px; margin-top: 22px; border-bottom: 1px solid #EEE; color: #6B6B72; font-size: 12px; font-weight: 600; letter-spacing: .02em; text-transform: uppercase; }
-.hx-tabs span { padding-bottom: 10px; } .hx-tabs .on { color: #1E7F52; box-shadow: inset 0 -2px 0 #1E7F52; }
-.hx-tools { display: flex; gap: 18px; margin: 14px 0; color: #1E7F52; font-weight: 600; font-size: 11.5px; align-items: center; }
-.hx-tools .srch { margin-left: auto; border: 1px solid #DDD; color: #9A9AA2; font-weight: 400; padding: 7px 12px; width: 180px; border-radius: 6px; }
-.tr { display: grid; grid-template-columns: 1.5fr 1.2fr .6fr .8fr; gap: 10px; padding: 11px 6px; border-bottom: 1px solid #F0F0F0; align-items: center; }
-.th { color: #8A8A92; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
-.empty { display: grid; justify-items: center; gap: 4px; padding: 30px 0; color: #45454C; font-weight: 600; }
-.empty i { width: 44px; height: 44px; border-radius: 12px; background: #E6F4EC; margin-bottom: 6px; } .empty small { color: #8A8A92; font-weight: 400; }
-.w520 { width: 520px; } .w460 { width: 460px; } .w600 { width: 600px; } .w440 { width: 440px; } .w420 { width: 420px; } .w380 { width: 380px; }
-.narrow .w600 { width: 540px; }
-.stp { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 26px; }
-.stp .s { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 110px; text-align: center; font-size: 12px; color: #8A8A92; flex: none; }
-.stp .s i { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #CFCFD5; background: #fff; display: grid; place-items: center; transition: all .35s cubic-bezier(.2,1.3,.4,1); }
-.stp .ln { flex: 1; height: 2px; background: #E4E4E8; margin-top: 14px; position: relative; overflow: hidden; } .stp .ln em { position: absolute; inset: 0; background: #1E7F52; transform: scaleX(0); transform-origin: left; transition: transform .5s ease; }
-.k1 .s1 i { background: #1E7F52; border-color: #1E7F52; transform: scale(1.08); } .k1 .s1 i::after { content: ""; width: 9px; height: 5px; border: 2px solid #fff; border-top: 0; border-right: 0; transform: rotate(-45deg) translate(1px, -1px); }
-.k1 .s1 { color: #16161A; } .k2 .l1 em { transform: none; }
-.k3 .s2 i { border-color: #1E7F52; box-shadow: 0 0 0 5px #DDF1E4; } .k3 .s2 i::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: #1E7F52; } .k3 .s2 { color: #16161A; font-weight: 600; }
-.fld { margin-top: 16px; } .fld p { margin: 0 0 10px; font-size: 13.5px; font-weight: 600; }
-.radios { display: flex; gap: 22px; }
-.rd { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; }
-.rd i { width: 18px; height: 18px; border-radius: 50%; border: 2px solid #B5B5BC; display: grid; place-items: center; transition: border-color .2s; }
-.rd i::after { content: ""; width: 9px; height: 9px; border-radius: 50%; background: #1E7F52; transform: scale(0); transition: transform .25s cubic-bezier(.2,1.5,.4,1); }
-.k4 [data-c="r3"] i, .k5 [data-c="y"] i { border-color: #1E7F52; } .k4 [data-c="r3"] i::after, .k5 [data-c="y"] i::after { transform: none; }
-.lbl { margin: 0 0 8px; font-size: 13.5px; font-weight: 600; }
-.inp { height: 46px; border: 1.5px solid #D4D4DA; border-radius: 8px; display: flex; align-items: center; padding: 0 14px; font-size: 15px; gap: 8px; transition: border-color .2s; }
-.k1 .inp { border-color: #E2A32A; } .k2 .inp { border-color: #1E7F52; }
-.inp .fix { display: none; } .k2 .inp .v { display: none; } .k2 .inp .fix { display: inline; }
-.inp .ok { margin-left: auto; width: 20px; height: 20px; border-radius: 50%; background: #1E7F52; transform: scale(0); transition: transform .3s cubic-bezier(.2,1.5,.4,1); }
-.k2 .inp .ok { transform: none; }
-.pop { margin-top: 12px; border: 1px solid #F0D9A6; background: #FFFAEE; border-radius: 10px; padding: 14px 16px; opacity: 0; transform: translateY(-6px); transition: opacity .25s, transform .35s cubic-bezier(.2,1.2,.4,1); }
-.pop .pt { margin: 0; font-size: 14.5px; } .pop .ps { margin: 6px 0 12px; font-size: 12.5px; color: #6B6B72; }
-.acts { display: flex; gap: 10px; } .acts.r { justify-content: flex-end; }
-.k1 .pop { opacity: 1; transform: none; } .k2 .pop { opacity: 0; transform: translateY(-6px); }
-.k2 [data-c="use"] { transform: scale(.95); }
-.tbh { display: flex; justify-content: space-between; align-items: baseline; }
-.tbh .pg { font-size: 13px; color: #6B6B72; } .tbh .pg b { color: #1E7F52; font-variant-numeric: tabular-nums; }
-.pbar { height: 6px; background: #EEE; border-radius: 3px; overflow: hidden; margin-bottom: 14px; } .pbar em { display: block; height: 100%; width: 15%; background: #1E7F52; transition: width 1.4s cubic-bezier(.2,.8,.2,1); }
-.k1 .pbar em { width: 66%; }
-.hx-tb .tr { font-size: 13.5px; } .hx-tb .r1, .hx-tb .r2, .hx-tb .r3 { opacity: 0; transform: translateY(8px); transition: opacity .3s, transform .4s cubic-bezier(.2,1.2,.4,1); }
+/* ---------- healthcare: rebuilt from the Figma screens ---------- */
+[data-film="health"] { --ui: #007F73; }
+.cq { width: 858px; height: 560px; flex: none; background: #F1F2F7; border-radius: 14px; overflow: hidden; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 40px 80px -40px rgba(0,0,0,.35), 0 0 0 1px rgba(0,0,0,.06);
+  font-family: "Inter", "Geist", system-ui, sans-serif; font-size: 9.6px; color: #1F1F24; display: grid; grid-template-rows: 40px 1fr; transform: scale(.88); }
+.narrow .cq { transform: scale(.66); }
+.cq svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.cq-top { background: linear-gradient(90deg, #43B1A5 0%, #25A26C 45%, #8CCD94 100%); display: flex; align-items: center; gap: 12px; padding: 0 14px; color: #fff; }
+.cq-logo { width: 66px; height: 14px; border-radius: 8px; background: rgba(255,255,255,.75); filter: blur(4px); margin-right: auto; }
+.cq-top svg { width: 14px; height: 14px; }
+.cq-top .id { font-size: 9.4px; letter-spacing: .02em; }
+.cq-av { width: 24px; height: 24px; border-radius: 50%; background: #fff; color: #005091; display: grid; place-items: center; font-size: 10.5px; }
+.cq-body { display: grid; grid-template-columns: 78px 1fr; min-height: 0; }
+.cq-nav { background: #fff; display: flex; flex-direction: column; padding-top: 8px; position: relative; }
+.cq-ni { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 10px 0 12px; color: #5F6368; font-size: 8.6px; position: relative; }
+.cq-ni svg { width: 18px; height: 18px; color: #6B6F73; }
+.cq-ni.dot::before { content: ""; position: absolute; top: 9px; left: calc(50% + 4px); width: 5px; height: 5px; border-radius: 50%; background: #D32F2F; }
+.cq-ni.on { color: #007F73; box-shadow: inset -3px 0 0 #007F73; } .cq-ni.on svg { color: #007F73; }
+.cq-todo { position: absolute; left: 10px; right: 10px; bottom: 14px; text-align: center; font-size: 8.6px; color: #3B3B40; }
+.cq-todo b { display: block; margin: 0 auto 5px; width: 40px; padding: 5px 0; background: #007F73; color: #fff; border-radius: 3px; font-weight: 500; }
+.cq-main { padding: 14px 18px 0; min-width: 0; position: relative; }
+.cq-crumb { display: flex; align-items: center; gap: 14px; height: 22px; font-size: 9.4px; color: #3B3B40; }
+.cq-crumb .lk { color: #005091; } .cq-crumb .sp { margin-left: auto; }
+.cq-pr { display: flex; flex-direction: column; gap: 4px; font-weight: 600; } .cq-pr i { display: block; width: 92px; height: 2px; background: #DDE2EA; } .cq-pr i em { display: block; width: 25%; height: 100%; background: #005091; }
+.cq-la { color: #3B3B40; }
+.cq-wrap { display: grid; grid-template-columns: 46px 1fr; gap: 10px; margin-top: 10px; height: 470px; }
+.cq-steps { background: #fff; border-radius: 6px 6px 0 0; box-shadow: 0 1px 3px rgba(0,0,0,.08); display: flex; flex-direction: column; align-items: center; gap: 0; padding-top: 12px; position: relative; }
+.cq-steps .chev { color: #005091; font-size: 12px; margin-bottom: 12px; }
+.cq-steps .ln { position: absolute; top: 46px; bottom: 0; width: 1.5px; background: #C9CDD3; }
+.cq-steps i { position: relative; z-index: 1; width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid #9AA0A6; background: #fff; margin: 0 0 21.5px; }
+.cq-steps i.d { background: #005091; border-color: #005091; } .cq-steps i.d::after { content: ""; position: absolute; left: 3px; top: 2px; width: 4px; height: 2.5px; border: 1.5px solid #fff; border-top: 0; border-right: 0; transform: rotate(-45deg); }
+.cq-steps i.c { border-color: #005091; } .cq-steps i.c::after { content: ""; position: absolute; inset: 2px; border-radius: 50%; background: #005091; }
+.cq-card { background: #fff; border-radius: 6px 6px 0 0; box-shadow: 0 1px 3px rgba(0,0,0,.08); padding: 14px 16px 0; position: relative; min-width: 0; }
+.cq-h { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid #E8EAED; margin: 0 -16px; padding-inline: 16px; }
+.cq-h h4 { margin: 0; font-size: 21px; font-weight: 400; letter-spacing: -.01em; } .cq-h svg { width: 18px; height: 18px; color: #005091; }
+.cq-row { display: flex; justify-content: space-between; gap: 18px; align-items: center; margin-top: 12px; }
+.cq-row p { margin: 0; color: #5F6368; font-size: 8.8px; line-height: 1.55; max-width: 470px; }
+.cq-btn { position: relative; flex: none; display: inline-flex; align-items: stretch; height: 24px; border-radius: 3px; background: #007F73; color: #fff; font-size: 9.2px; font-weight: 500; letter-spacing: .04em; box-shadow: 0 2px 2px -1px rgba(0,0,0,.2); transition: background .2s; }
+.cq-btn > span { padding: 0 11px; display: flex; align-items: center; } .cq-btn > i { width: 28px; border-left: 1px solid rgba(255,255,255,.35); display: grid; place-items: center; font-style: normal; }
+.cq-menu { position: absolute; right: 0; top: 30px; width: 210px; background: #fff; border-radius: 4px; box-shadow: 0 8px 24px -6px rgba(0,0,0,.25), 0 0 0 1px rgba(0,0,0,.05); padding: 5px 0; color: #1F1F24; letter-spacing: 0; font-weight: 400; z-index: 5;
+  opacity: 0; transform: translateY(-4px) scale(.98); transform-origin: top right; transition: opacity .2s, transform .3s cubic-bezier(.2,1.2,.4,1); }
+.cq-menu span { display: block; padding: 8px 12px; font-size: 9.6px; }
+.cq-tabs { display: flex; gap: 2px; margin-top: 14px; border-bottom: 1px solid #E8EAED; }
+.cq-tabs span { padding: 9px 10px; font-size: 8.8px; letter-spacing: .04em; color: #5F6368; white-space: nowrap; }
+.cq-tabs .on { color: #005091; box-shadow: inset 0 -2px 0 #005091; }
+.cq-info { margin: 10px 0 0; font-size: 8.8px; line-height: 1.55; color: #3B3B40; }
+.cq-tools { display: flex; align-items: center; gap: 16px; margin-top: 12px; color: #005091; font-size: 8.4px; letter-spacing: .05em; font-weight: 500; }
+.cq-tools .search { margin-left: auto; width: 130px; height: 24px; border: 1px solid #C9CDD3; border-radius: 4px; display: flex; align-items: center; gap: 6px; padding: 0 8px; color: #80868B; letter-spacing: 0; font-weight: 400; font-size: 9.4px; }
+.cq-tools svg, .cq-tools .search svg { width: 11px; height: 11px; }
+.cq-tr { display: grid; grid-template-columns: 1.3fr .9fr 1.1fr .8fr 50px; gap: 10px; align-items: center; padding: 0 10px; border-bottom: 1px solid #E8EAED; }
+.cq-th { height: 34px; margin-top: 10px; font-size: 8.8px; font-weight: 500; }
+.cq-td { height: 55px; font-size: 8.8px; }
+.cq-td small { display: block; color: #80868B; font-size: 8px; margin-top: 2px; } .cq-td .ds { font-size: 7.6px; line-height: 1.55; color: #3B3B40; }
+.cq-td .act { display: flex; gap: 12px; justify-content: flex-end; } .cq-td .act svg { width: 12px; height: 12px; } .cq-td .ed { color: #005091; } .cq-td .del { color: #D32F2F; }
+.cq-chip { font-style: normal; display: inline-block; font-size: 8.6px; padding: 4px 8px; border-radius: 999px; }
+.cq-chip.a { background: #C8E6C9; color: #1B5E20; } .cq-chip.p { background: #CFE3F5; color: #0D3C61; } .cq-chip.r { background: #F8D7DD; color: #8E2A38; } .cq-chip.s { background: #E2DAF2; color: #4A3A78; }
+.cq-empty { height: 104px; background: #F8F9FB; display: grid; justify-items: center; align-content: center; gap: 5px; font-size: 10px; color: #3B3B40; }
+.cq-empty i { width: 36px; height: 36px; border-radius: 50%; background: #E8F2FB; display: grid; place-items: center; margin-bottom: 4px; } .cq-empty i svg { width: 16px; height: 16px; color: #3A86C8; }
+.cq-empty b { font-weight: 500; font-size: 10.6px; } .cq-empty small { font-size: 9px; color: #5F6368; }
+.cq-foot { display: flex; align-items: center; gap: 22px; height: 30px; padding: 0 2px; font-size: 8px; color: #3B3B40; }
+.cq-foot .pg { color: #9AA0A6; letter-spacing: 6px; }
+.cq-act { position: absolute; right: 16px; bottom: 20px; display: flex; gap: 8px; }
+.cq-back { height: 24px; padding: 0 14px; border: 1px solid #9FB8D0; border-radius: 3px; color: #005091; font-size: 8.8px; letter-spacing: .05em; display: inline-flex; align-items: center; gap: 6px; background: #fff; }
+.cq-save { height: 24px; padding: 0 14px; border-radius: 3px; background: #007F73; color: #fff; font-size: 8.8px; letter-spacing: .05em; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 2px -1px rgba(0,0,0,.2); transition: background .2s; }
+.cq-fab { position: absolute; right: 12px; bottom: 12px; width: 26px; height: 26px; border-radius: 50%; background: #0288D1; display: grid; place-items: center; color: #fff; box-shadow: 0 3px 6px rgba(0,0,0,.25); } .cq-fab svg { width: 12px; height: 12px; }
+.cq-toast { position: absolute; left: 22px; bottom: 26px; z-index: 6; display: flex; align-items: center; gap: 8px; background: #2E7D32; color: #fff; border-radius: 4px; padding: 8px 10px; font-size: 9px; line-height: 1.35; box-shadow: 0 6px 14px -4px rgba(0,0,0,.3);
+  opacity: 0; transform: translateY(10px); transition: opacity .3s, transform .45s cubic-bezier(.2,1.3,.4,1); }
+.cq-toast svg { width: 12px; height: 12px; flex: none; } .cq-toast .x { margin-left: 18px; opacity: .9; }
+/* dashboard */
+.cq-dash { padding: 16px 20px 0; min-width: 0; overflow: hidden; }
+.cq-wel { display: flex; justify-content: space-between; align-items: flex-start; }
+.cq-wel h4 { margin: 0; font-size: 22px; font-weight: 400; letter-spacing: -.01em; } .cq-wel p { margin: 6px 0 0; font-size: 12.4px; color: #5F6368; }
+.cq-qa { height: 26px; padding: 0 14px; border-radius: 3px; background: #007F73; color: #fff; font-size: 9.2px; letter-spacing: .05em; display: inline-flex; gap: 7px; align-items: center; box-shadow: 0 2px 2px -1px rgba(0,0,0,.2); transition: background .2s, transform .12s; }
+.cq-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+.cq-panel { background: #fff; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,.08); padding: 12px 14px; }
+.cq-ph { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 10px; border-bottom: 1px solid #E8EAED; margin: 0 -14px 6px; padding-inline: 14px; }
+.cq-ph b { font-size: 13.6px; font-weight: 500; } .cq-ph .lk { font-size: 8.8px; color: #005091; }
+.cq-todo-r { display: flex; align-items: center; gap: 10px; padding: 8px 6px; margin: 0 -6px; border-radius: 4px; font-size: 9.6px; transition: background .2s; }
+.cq-todo-r .n { width: 18px; height: 18px; border-radius: 50%; background: #5C6BC0; color: #fff; display: grid; place-items: center; font-size: 9px; flex: none; }
+.cq-todo-r .cq-chip { margin-left: auto; font-size: 7.6px; padding: 3px 7px; }
+.cq-more { display: block; padding: 10px 0 4px; border-top: 1px solid #E8EAED; margin-top: 6px; font-size: 9px; color: #005091; }
+.cq-alert { display: flex; gap: 9px; align-items: flex-start; padding: 9px 10px; border-radius: 4px; font-size: 9.6px; margin-top: 4px; transition: box-shadow .2s; }
+.cq-alert svg { width: 13px; height: 13px; flex: none; margin-top: 1px; } .cq-alert small { display: block; color: #5F6368; font-size: 8.2px; margin-top: 3px; }
+.cq-alert.hi { background: #FFF4E5; } .cq-alert.hi svg { color: #ED6C02; } .cq-alert.lo svg { color: #0288D1; }
+.cq-sel { display: grid; grid-template-columns: 1.2fr 1fr; gap: 10px; margin-top: 4px; }
+.cq-sel span { border: 1px solid #C9CDD3; border-radius: 4px; padding: 6px 8px 5px; font-size: 9.4px; position: relative; } .cq-sel small { display: block; font-size: 7px; color: #5F6368; margin-bottom: 2px; }
+.cq-sel span::after { content: "▾"; position: absolute; right: 8px; top: 10px; color: #5F6368; }
+.cq-bar { display: flex; height: 18px; margin-top: 10px; gap: 2px; } .cq-bar i { flex: 1; }
+.cq-leg { display: flex; justify-content: space-between; margin-top: 12px; font-size: 9px; color: #005091; align-items: center; }
+.cq-leg span { display: inline-flex; align-items: center; gap: 8px; } .cq-leg em { font-style: normal; width: 20px; height: 18px; border-radius: 3px; background: #292F4A; color: #fff; display: grid; place-items: center; font-size: 7.6px; } .cq-leg span:last-child em { background: #E65100; }
+/* scene states */
+.k1 [data-c="t1"] { background: #EEF2FA; }
+.k2 [data-c="al"] { box-shadow: 0 0 0 1.5px #ED6C02 inset; }
+.k3 [data-c="qa"] { background: #00695F; transform: scale(.97); }
+.k1 .cq-pr i em { width: 15%; }
+.k2 [data-c="add"] { background: #00695F; } .k2 .cq-menu { opacity: 1; transform: none; }
+.k3 .cq-menu [data-c="o2"] { background: #EEF2FA; }
+.cq-td { opacity: 0; transform: translateY(6px); transition: opacity .3s, transform .4s cubic-bezier(.2,1.2,.4,1), background .2s; }
 .k1 .r1, .k2 .r2, .k3 .r3 { opacity: 1; transform: none; }
-.k3 .r3 { background: linear-gradient(90deg, #E6F4EC, transparent 80%); }
-.mw { position: relative; display: grid; place-items: center; }
-.mdl .ps { margin: 0 0 22px; font-size: 14px; color: #55555D; line-height: 1.5; }
-.mdl { transition: opacity .25s, transform .35s ease; } .k1 [data-c="save"] { transform: scale(.95); filter: brightness(.88); }
-.k2 .mdl { opacity: 0; transform: scale(.94); }
-.toast { position: absolute; display: flex; align-items: center; gap: 12px; background: #fff; border-radius: 14px; padding: 10px 16px 10px 10px; font-size: 16px; font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 24px 44px -18px rgba(0,0,0,.4);
-  opacity: 0; transform: translateY(16px) scale(.9); transition: opacity .3s, transform .5s cubic-bezier(.2,1.4,.4,1); white-space: nowrap; }
-.toast .tic { width: 34px; height: 34px; border-radius: 10px; background: var(--ui); position: relative; } .toast .tic::after { content: ""; position: absolute; left: 11px; top: 11px; width: 12px; height: 7px; border: 2.5px solid #fff; border-top: 0; border-right: 0; transform: rotate(-45deg); }
-.toast em { font-style: normal; font-size: 13px; color: var(--ui); background: color-mix(in srgb, var(--ui) 12%, #fff); padding: 5px 10px; border-radius: 999px; }
-.k2 .toast { opacity: 1; transform: none; }
+.k4 .cq-toast { opacity: 1; transform: none; }
+.k5 .r3 { background: #F5F8FC; } .k5 .r3 .ed { color: #003A6B; }
+/* design system board */
+.ds { width: 860px; display: grid; grid-template-columns: 1.15fr .8fr 1.05fr; gap: 14px; align-items: start; font-family: "Inter", "Geist", system-ui, sans-serif; color: #1F1F24; flex: none; }
+.ds-col { display: grid; gap: 14px; }
+.ds-p { background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 20px 40px -26px rgba(0,0,0,.25); display: grid; gap: 12px; opacity: 0; transform: translateY(12px); transition: opacity .35s, transform .55s cubic-bezier(.2,1.2,.4,1); }
+.ds-l { font-family: var(--f-mono); font-size: 9.5px; text-transform: uppercase; letter-spacing: .08em; color: #80868B; }
+.ds-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.ds .cq-btn, .ds .cq-back, .ds .cq-save { height: 30px; font-size: 10.6px; } .ds .cq-btn > i { width: 32px; }
+.ds .cq-chip { font-size: 10.4px; padding: 5px 10px; }
+.ds .cq-tabs { margin-top: 0; } .ds .cq-tabs span { font-size: 9.6px; padding: 9px 8px; }
+.ds-step { display: grid; gap: 0; position: relative; padding-left: 4px; }
+.ds-step::before { content: ""; position: absolute; left: 11px; top: 12px; bottom: 12px; width: 1.5px; background: #C9CDD3; }
+.ds-step span { display: flex; align-items: center; gap: 12px; height: 38px; font-size: 11px; color: #5F6368; position: relative; }
+.ds-step i { width: 15px; height: 15px; border-radius: 50%; border: 1.5px solid #9AA0A6; background: #fff; position: relative; flex: none; }
+.ds-step .d i { background: #005091; border-color: #005091; } .ds-step .d i::after { content: ""; position: absolute; left: 3.5px; top: 3px; width: 5px; height: 3px; border: 1.5px solid #fff; border-top: 0; border-right: 0; transform: rotate(-45deg); }
+.ds-step .d { color: #1F1F24; } .ds-step .c { color: #005091; font-weight: 600; } .ds-step .c i { border-color: #005091; box-shadow: 0 0 0 4px #E3EDF7; } .ds-step .c i::after { content: ""; position: absolute; inset: 2.5px; border-radius: 50%; background: #005091; }
+.ds .cq-alert { margin: 0; font-size: 10.4px; } .ds .cq-alert small { font-size: 9px; }
+.ds .cq-toast { position: static; opacity: 1; transform: none; font-size: 10px; }
+.k1 .g1, .k2 .g2, .k3 .g3, .k4 .g4, .k5 .g5, .k6 .g6 { opacity: 1; transform: none; }
+.k7 [data-c="sv"] { background: #00695F; }
 
 /* ---------- staffcare ---------- */
 [data-film="staff"] { --ui: #E52421; }
-.sb { height: 22px; display: flex; justify-content: space-between; padding: 6px 16px 0; font-size: 9px; font-weight: 600; }
-.rb { background: #E52421; color: #fff; height: 40px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; font-size: 13px; }
-.rb b { font-weight: 600; }
+.rb { background: #E52421; color: #fff; height: 40px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; font-size: 13px; } .rb b { font-weight: 600; }
 .scr.old { background: #F2F2F2; }
 .ob { background: #3A3A40; color: #fff; padding: 10px 12px; font-weight: 600; font-size: 12px; }
 .otabs { display: flex; background: #fff; border-bottom: 1px solid #DDD; } .otabs span { flex: 1; text-align: center; padding: 7px 0; font-size: 10px; border-right: 1px solid #DDD; } .otabs .on { background: #5A5A62; color: #fff; }
 .ogrid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 8px; }
-.ogrid span { background: #fff; display: flex; align-items: center; gap: 7px; padding: 6px; font-size: 9.5px; border: 1px solid #E6E6E6; }
-.ogrid i { width: 22px; height: 22px; border-radius: 3px; background: var(--c); flex: none; }
+.ogrid span { background: #fff; display: flex; align-items: center; gap: 7px; padding: 6px; font-size: 9.5px; border: 1px solid #E6E6E6; } .ogrid i { width: 22px; height: 22px; border-radius: 3px; background: var(--c); flex: none; }
 .trk { text-align: center; font-size: 9px; color: #55555D; padding: 7px 0; }
 .wel { margin: 0 10px; border: 1.5px solid #F2B7B4; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; }
-.wel p { margin: 0; } .wel .tm { margin-top: 4px; color: #E52421; } .wel .tm b { font-size: 22px; font-weight: 700; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
-.wel small { color: #8A8A92; font-size: 8.5px; }
+.wel p { margin: 0; } .wel .tm { margin-top: 4px; color: #E52421; } .wel .tm b { font-size: 22px; font-weight: 700; letter-spacing: -.02em; font-variant-numeric: tabular-nums; } .wel small { color: #8A8A92; font-size: 8.5px; }
 .cob { width: 62px; height: 62px; border-radius: 50%; background: #E52421; color: #fff; display: grid; place-items: center; font-weight: 600; font-size: 10px; box-shadow: 0 0 0 7px #FBD9D7; transition: all .3s; flex: none; text-align: center; }
-.k1 .cob { transform: scale(.9); } .k2 .cob { background: #8A8A92; box-shadow: 0 0 0 7px #E6E6EA; transform: none; }
-.k2 .cob em::before { content: "Checked out"; } .cob em { font-style: normal; } .k2 .cob em { font-size: 0; } .k2 .cob em::before { font-size: 9px; }
-.k2 .wel .tm { color: #8A8A92; }
+.cob em { font-style: normal; } .k1 .cob { transform: scale(.9); } .k2 .cob { background: #8A8A92; box-shadow: 0 0 0 7px #E6E6EA; transform: none; } .k2 .cob em { font-size: 0; } .k2 .cob em::before { content: "Checked out"; font-size: 9px; } .k2 .wel .tm { color: #8A8A92; }
 .shd { margin: 12px 12px 6px; font-weight: 600; font-size: 11.5px; }
-.qt { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 0 10px; }
-.qt span { border: 1px solid #E6E6EA; border-radius: 8px; padding: 8px; display: flex; flex-direction: column; gap: 5px; font-size: 10px; }
-.qt i { width: 18px; height: 18px; border-radius: 5px; background: #FDE3E1; border: 1.5px solid #E52421; }
-.up { margin: 0 10px; border-radius: 8px; overflow: hidden; border: 1px solid #E6E6EA; }
-.up .uh { background: #E9ECFB; padding: 7px 10px; display: flex; justify-content: space-between; } .up .uh span { color: #2F6BE0; font-size: 9px; }
-.up p { margin: 6px 10px; } .up .vd { display: block; margin: 0 10px 8px; text-align: center; border: 1px solid #E6E6EA; border-radius: 6px; padding: 6px; color: #E52421; }
+.qt { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 0 10px; } .qt span { border: 1px solid #E6E6EA; border-radius: 8px; padding: 8px; display: flex; flex-direction: column; gap: 5px; font-size: 10px; } .qt i { width: 18px; height: 18px; border-radius: 5px; background: #FDE3E1; border: 1.5px solid #E52421; }
+.up { margin: 0 10px; border-radius: 8px; overflow: hidden; border: 1px solid #E6E6EA; } .up .uh { background: #E9ECFB; padding: 7px 10px; display: flex; justify-content: space-between; } .up .uh span { color: #2F6BE0; font-size: 9px; } .up p { margin: 6px 10px; } .up .vd { display: block; margin: 0 10px 8px; text-align: center; border: 1px solid #E6E6EA; border-radius: 6px; padding: 6px; color: #E52421; }
 .tabbar { position: absolute; left: 0; right: 0; bottom: 0; height: 42px; border-top: 1px solid #EEE; background: #fff; display: flex; } .tabbar span { flex: 1; display: grid; place-items: center; font-size: 9px; color: #9A9AA2; } .tabbar .on { color: #E52421; font-weight: 600; }
 .big4 { display: grid; grid-template-columns: repeat(2, 170px); gap: 14px; }
-.big4 .tl4 { background: #fff; border-radius: 16px; padding: 18px; height: 120px; display: flex; flex-direction: column; justify-content: space-between; font-size: 17px; font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 20px 40px -24px rgba(0,0,0,.3);
-  opacity: 0; transform: translateY(14px) scale(.94); transition: opacity .3s, transform .5s cubic-bezier(.2,1.4,.4,1), background .2s, color .2s; }
+.big4 .tl4 { background: #fff; border-radius: 16px; padding: 18px; height: 120px; display: flex; flex-direction: column; justify-content: space-between; font-size: 17px; font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 20px 40px -24px rgba(0,0,0,.3); opacity: 0; transform: translateY(14px) scale(.94); transition: opacity .3s, transform .5s cubic-bezier(.2,1.4,.4,1), background .2s, color .2s; }
 .big4 .tl4 i { width: 40px; height: 40px; border-radius: 11px; background: #FDE3E1; border: 2px solid #E52421; }
-.k1 .t1, .k2 .t2, .k3 .t3, .k4 .t4 { opacity: 1; transform: none; }
-.k5 .t2 { background: #E52421; color: #fff; } .k5 .t2 i { background: #fff; border-color: #fff; }
+.k1 .t1, .k2 .t2, .k3 .t3, .k4 .t4 { opacity: 1; transform: none; } .k5 .t2 { background: #E52421; color: #fff; } .k5 .t2 i { background: #fff; border-color: #fff; }
 .map { position: absolute; left: 0; right: 0; top: 62px; bottom: 0; background: #EEF0EC; overflow: hidden; }
-.map .rdh, .map .rdv { position: absolute; background: #fff; box-shadow: 0 0 0 1px #E1E3DE; }
-.map .rdh { left: -10%; right: -10%; height: 10px; } .map .rdv { top: -10%; bottom: -10%; width: 10px; }
-.map .blk { position: absolute; background: #DCE7D3; border-radius: 3px; }
+.map .rdh, .map .rdv { position: absolute; background: #fff; box-shadow: 0 0 0 1px #E1E3DE; } .map .rdh { left: -10%; right: -10%; height: 10px; } .map .rdv { top: -10%; bottom: -10%; width: 10px; } .map .blk { position: absolute; background: #DCE7D3; border-radius: 3px; }
 .pin { position: absolute; width: 22px; height: 22px; margin: -22px 0 0 -11px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg) scale(0); background: var(--c); transition: transform .4s cubic-bezier(.2,1.6,.4,1); box-shadow: 0 4px 8px rgba(0,0,0,.25); }
-.pin::after { content: ""; position: absolute; left: 7px; top: 7px; width: 8px; height: 8px; border-radius: 50%; background: #fff; }
-.k1 .p1, .k2 .p2, .k3 .p3 { transform: rotate(-45deg) scale(1); }
+.pin::after { content: ""; position: absolute; left: 7px; top: 7px; width: 8px; height: 8px; border-radius: 50%; background: #fff; } .k1 .p1, .k2 .p2, .k3 .p3 { transform: rotate(-45deg) scale(1); }
 .me { position: absolute; width: 14px; height: 14px; margin: -7px; border-radius: 50%; background: #2F6BE0; box-shadow: 0 0 0 4px #fff, 0 0 0 16px rgba(47,107,224,.18); }
 .sheet { position: absolute; left: 0; right: 0; bottom: 0; background: #fff; border-radius: 16px 16px 0 0; box-shadow: 0 -10px 30px rgba(0,0,0,.12); padding: 10px 12px 14px; transform: translateY(100%); transition: transform .5s cubic-bezier(.2,1,.3,1); }
-.sheet::before { content: ""; display: block; width: 34px; height: 4px; border-radius: 2px; background: #DDD; margin: 0 auto 10px; }
-.k4 .sheet { transform: none; }
-.cnt { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; } .cnt span { border: 1px solid #EEE; border-radius: 8px; padding: 6px 7px; font-size: 8.5px; color: #6B6B72; } .cnt b { display: block; font-size: 15px; color: #16161A; }
-.cnt span:nth-child(1) b { color: #1B7A47; } .cnt span:nth-child(3) b { color: #2F6BE0; }
-.tk { margin-top: 8px; border-radius: 8px; background: #F6F6F8; padding: 8px 10px; display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; align-items: center; }
-.tk span { color: #6B6B72; font-size: 9px; grid-column: 1; } .tk em { font-style: normal; grid-row: 1 / 3; grid-column: 2; background: #E52421; color: #fff; border-radius: 6px; padding: 6px 9px; font-size: 9.5px; transition: transform .12s; }
-.k5 .tk em { transform: scale(.92); }
+.sheet::before { content: ""; display: block; width: 34px; height: 4px; border-radius: 2px; background: #DDD; margin: 0 auto 10px; } .k4 .sheet { transform: none; }
+.cnt { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; } .cnt span { border: 1px solid #EEE; border-radius: 8px; padding: 6px 7px; font-size: 8.5px; color: #6B6B72; } .cnt b { display: block; font-size: 15px; color: #16161A; } .cnt span:nth-child(1) b { color: #1B7A47; } .cnt span:nth-child(3) b { color: #2F6BE0; }
+.tk { margin-top: 8px; border-radius: 8px; background: #F6F6F8; padding: 8px 10px; display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; align-items: center; } .tk span { color: #6B6B72; font-size: 9px; grid-column: 1; } .tk em { font-style: normal; grid-row: 1 / 3; grid-column: 2; background: #E52421; color: #fff; border-radius: 6px; padding: 6px 9px; font-size: 9.5px; transition: transform .12s; } .k5 .tk em { transform: scale(.92); }
 .exp { width: 480px; display: grid; gap: 14px; }
 .es { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .es span { background: #fff; border-radius: 14px; padding: 14px; font-size: 13px; color: #6B6B72; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 16px 32px -22px rgba(0,0,0,.3); opacity: 0; transform: translateY(10px); transition: opacity .3s, transform .45s cubic-bezier(.2,1.3,.4,1); }
-.es b { font-size: 24px; color: #16161A; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
-.es .e3 { border: 2px solid #3DBE77; } .es .e3 b { color: #1B7A47; }
-.k1 .e1, .k2 .e2, .k3 .e3 { opacity: 1; transform: none; }
+.es b { font-size: 24px; color: #16161A; letter-spacing: -.02em; font-variant-numeric: tabular-nums; } .es .e3 { border: 2px solid #3DBE77; } .es .e3 b { color: #1B7A47; } .k1 .e1, .k2 .e2, .k3 .e3 { opacity: 1; transform: none; }
 .el { background: #fff; border-radius: 14px; padding: 6px 16px; box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 16px 32px -22px rgba(0,0,0,.3); }
 .er { display: grid; grid-template-columns: 30px 1fr auto 70px; gap: 12px; align-items: center; padding: 11px 0; border-bottom: 1px solid #F0F0F0; font-size: 14px; opacity: 0; transform: translateX(-10px); transition: opacity .3s, transform .45s cubic-bezier(.2,1.2,.4,1); }
-.er:last-child { border-bottom: 0; } .er > i { width: 30px; height: 30px; border-radius: 8px; background: #FDE3E1; } .er small { display: block; color: #8A8A92; font-size: 11.5px; } .er > b:last-child { text-align: right; }
-.k4 .x1, .k5 .x2, .k6 .x3 { opacity: 1; transform: none; }
+.er:last-child { border-bottom: 0; } .er > i { width: 30px; height: 30px; border-radius: 8px; background: #FDE3E1; } .er small { display: block; color: #8A8A92; font-size: 11.5px; } .er > b:last-child { text-align: right; } .k4 .x1, .k5 .x2, .k6 .x3 { opacity: 1; transform: none; }
 .form { padding: 10px 12px; } .form p { margin: 9px 0 5px; font-weight: 600; font-size: 10px; }
-.fin { height: 30px; border: 1px solid #DCDCE0; border-radius: 6px; display: flex; align-items: center; padding: 0 9px; font-size: 11px; }
-.fin.ev { height: 52px; border-style: dashed; justify-content: center; color: #9A9AA2; }
-.addb { position: absolute; left: 12px; right: 12px; bottom: 16px; height: 34px; border-radius: 7px; background: #E52421; color: #fff; display: grid; place-items: center; font-weight: 600; font-size: 11px; transition: transform .12s, filter .2s; }
-.k1 .addb { transform: scale(.95); filter: brightness(.88); }
-.snack { position: absolute; left: 12px; right: 12px; bottom: 60px; background: #16161A; color: #fff; border-radius: 8px; padding: 9px 11px; font-size: 10.5px; opacity: 0; transform: translateY(10px); transition: opacity .3s, transform .4s cubic-bezier(.2,1.3,.4,1); }
-.k2 .snack { opacity: 1; transform: none; }
+.fin { height: 30px; border: 1px solid #DCDCE0; border-radius: 6px; display: flex; align-items: center; padding: 0 9px; font-size: 11px; } .fin.ev { height: 52px; border-style: dashed; justify-content: center; color: #9A9AA2; }
+.addb { position: absolute; left: 12px; right: 12px; bottom: 16px; height: 34px; border-radius: 7px; background: #E52421; color: #fff; display: grid; place-items: center; font-weight: 600; font-size: 11px; transition: transform .12s, filter .2s; } .k1 .addb { transform: scale(.95); filter: brightness(.88); }
+.snack { position: absolute; left: 12px; right: 12px; bottom: 60px; background: #16161A; color: #fff; border-radius: 8px; padding: 9px 11px; font-size: 10.5px; opacity: 0; transform: translateY(10px); transition: opacity .3s, transform .4s cubic-bezier(.2,1.3,.4,1); } .k2 .snack { opacity: 1; transform: none; }
 
 /* ---------- adani one ---------- */
 [data-film="adani"] { --ui: #2E6BD6; }
@@ -345,57 +345,43 @@ html.no-notes .sample-note { display: none; }
 .jh { height: 108px; background: linear-gradient(180deg, #2B1E4F 0%, #8E3F72 55%, #F08A5D 100%); color: #fff; padding: 14px 14px 0; position: relative; overflow: hidden; }
 .jh::after { content: ""; position: absolute; left: -10%; right: -10%; bottom: -14px; height: 40px; background: radial-gradient(circle at 20% 100%, #1B1230 30%, transparent 31%), radial-gradient(circle at 55% 100%, #1B1230 22%, transparent 23%), radial-gradient(circle at 85% 100%, #1B1230 34%, transparent 35%); }
 .jh b { display: block; margin-top: 18px; font-size: 18px; letter-spacing: -.01em; }
-.fc { margin: -24px 10px 0; position: relative; z-index: 2; background: #fff; border-radius: 12px; padding: 10px 11px; box-shadow: 0 10px 24px -14px rgba(0,0,0,.35); transform: translateY(14px); opacity: 0; transition: opacity .35s, transform .5s cubic-bezier(.2,1.2,.4,1); }
-.k1 .fc { opacity: 1; transform: none; }
+.fc { margin: -24px 10px 0; position: relative; z-index: 2; background: #fff; border-radius: 12px; padding: 10px 11px; box-shadow: 0 10px 24px -14px rgba(0,0,0,.35); transform: translateY(14px); opacity: 0; transition: opacity .35s, transform .5s cubic-bezier(.2,1.2,.4,1); } .k1 .fc { opacity: 1; transform: none; }
 .fr { display: flex; align-items: center; gap: 5px; font-size: 18px; } .fr b { font-weight: 700; } .fr em { font-style: normal; font-size: 8px; background: #FFD21F; padding: 2px 4px; border-radius: 3px; font-weight: 700; }
 .fr .lane { flex: 1; height: 0; border-top: 1.5px dashed #B5B5BC; position: relative; margin: 0 4px; }
-.fr .lane i { position: absolute; top: -7px; left: 0; width: 13px; height: 13px; background: #2E6BD6; clip-path: polygon(0 35%, 60% 35%, 30% 0, 50% 0, 90% 35%, 100% 50%, 90% 65%, 50% 100%, 30% 100%, 60% 65%, 0 65%); transition: left 1.6s cubic-bezier(.4,0,.2,1); }
-.k2 .fr .lane i { left: calc(100% - 13px); }
+.fr .lane i { position: absolute; top: -7px; left: 0; width: 13px; height: 13px; background: #2E6BD6; clip-path: polygon(0 35%, 60% 35%, 30% 0, 50% 0, 90% 35%, 100% 50%, 90% 65%, 50% 100%, 30% 100%, 60% 65%, 0 65%); transition: left 1.6s cubic-bezier(.4,0,.2,1); } .k2 .fr .lane i { left: calc(100% - 13px); }
 .fr2, .fr3 { display: flex; justify-content: space-between; margin-top: 8px; } .fr2 small { display: block; color: #8A8A92; font-size: 8.5px; } .fr2 span { font-weight: 600; font-size: 11px; } .fr3 { color: #55555D; font-size: 9.5px; padding-top: 7px; border-top: 1px solid #EEE; }
-.tls { padding: 12px 12px 0 26px; position: relative; }
-.tls::before { content: ""; position: absolute; left: 15px; top: 14px; bottom: -40px; border-left: 1.5px dashed #B5C7EA; }
+.tls { padding: 12px 12px 0 26px; position: relative; } .tls::before { content: ""; position: absolute; left: 15px; top: 14px; bottom: -40px; border-left: 1.5px dashed #B5C7EA; }
 .tls .ti { position: relative; font-size: 13px; margin: 6px 0 8px; } .tls .ti i { position: absolute; left: -15px; top: 4px; width: 9px; height: 9px; border-radius: 50%; background: #2E6BD6; }
 .tls .tc { background: #fff; border-radius: 10px; padding: 9px 10px; border: 1px solid #E6E9F2; } .tls .tc small { display: block; color: #6B6B72; margin: 3px 0 6px; } .tls .tc em { font-style: normal; color: #2E6BD6; font-weight: 600; }
-.tlc { position: relative; padding: 22px 24px 22px 54px; }
-.tlc .rail { position: absolute; left: 30px; top: 36px; bottom: 50px; width: 2px; background: #E1E6F2; } .tlc .rail em { position: absolute; left: 0; right: 0; top: 0; height: 0; background: #2E6BD6; transition: height 1s cubic-bezier(.4,0,.2,1); }
-.k2 .tlc .rail em { height: 50%; }
+.w420 { width: 420px; } .w380 { width: 380px; }
+.tlc { position: relative; padding: 22px 24px 22px 54px; } .tlc .rail { position: absolute; left: 30px; top: 36px; bottom: 50px; width: 2px; background: #E1E6F2; } .tlc .rail em { position: absolute; left: 0; right: 0; top: 0; height: 0; background: #2E6BD6; transition: height 1s cubic-bezier(.4,0,.2,1); } .k2 .tlc .rail em { height: 50%; }
 .tli { position: relative; display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; padding: 14px 0; }
 .tli > i { position: absolute; left: -31px; top: 17px; width: 16px; height: 16px; border-radius: 50%; background: #fff; border: 2.5px solid #C3CDE3; z-index: 1; transition: all .3s cubic-bezier(.2,1.4,.4,1); }
 .tli b { font-size: 17px; letter-spacing: -.01em; } .tli small { display: block; color: #6B6B72; font-size: 13px; margin-top: 4px; }
-.k1 .q1 > i { background: #2E6BD6; border-color: #2E6BD6; }
-.k3 .q2 > i { border-color: #2E6BD6; box-shadow: 0 0 0 6px #DCE7FB; transform: scale(1.1); }
-.nowc { font-style: normal; font-size: 12px; font-weight: 700; background: #FFD21F; padding: 4px 9px; border-radius: 999px; opacity: 0; transform: scale(.6); transition: all .35s cubic-bezier(.2,1.5,.4,1); }
-.k3 .nowc { opacity: 1; transform: none; }
-.gate .gv { position: relative; height: 64px; }
-.gate .gv span { position: absolute; left: 0; top: 0; font-size: 44px; font-weight: 700; letter-spacing: -.03em; transition: opacity .3s, transform .45s cubic-bezier(.2,1.4,.4,1); }
-.gate .g0 { color: #C3C3CA; } .gate .g1 { opacity: 0; transform: translateY(12px); }
-.gate .g1 b { background: #FFD21F; padding: 0 10px; border-radius: 8px; font-weight: 700; }
+.k1 .q1 > i { background: #2E6BD6; border-color: #2E6BD6; } .k3 .q2 > i { border-color: #2E6BD6; box-shadow: 0 0 0 6px #DCE7FB; transform: scale(1.1); }
+.nowc { font-style: normal; font-size: 12px; font-weight: 700; background: #FFD21F; padding: 4px 9px; border-radius: 999px; opacity: 0; transform: scale(.6); transition: all .35s cubic-bezier(.2,1.5,.4,1); } .k3 .nowc { opacity: 1; transform: none; }
+.ct { margin: 0 0 16px; font-size: 19px; font-weight: 600; letter-spacing: -.02em; }
+.gate .gv { position: relative; height: 64px; } .gate .gv span { position: absolute; left: 0; top: 0; font-size: 44px; font-weight: 700; letter-spacing: -.03em; transition: opacity .3s, transform .45s cubic-bezier(.2,1.4,.4,1); }
+.gate .g0 { color: #C3C3CA; } .gate .g1 { opacity: 0; transform: translateY(12px); } .gate .g1 b { background: #FFD21F; padding: 0 10px; border-radius: 8px; font-weight: 700; }
 .k1 .gate .g0 { opacity: .4; animation: shim .5s ease infinite alternate; } @keyframes shim { to { opacity: .15; } }
 .k2 .gate .g0 { opacity: 0; transform: translateY(-12px); } .k2 .gate .g1 { opacity: 1; transform: none; }
 .gu { margin: 6px 0 16px; font-size: 13px; color: #8A8A92; } .k2 .gu { color: #1B7A47; }
-.brd { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 0; border-top: 1px solid #EEE; } .brd span { color: #6B6B72; font-size: 14px; } .brd b { font-size: 24px; font-variant-numeric: tabular-nums; }
-.cdk { color: #2E6BD6; font-weight: 600; font-size: 14px; }
+.brd { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 0; border-top: 1px solid #EEE; } .brd span { color: #6B6B72; font-size: 14px; } .brd b { font-size: 24px; font-variant-numeric: tabular-nums; } .cdk { color: #2E6BD6; font-weight: 600; font-size: 14px; }
 .offs { width: 420px; display: grid; gap: 14px; }
 .off { display: grid; grid-template-columns: 1fr 62px; gap: 6px 14px; align-items: start; opacity: 0; transform: translateY(16px); transition: opacity .35s, transform .5s cubic-bezier(.2,1.3,.4,1); padding: 20px 22px; }
-.off .ol { grid-column: 1 / -1; font-size: 12px; font-weight: 700; color: #2E6BD6; text-transform: uppercase; letter-spacing: .06em; }
-.off b { font-size: 18px; letter-spacing: -.01em; } .off small { display: block; color: #6B6B72; font-size: 13px; margin-top: 4px; }
-.off .oi { width: 62px; height: 62px; border-radius: 14px; background: #FFE9D6; grid-row: 2 / 4; grid-column: 2; display: grid; place-items: center; font-size: 30px; font-weight: 700; }
-.off .bn { color: #2E6BD6; font-weight: 600; font-size: 14px; transition: transform .12s; display: inline-block; }
-.k1 .o1 { opacity: 1; transform: none; } .k2 .o1 .bn { transform: scale(.92); } .k3 .o2 { opacity: 1; transform: none; }
-.o2 .oi { background: #E3EDFC; color: #2E6BD6; }
+.off .ol { grid-column: 1 / -1; font-size: 12px; font-weight: 700; color: #2E6BD6; text-transform: uppercase; letter-spacing: .06em; } .off b { font-size: 18px; letter-spacing: -.01em; } .off small { display: block; color: #6B6B72; font-size: 13px; margin-top: 4px; }
+.off .oi { width: 62px; height: 62px; border-radius: 14px; background: #FFE9D6; grid-row: 2 / 4; grid-column: 2; display: grid; place-items: center; font-size: 30px; font-weight: 700; } .off .bn { color: #2E6BD6; font-weight: 600; font-size: 14px; transition: transform .12s; display: inline-block; }
+.k1 .o1 { opacity: 1; transform: none; } .k2 .o1 .bn { transform: scale(.92); } .k3 .o2 { opacity: 1; transform: none; } .o2 .oi { background: #E3EDFC; color: #2E6BD6; }
 .narrow .offs, .narrow .exp { width: 520px; }
 @media (max-width: 860px) {
-  .det { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .det > .ttl { grid-column: 1 / -1; }
-  .det > * + * { border-left: 0; }
-  .det > .st, .det > .go { border-top: 1px solid var(--grid); }
-  .det > .st + .st { border-left: 1px solid var(--grid); }
-  .det > .go { grid-column: 1 / -1; flex-direction: row; align-items: center; }
-  .bar { padding: 18px 20px; font-size: 11.5px; } .det > * { padding: 22px 20px; }
-  .fstage { aspect-ratio: 4 / 5; }
-  .wt { padding: 84px 0 64px; } .gap { height: 64px; }
+  .pcard { padding-block: 78px 16px; gap: 16px; }
+  .prow { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .pstats { gap: 22px; flex-wrap: wrap; }
+  .go .t { height: 40px; font-size: 13.5px; padding: 0 16px; } .go .a { width: 40px; height: 40px; }
+  .work-intro { padding-block: 96px 8px; }
+  .fstage { border-radius: 16px; }
 }
-@media (prefers-reduced-motion: reduce) { .js .proj .rv { opacity: 1; transform: none; transition: none; } }
+@media (prefers-reduced-motion: reduce) { .js .proj .rv { opacity: 1; transform: none; transition: none; } .scene { transition: none; } }
 
 /* ---------- sample controls ---------- */
 .ctrl { position: fixed; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); translate: -50% 0; z-index: 40; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center;
@@ -406,7 +392,8 @@ html.no-notes .sample-note { display: none; }
 
 @media (max-width: 760px) {
   .wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-  .nav { left: max(12px, env(safe-area-inset-left, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); top: calc(12px + env(safe-area-inset-top, 0px)); }
+  .nav { left: max(18px, env(safe-area-inset-left, 0px)); right: max(18px, env(safe-area-inset-right, 0px)); top: calc(18px + env(safe-area-inset-top, 0px)); }
+  .hframe { inset: 8px; border-radius: 20px; }
   .pill { height: 42px; padding-right: 12px; } .pill .logo { margin-right: 2px; }
   .pill a.l { font-size: 14px; padding: 6px 7px; }
   .pill a.l.hide-sm { display: none; }
@@ -442,6 +429,7 @@ html.no-notes .sample-note { display: none; }
 <main id="top">
   <section class="hero" id="hero">
     <div class="stage">
+      <div class="hframe" aria-hidden="true"></div>
       <div class="hero-in">
         <h1 class="hl" aria-label="Interaction Designer who ships">
           <span class="layer" id="layerA" aria-hidden="true">
@@ -482,85 +470,148 @@ html.no-notes .sample-note { display: none; }
   </section>
 
   <section class="work" id="work" aria-labelledby="workTitle">
-    <div class="wrap">
-      <div class="gw">
-        <div class="wt"><h2 id="workTitle">Selected<span class="tile"><canvas id="wtCv"></canvas></span>work</h2></div>
-
-        <article class="proj" style="--acc:#1E7F52">
-          <div class="fl"><i class="nd l"></i><i class="nd r"></i></div>
-          <a class="fstage" href="https://kaliyugg.framer.website/healthcare" target="_blank" rel="noopener" data-film="health" style="--bg0:#E4F1E8" aria-label="Credentialing case study. Animated preview rebuilt from the real flow: adding an affiliation, the stepper, catching a duplicate, the records table, saving, and the result.">
-            <canvas class="sky"></canvas>
-            <div class="box" aria-hidden="true">
-              <div class="scene" data-bg="#E4F1E8">
-                <div class="hx">
-                  <div class="hx-top"><span class="hx-brand"><i></i>Credentialing</span><span class="hx-prog">Progress <b>15%</b><span class="pb"><em></em></span></span><span class="hx-av">DP</span></div>
-                  <div class="hx-body">
-                    <div class="hx-nav"><span class="ni"><i></i>Home</span><span class="ni"><i></i>Alerts</span><span class="ni on"><i></i>Profile</span><span class="ni"><i></i>Locations</span><span class="ni"><i></i>Documents</span><span class="ni"><i></i>Auth</span></div>
-                    <div class="hx-main">
-                      <div class="hx-head"><div><h4>Hospital Affiliations</h4><p>Hospitals where you hold current or pending privileges, or any other arrangement.</p></div>
-                        <div class="hx-add"><span class="btn g" data-c="add">+ Add hospital affiliation</span>
-                          <div class="menu"><span>Admitting privilege</span><span data-c="o2">Non-admitting affiliation</span><span>Past affiliation</span></div></div></div>
-                      <div class="hx-tabs"><span class="on">Admitting</span><span>Non-admitting</span><span>Ambulatory centers</span></div>
-                      <div class="hx-tools"><span>Auto-resize</span><span>Columns</span><span>Filters</span><span class="srch">Search</span></div>
-                      <div class="tr th"><span>Name</span><span>Location</span><span>Description</span><span>Status</span></div>
-                      <div class="empty"><i></i>No results found<small>Add a record to get started</small></div>
+      <div class="work-intro"><div class="wrap"><h2 id="workTitle">Selected work</h2></div></div>
+        <article class="proj">
+          <div class="wrap pcard">
+            <div class="prow">
+              <div class="rv"><h3>Helping 1.4M+ doctors carry their professional history</h3><p class="role">Capgemini · Offshore design track lead · team of 6 · 10 months</p></div>
+              <div class="pstats rv"><div class="pst"><b>84%</b><span>Task success, up from 56%</span></div><div class="pst"><b>9%</b><span>Drop-off, down from 30%</span></div>
+                <a class="go" href="https://kaliyugg.framer.website/healthcare" target="_blank" rel="noopener"><span class="t">Read the case study</span><span class="a"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a></div>
+            </div>
+            <a class="fstage" href="https://kaliyugg.framer.website/healthcare" target="_blank" rel="noopener" data-film="health" style="--bg0:#E8EEF4" aria-label="Credentialing case study. Animated preview of the real screens: the dashboard, the hospital affiliations flow, the design system, and the saved records.">
+              <div class="box" aria-hidden="true">              <div class="scene" data-bg="#E8EEF4">
+                <div class="cq">
+                  <div class="cq-top"><i class="cq-logo"></i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5M12 16.5h.01"/></svg><span class="id">XXXX ID: #######</span><span class="cq-av">OP</span></div>
+                  <div class="cq-body">
+                    <div class="cq-nav">
+                      <span class="cq-ni on"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9h-6v-6H9v6H3z"/></svg>Home</span>
+                      <span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"/></svg>Alerts</span>
+                      <span class="cq-ni dot"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M9 6V4h6v2M12 10v6M9 13h6"/></svg>Practitioners</span>
+                      <span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Locations</span>
+                      <span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>Authorizations</span>
+                      <span class="cq-ni dot"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="3"/><circle cx="5" cy="10" r="2"/><circle cx="19" cy="10" r="2"/><path d="M6 20a6 6 0 0 1 12 0M1 19a4 4 0 0 1 5-3.5M23 19a4 4 0 0 0-5-3.5"/></svg>Organization</span>
+                    </div>
+                    <div class="cq-dash">
+                      <div class="cq-wel"><div><h4>Welcome Back, Kendra Patel</h4><p>Aesthetic Smiles</p></div><span class="cq-qa" data-c="qa">+ &nbsp;QUICK ADD</span></div>
+                      <div class="cq-cols">
+                        <div class="cq-panel">
+                          <div class="cq-ph"><b>To Do</b><span class="lk">See All</span></div>
+                          <div class="cq-todo-r" data-c="t1"><span class="n">4</span>Incomplete Practitioner Profiles<i class="cq-chip r">Required</i></div>
+                          <div class="cq-todo-r"><span class="n">5</span>Incomplete Directory Sections<i class="cq-chip r">Required</i></div>
+                          <div class="cq-todo-r"><span class="n">1</span>Respond to Authorization<i class="cq-chip r">Required</i></div>
+                          <div class="cq-todo-r"><span class="n">2</span><span>Directory Confirmation expiring on <b>(MM/DD/YYYY)</b></span><i class="cq-chip s">Suggested</i></div>
+                          <div class="cq-todo-r"><span class="n">1</span><span>Document expiring on <b>(MM/DD/YYYY)</b></span><i class="cq-chip s">Suggested</i></div>
+                          <span class="cq-more">12 More To Do Tasks</span>
+                        </div>
+                        <div style="display:grid;gap:14px;align-content:start">
+                          <div class="cq-panel">
+                            <div class="cq-ph"><b>Broadcast Alerts</b><span class="lk">See All</span></div>
+                            <div class="cq-alert hi" data-c="al"><svg viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></svg><div>Broadcast Alert - High Priority<small>04/28/25 – 10:30 AM EST</small></div></div>
+                            <div class="cq-alert lo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/></svg><div>Broadcast Alert - Low Priority<small>04/28/25 – 10:30 AM EST</small></div></div>
+                            <span class="cq-more">2 More Broadcast Alerts</span>
+                          </div>
+                          <div class="cq-panel">
+                            <div class="cq-ph"><b>Profile Status Tracker</b><span class="lk">See All</span></div>
+                            <div class="cq-sel"><span><small>Profile Type</small>Non-Delegated Credentialing</span><span><small>State</small>All</span></div>
+                            <div class="cq-bar"><i style="background:#292F4A"></i><i style="background:#005091"></i><i style="background:#00838F"></i><i style="background:#E65100"></i><i style="background:#9E9D24"></i><i style="background:#2E7D32"></i></div>
+                            <div class="cq-leg"><span><em>##</em>Unregistered</span><span><em>##</em>Incomplete Profile</span></div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="scene" data-bg="#F4EFE1">
-                <div class="card w520">
-                  <p class="ct">Add non-admitting affiliation</p>
-                  <div class="stp"><div class="s s1"><i></i><span>Hospital information</span></div><b class="ln l1"><em></em></b><div class="s s2"><i></i><span>Affiliation details</span></div><b class="ln"><em></em></b><div class="s s3"><i></i><span>Contact information</span></div></div>
-                  <div class="fld"><p>Affiliation status</p><div class="radios"><span class="rd"><i></i>Active</span><span class="rd"><i></i>Inactive</span><span class="rd" data-c="r3"><i></i>Pending</span></div></div>
-                  <div class="fld"><p>Is this your primary hospital?</p><div class="radios"><span class="rd" data-c="y"><i></i>Yes</span><span class="rd"><i></i>No</span></div></div>
+              <div class="scene" data-bg="#F4F0E8">
+                <div class="cq">
+                  <div class="cq-top"><i class="cq-logo"></i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5M12 16.5h.01"/></svg><span class="id">XXXX ID: #######</span><span class="cq-av">OP</span></div>
+                  <div class="cq-body">
+                    <div class="cq-nav"><span class="cq-ni"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9h-6v-6H9v6H3z"/></svg>Home</span><span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"/></svg>Alerts</span><span class="cq-ni on dot"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M9 6V4h6v2M12 10v6M9 13h6"/></svg>Profile</span><span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Locations</span><span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></svg>Documents</span><span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>Authorizations</span><span class="cq-todo"><b>##%</b>To-Do Status</span></div>
+                    <div class="cq-main">
+                      <div class="cq-crumb"><span><span class="lk">Home</span> &nbsp;›&nbsp; Profile</span><span class="sp"></span><span class="cq-pr">Progress: 15%<i><em></em></i></span><span class="cq-la">Last Attested: --/--/--</span></div>
+                      <div class="cq-wrap">
+                        <div class="cq-steps"><span class="chev">›</span><span class="ln"></span><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="c"></i><i></i><i></i><i></i></div>
+                        <div class="cq-card">
+                          <div class="cq-h"><h4>Hospital Affiliations</h4><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg></div>
+                          <div class="cq-row"><p>If there are hospitals where you have current or pending admitting privileges, current or pending arrangements, or a different non-admitting affiliation, enter them below.</p><span class="cq-btn" data-c="add"><span>ADD HOSPITAL AFFILIATION</span><i>▾</i><div class="cq-menu"><span>Admitting privilege</span><span data-c="o2">Non-admitting affiliation</span><span>Ambulatory surgery center</span></div></span></div>
+                          <div class="cq-tabs"><span>ADMITTING PRIVILEGES</span><span>ADMITTING ARRANGEMENTS</span><span class="on">NON-ADMITTING AFFILIATIONS</span><span>AMBULATORY SURGERY CENTERS</span></div>
+                          <p class="cq-info">If you are affiliated with a hospital, but you cannot admit. This may be called "courtesy" or "consulting" privileges at some hospitals. Please also enter in pending non-admitting hospital affiliations.</p>
+                          <div class="cq-tools"><span>‹› &nbsp;AUTO-RESIZE</span><span>▥ &nbsp;COLUMNS</span><span>☰ &nbsp;FILTERS</span><span class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>Search</span></div>
+                          <div class="cq-tr cq-th"><span>Name</span><span>Location</span><span>Description</span><span>Status</span><span></span></div>
+                          <div class="cq-empty"><i><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M9 12h6M9 16h4"/></svg></i><b>No Results Found</b><small>Please create a new record</small></div>
+                          <div class="cq-foot"><span>Rows per page: &nbsp;10 ▾</span><span>0-0 of 0</span><span class="pg">‹ ›</span></div>
+                          <div class="cq-act"><span class="cq-back">‹ &nbsp;BACK</span><span class="cq-save">SAVE &amp; CONTINUE &nbsp;›</span></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span class="cq-fab"><svg viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2M4 14h3v5H5a1 1 0 0 1-1-1zM20 14h-3v5h2a1 1 0 0 0 1-1z"/></svg></span>
+                  
                 </div>
               </div>
-              <div class="scene" data-bg="#E4F1E8">
-                <div class="card w460">
-                  <p class="lbl">Hospital name</p>
-                  <div class="inp"><span class="v" data-t="hn"></span><span class="fix">Northfield General Hospital</span><i class="ok"></i></div>
-                  <div class="pop"><p class="pt">Did you mean <b>Northfield General Hospital</b>?</p><p class="ps">It's already in your records. Saving it again would create a duplicate.</p><div class="acts"><span class="btn g" data-c="use">Use suggestion</span><span class="btn o">Keep mine</span></div></div>
+              <div class="scene" data-bg="#F3F1EC">
+                <div class="ds scale-n">
+                  <div class="ds-col">
+                    <div class="ds-p g1"><span class="ds-l">Buttons</span><div class="ds-row"><span class="cq-btn"><span>ADD HOSPITAL AFFILIATION</span><i>▾</i></span></div><div class="ds-row"><span class="cq-back">‹ &nbsp;BACK</span><span class="cq-save" data-c="sv">SAVE &amp; CONTINUE &nbsp;›</span></div></div>
+                    <div class="ds-p g2"><span class="ds-l">Status chips</span><div class="ds-row"><i class="cq-chip a">Active</i><i class="cq-chip p">Pending</i><i class="cq-chip r">Required</i><i class="cq-chip s">Suggested</i></div></div>
+                    <div class="ds-p g3"><span class="ds-l">Tabs</span><div class="cq-tabs"><span>ADMITTING</span><span class="on">NON-ADMITTING</span><span>AMBULATORY</span></div></div>
+                  </div>
+                  <div class="ds-p g4"><span class="ds-l">Section stepper</span>
+                    <div class="ds-step"><span class="d"><i></i>Personal information</span><span class="d"><i></i>Education</span><span class="d"><i></i>Licenses</span><span class="d"><i></i>Work history</span><span class="c"><i></i>Hospital affiliations</span><span><i></i>Insurance</span><span><i></i>Attestation</span></div>
+                  </div>
+                  <div class="ds-col">
+                    <div class="ds-p g5"><span class="ds-l">Alerts</span>
+                      <div class="cq-alert hi"><svg viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></svg><div>Broadcast Alert - High Priority<small>04/28/25 – 10:30 AM EST</small></div></div>
+                      <div class="cq-alert lo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/></svg><div>Broadcast Alert - Low Priority<small>04/28/25 – 10:30 AM EST</small></div></div>
+                    </div>
+                    <div class="ds-p g6"><span class="ds-l">Feedback</span><div class="cq-toast"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 10"/></svg><span>Hospital Affiliation added<br>Successfully</span><span class="x">✕</span></div></div>
+                  </div>
                 </div>
               </div>
-              <div class="scene" data-bg="#E7EEF7">
-                <div class="card w600 hx-tb">
-                  <div class="tbh"><p class="ct">Hospital affiliations</p><span class="pg">Progress <b data-n="pg">15%</b></span></div>
-                  <div class="pbar"><em></em></div>
-                  <div class="tr th"><span>Hospital</span><span>Department</span><span>Since</span><span>Status</span></div>
-                  <div class="tr r1"><span>Northfield General</span><span>Cardiology</span><span>2019</span><span><i class="chip ok">Verified</i></span></div>
-                  <div class="tr r2"><span>Lakeview Medical</span><span>Internal medicine</span><span>2021</span><span><i class="chip ok">Verified</i></span></div>
-                  <div class="tr r3"><span>Riverside Institute</span><span>Clinical research</span><span>2022</span><span><i class="chip wt">In review</i></span></div>
+              <div class="scene" data-bg="#E9F1EE">
+                <div class="cq">
+                  <div class="cq-top"><i class="cq-logo"></i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5M12 16.5h.01"/></svg><span class="id">XXXX ID: #######</span><span class="cq-av">OP</span></div>
+                  <div class="cq-body">
+                    <div class="cq-nav"><span class="cq-ni"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9h-6v-6H9v6H3z"/></svg>Home</span><span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"/></svg>Alerts</span><span class="cq-ni on dot"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M9 6V4h6v2M12 10v6M9 13h6"/></svg>Profile</span><span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Locations</span><span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></svg>Documents</span><span class="cq-ni dot"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>Authorizations</span><span class="cq-todo"><b>##%</b>To-Do Status</span></div>
+                    <div class="cq-main">
+                      <div class="cq-crumb"><span><span class="lk">Home</span> &nbsp;›&nbsp; Profile</span><span class="sp"></span><span class="cq-pr">Progress: 15%<i><em></em></i></span><span class="cq-la">Last Attested: --/--/--</span></div>
+                      <div class="cq-wrap">
+                        <div class="cq-steps"><span class="chev">›</span><span class="ln"></span><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="d"></i><i class="c"></i><i></i><i></i><i></i></div>
+                        <div class="cq-card">
+                          <div class="cq-h"><h4>Hospital Affiliations</h4><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg></div>
+                          <div class="cq-row"><p>If there are hospitals where you have current or pending admitting privileges, current or pending arrangements, or a different non-admitting affiliation, enter them below.</p><span class="cq-btn" data-c="add"><span>ADD HOSPITAL AFFILIATION</span><i>▾</i></span></div>
+                          <div class="cq-tabs"><span>ADMITTING PRIVILEGES</span><span>ADMITTING ARRANGEMENTS</span><span class="on">NON-ADMITTING AFFILIATIONS</span><span>AMBULATORY SURGERY CENTERS</span></div>
+                          <p class="cq-info">If you are affiliated with a hospital, but you cannot admit. This may be called "courtesy" or "consulting" privileges at some hospitals. Please also enter in pending non-admitting hospital affiliations.</p>
+                          <div class="cq-tools"><span>‹› &nbsp;AUTO-RESIZE</span><span>▥ &nbsp;COLUMNS</span><span>☰ &nbsp;FILTERS</span><span class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>Search</span></div>
+                          <div class="cq-tr cq-th"><span>Name</span><span>Location</span><span>Description</span><span>Status</span><span></span></div>
+                          <div class="cq-tr cq-td r1"><span>Abbeville General Hospital</span><span>Abbeville<small>LA</small></span><span class="ds">Previously served as adjunct faculty for clinical psychology rotation. wingardium. Sc...</span><span><i class="cq-chip a">Active</i></span><span class="act"><svg class="ed" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg><svg class="del" viewBox="0 0 24 24"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/></svg></span></div><div class="cq-tr cq-td r2"><span>Abbeville General Hospital</span><span>Abbeville<small>LA</small></span><span class="ds">Previously served as adjunct faculty for clinical psychology rotation. wingardium. Sc...</span><span><i class="cq-chip a">Active</i></span><span class="act"><svg class="ed" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg><svg class="del" viewBox="0 0 24 24"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/></svg></span></div><div class="cq-tr cq-td r3"><span>Abbeville General Hospital</span><span>Abbeville<small>LA</small></span><span class="ds">Previously served as adjunct faculty for clinical psychology rotation. wingardium. Sc...</span><span><i class="cq-chip p">Pending</i></span><span class="act"><svg class="ed" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg><svg class="del" viewBox="0 0 24 24"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/></svg></span></div>
+                          <div class="cq-foot"><span>Rows per page: &nbsp;10 ▾</span><span>1-2 of 2</span><span class="pg">‹ ›</span></div>
+                          <div class="cq-act"><span class="cq-back">‹ &nbsp;BACK</span><span class="cq-save">SAVE &amp; CONTINUE &nbsp;›</span></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <span class="cq-fab"><svg viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2M4 14h3v5H5a1 1 0 0 1-1-1zM20 14h-3v5h2a1 1 0 0 0 1-1z"/></svg></span>
+                  <div class="cq-toast"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 10"/></svg><span>Hospital Affiliation added<br>Successfully</span><span class="x">✕</span></div>
                 </div>
               </div>
-              <div class="scene" data-bg="#F4EFE1">
-                <div class="mw">
-                  <div class="card w440 mdl"><p class="ct">Save changes?</p><p class="ps">You're about to leave the non-admitting affiliation record. Would you like to save your changes first?</p><div class="acts r"><span class="btn o">Discard</span><span class="btn g" data-c="save">Save changes</span></div></div>
-                  <div class="toast"><i class="tic"></i><span>Affiliation saved</span><em>Step 2 of 3</em></div>
-                </div>
-              </div>
-              <div class="scene" data-bg="#17583A">
+              <div class="scene" data-bg="#0B5E54">
                 <div class="metric" style="--a:56%;--b:84%"><p>Task success</p><div class="big"><span class="from">56%</span><span class="ar">→</span><b data-n="m">56%</b></div><div class="mb"><em></em></div><p class="sub">Drop-off fell from 30% to 9%</p></div>
               </div>
-            </div>
-            <canvas class="cut"></canvas>
-          </a>
-          <div class="bar"><span class="nm">Credentialing for doctors</span><span class="cat"><i></i>Capgemini · Healthcare <b>2026</b></span></div>
-          <div class="det">
-            <div class="ttl rv"><h3>Helping 1.4M+ doctors carry their professional history</h3><p class="role">Offshore design track lead · team of 6 · 10 months</p></div>
-            <div class="st rv"><b>84%</b><span>Task success, up from 56%</span></div>
-            <div class="st rv"><b>9%</b><span>Drop-off, down from 30%</span></div>
-            <a class="go rv" href="https://kaliyugg.framer.website/healthcare" target="_blank" rel="noopener"><span class="t">Read the case study</span><span class="a"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a>
-          </div>
-          <div class="fl"><i class="nd l"></i><i class="nd r"></i></div>
-        </article>
-        <div class="gap"></div>
 
-        <article class="proj" style="--acc:#D3302A">
-          <div class="fl"><i class="nd l"></i><i class="nd r"></i></div>
-          <a class="fstage" href="https://kaliyugg.framer.website/staffcare" target="_blank" rel="noopener" data-film="staff" style="--bg0:#F7E3E0" aria-label="Staffcare case study. Animated preview rebuilt from the real app: the old grid home, the new home and check-out, quick tasks, the task map, expenses and adding an expense.">
-            <canvas class="sky"></canvas>
-            <div class="box" aria-hidden="true">
+              </div>
+            </a>
+          </div>
+        </article>
+        <article class="proj">
+          <div class="wrap pcard">
+            <div class="prow">
+              <div class="rv"><h3>A field app that keeps up with staff on the move</h3><p class="role">Zero Designs · UX design intern · 2024</p></div>
+              <div class="pstats rv"><div class="pst"><b>1:20</b><span>Minutes navigating, down from 3:45</span></div><div class="pst"><b>+50%</b><span>Task success in testing</span></div>
+                <a class="go" href="https://kaliyugg.framer.website/staffcare" target="_blank" rel="noopener"><span class="t">Read the case study</span><span class="a"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a></div>
+            </div>
+            <a class="fstage" href="https://kaliyugg.framer.website/staffcare" target="_blank" rel="noopener" data-film="staff" style="--bg0:#F7E3E0" aria-label="Staffcare case study. Animated preview rebuilt from the real app: the old grid home, the new home and check-out, quick tasks, the task map, expenses and adding an expense.">
+              <div class="box" aria-hidden="true">
               <div class="scene" data-bg="#F7E3E0">
                 <div class="lab"><b>Before</b>Fourteen buttons, all equally loud</div>
                 <div class="ph"><div class="scr old">
@@ -626,25 +677,20 @@ html.no-notes .sample-note { display: none; }
                   <span class="addb" data-c="add">Add expense</span>
                 </div></div>
               </div>
-            </div>
-            <canvas class="cut"></canvas>
-          </a>
-          <div class="bar"><span class="nm">Staffcare field app</span><span class="cat"><i></i>Zero Designs · Field ops <b>2024</b></span></div>
-          <div class="det">
-            <div class="ttl rv"><h3>A field app that keeps up with staff on the move</h3><p class="role">UX design intern · 0 to 1 redesign · 30 field interviews</p></div>
-            <div class="st rv"><b>1:20</b><span>Minutes navigating, down from 3:45</span></div>
-            <div class="st rv"><b>+50%</b><span>Task success in testing</span></div>
-            <a class="go rv" href="https://kaliyugg.framer.website/staffcare" target="_blank" rel="noopener"><span class="t">Read the case study</span><span class="a"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a>
+            
+              </div>
+            </a>
           </div>
-          <div class="fl"><i class="nd l"></i><i class="nd r"></i></div>
         </article>
-        <div class="gap"></div>
-
-        <article class="proj" style="--acc:#4B3FA8">
-          <div class="fl"><i class="nd l"></i><i class="nd r"></i></div>
-          <a class="fstage" href="https://kaliyugg.framer.website/adani" target="_blank" rel="noopener" data-film="adani" style="--bg0:#ECE8FA" aria-label="Adani One case study. Animated preview rebuilt from the real app: the journey card, the travel timeline, live gate details, offers at the right moment, and the result.">
-            <canvas class="sky"></canvas>
-            <div class="box" aria-hidden="true">
+        <article class="proj">
+          <div class="wrap pcard">
+            <div class="prow">
+              <div class="rv"><h3>One calm timeline for anxious flyers</h3><p class="role">Adani Digital Labs · UX design intern · 2023</p></div>
+              <div class="pstats rv"><div class="pst"><b>3.1</b><span>Anxiety score, down from 7.2</span></div><div class="pst"><b>8s</b><span>To find the gate, down from 30s</span></div>
+                <a class="go" href="https://kaliyugg.framer.website/adani" target="_blank" rel="noopener"><span class="t">Read the case study</span><span class="a"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a></div>
+            </div>
+            <a class="fstage" href="https://kaliyugg.framer.website/adani" target="_blank" rel="noopener" data-film="adani" style="--bg0:#ECE8FA" aria-label="Adani One case study. Animated preview rebuilt from the real app: the journey card, the travel timeline, live gate details, offers at the right moment, and the result.">
+              <div class="box" aria-hidden="true">
               <div class="scene" data-bg="#ECE8FA">
                 <div class="lab"><b>One timeline</b>The whole trip, in the order it happens</div>
                 <div class="ph"><div class="scr adn">
@@ -679,22 +725,12 @@ html.no-notes .sample-note { display: none; }
               <div class="scene" data-bg="#3D3290">
                 <div class="metric" style="--a:72%;--b:31%"><p>Travel anxiety score</p><div class="big"><span class="from">7.2</span><span class="ar">→</span><b data-n="m">7.2</b></div><div class="mb"><em></em></div><p class="sub">Time to find the gate: 30s down to 8s</p></div>
               </div>
-            </div>
-            <canvas class="cut"></canvas>
-          </a>
-          <div class="bar"><span class="nm">Adani One travel companion</span><span class="cat"><i></i>Adani Digital Labs · Travel <b>2023</b></span></div>
-          <div class="det">
-            <div class="ttl rv"><h3>One calm timeline for anxious flyers</h3><p class="role">UX design intern · 30 interviews · support ticket analysis</p></div>
-            <div class="st rv"><b>3.1</b><span>Anxiety score, down from 7.2</span></div>
-            <div class="st rv"><b>8s</b><span>To find the gate, down from 30s</span></div>
-            <a class="go rv" href="https://kaliyugg.framer.website/adani" target="_blank" rel="noopener"><span class="t">Read the case study</span><span class="a"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a>
+            
+              </div>
+            </a>
           </div>
-          <div class="fl"><i class="nd l"></i><i class="nd r"></i></div>
         </article>
-      </div>
-    </div>
-  </section>
-
+    </section>
 </main>
 
 
@@ -756,15 +792,17 @@ html.no-notes .sample-note { display: none; }
 
   /* ---------- sky field ---------- */
   let W = 0, H = 0, cols = 0, rows = 0, dpr = 1, cells = [], z = 0, drift = 0;
-  function maskAt(xn, yn, narrow) {
-    const top = 1 - smooth(.05, narrow ? .12 : .165, yn);
-    const bot = smooth(narrow ? .74 : .72, narrow ? .88 : .86, yn) * (1 - .74 * smooth(.93, .99, yn));
-    const left = .38 * (1 - smooth(0, .1, xn)), right = .22 * smooth(.92, 1, xn);
+  function maskAt(xn, yn, narrow, ex = 0) {
+    const top = 1 - smooth(.05, (narrow ? .12 : .165) + ex * .4, yn);
+    const bot = smooth((narrow ? .74 : .72) - ex * .8, narrow ? .88 : .86, yn) * (1 - .6 * smooth(.93, .99, yn));
+    const left = .5 * (1 - smooth(0, .1 + ex * 1.4, xn)), right = .42 * smooth(.92 - ex * 1.4, 1, xn);
     return Math.max(top, bot, left, right);
   }
   function levelAt(c) {
     const n = .6 * vn3(c.gx / 6.5 + drift, c.gy / 6.5, z) + .4 * vn3(c.gx / 2.8 + 5.2 + drift * 3.02, c.gy / 2.8 + 1.7, z * 1.6 + 9.1);
-    const F = .76 * c.m + (n - .5) * (.26 + .9 * c.m) * 1.4;
+    const P = vn3(c.gx / 11 + drift * .6, c.gy / 11 + 40, z * .35);          // slow regional density
+    const mm = Math.max(c.m * (.38 + 1.05 * P), c.mx * smooth(.58, .9, P));   // dense pockets push inward, sparse ones thin out
+    const F = .8 * mm + (n - .5) * (.26 + .9 * mm) * 1.6;
     return F <= 0 ? 0 : Math.min(4, Math.floor(F * 5));
   }
   function buildCells() {
@@ -773,7 +811,7 @@ html.no-notes .sample-note { display: none; }
       const x = gx * S, y = gy * S, xn = (x + S / 2) / W, yn = (y + S / 2) / H;
       const dTop = Math.hypot(x - W / 2, y) / diag, dBot = Math.hypot(x - W / 2, H - y) / diag * 1.15;
       const r = Math.random(), stray = Math.random() < .035;
-      cells.push({ gx, gy, x, y, m: maskAt(xn, yn, narrow), a: .02 + .5 * (.55 * Math.random() + .45 * Math.min(dTop, dBot) * 1.6), c: stray ? .2 + r * .1 : .02 + r * .15, stray });
+      cells.push({ gx, gy, x, y, m: maskAt(xn, yn, narrow), mx: maskAt(xn, yn, narrow, .06), a: .02 + .5 * (.55 * Math.random() + .45 * Math.min(dTop, dBot) * 1.6), c: stray ? .2 + r * .1 : .02 + r * .15, stray });
     }
   }
 
@@ -808,7 +846,7 @@ html.no-notes .sample-note { display: none; }
   function scrollM() {
     const range = hero.offsetHeight - innerHeight;
     const y = scrollY - hero.offsetTop;
-    return clamp((y - innerHeight * .03) / (range * .8), 0, 1);
+    return clamp((y - innerHeight * .03) / (innerHeight * 1.4), 0, 1);
   }
 
   function drawSky() {
@@ -826,12 +864,19 @@ html.no-notes .sample-note { display: none; }
       const lv = levelAt(c); if (!lv) continue;
       paths[lv].rect(x, y, S, S);
     }
-    for (let lv = 1; lv <= 4; lv++) { sx.fillStyle = FS[lv]; sx.fill(paths[lv]); }
+    clipFrame(sx); for (let lv = 1; lv <= 4; lv++) { sx.fillStyle = FS[lv]; sx.fill(paths[lv]); } sx.restore();
+  }
+  function clipFrame(g) {
+    const I = W < 760 ? 8 : 14, R = W < 760 ? 20 : 28;
+    g.save(); g.beginPath(); if (g.roundRect) g.roundRect(I, I, W - 2 * I, H - 2 * I, R); else g.rect(I, I, W - 2 * I, H - 2 * I); g.clip();
   }
 
   function drawFx() {
     fxx.clearRect(0, 0, W, H);
     if (mode !== 'live' || m <= 0 || m >= 1) return;
+    clipFrame(fxx); drawFxInner(); fxx.restore();
+  }
+  function drawFxInner() {
     if (m < .22) {
       const on = smooth(.02, .1, m), off = smooth(.1, .2, m);
       A.forEach((w, i) => {
@@ -854,6 +899,8 @@ html.no-notes .sample-note { display: none; }
   }
 
   /* ---------- loop ---------- */
+  const workEl = document.getElementById('work'), heroStage = document.querySelector('.hero .stage');
+  const ease2 = t => t * t * (3 - 2 * t);
   let last = performance.now();
   function frame(now) {
     const dt = Math.min(50, now - last); last = now;
@@ -866,6 +913,11 @@ html.no-notes .sample-note { display: none; }
       m = scrollM();
       if (!nav.classList.contains('in') && now - loadEnd > 380) nav.classList.add('in');
       nav.classList.toggle('away', m > .01 && m < .995);
+    }
+    if (workEl && heroStage) {
+      const ov = clamp(1 - workEl.getBoundingClientRect().top / H, 0, 1);
+      heroStage.style.transform = ov > 0 ? `scale(${(1 - .06 * ease2(ov)).toFixed(4)})` : '';
+      heroStage.style.opacity = ov > 0 ? (1 - .45 * ease2(ov)).toFixed(3) : '';
     }
     if (mode !== 'wait') { applyWords(); drawSky(); drawFx(); }
     requestAnimationFrame(frame);
@@ -898,7 +950,7 @@ html.no-notes .sample-note { display: none; }
   (document.getElementById('replay') || {}).onclick = () => { if (lenis) lenis.scrollTo(0, { immediate: true }); else scrollTo(0, 0); startLoad(); };
   (document.getElementById('rewrite') || {}).onclick = () => {
     const range = hero.offsetHeight - innerHeight;
-    toY(m < .5 ? hero.offsetTop + range * .88 : 0, 2.2);
+    toY(m < .5 ? hero.offsetTop + innerHeight * 1.5 : 0, 2.2);
   };
   (document.getElementById('notesBtn') || {}).onclick = e => { const off = root.classList.toggle('no-notes'); e.currentTarget.setAttribute('aria-pressed', !off); };
 })();
@@ -907,82 +959,21 @@ html.no-notes .sample-note { display: none; }
 (() => {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
-  const smooth = (a, b, v) => { const t = clamp((v - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
   const ease = t => t <= 0 ? 0 : t >= 1 ? 1 : t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-  const h3 = (x, y, z) => { let h = Math.imul(x | 0, 374761393) ^ Math.imul(y | 0, 668265263) ^ Math.imul(z | 0, 2147483647); h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; };
-  const sm = t => t * t * (3 - 2 * t);
-  function vn3(x, y, z) {
-    const xi = Math.floor(x), yi = Math.floor(y), zi = Math.floor(z), u = sm(x - xi), v = sm(y - yi), w = sm(z - zi);
-    const a = h3(xi, yi, zi), b = h3(xi + 1, yi, zi), c = h3(xi, yi + 1, zi), d = h3(xi + 1, yi + 1, zi), e = h3(xi, yi, zi + 1), f = h3(xi + 1, yi, zi + 1), g = h3(xi, yi + 1, zi + 1), k = h3(xi + 1, yi + 1, zi + 1);
-    const l1 = a + (b - a) * u, l2 = c + (d - c) * u, l3 = e + (f - e) * u, l4 = g + (k - g) * u, m1 = l1 + (l2 - l1) * v, m2 = l3 + (l4 - l3) * v;
-    return m1 + (m2 - m1) * w;
-  }
-  function checker(a, b) { const c = document.createElement('canvas'); c.width = c.height = 4; const x = c.getContext('2d'); x.fillStyle = b; x.fillRect(0, 0, 4, 4); x.fillStyle = a; x.fillRect(0, 0, 2, 2); x.fillRect(2, 2, 2, 2); return c; }
-  const dprOf = () => Math.min(2, devicePixelRatio || 1);
 
-  /* ---------- section title mark ---------- */
-  (() => {
-    const cv = document.getElementById('wtCv'); if (!cv) return;
-    const MARK = [[3, 3, 4, 4, 3, 2], [3, 1, 0, 0, 1, 3], [4, 1, 0, 0, 1, 3], [3, 2, 1, 1, 2, 4], [2, 3, 3, 4, 3, 3]];
-    const paint = () => {
-      const r = cv.getBoundingClientRect(), d = dprOf(); if (r.width < 2) return;
-      cv.width = Math.round(r.width * d); cv.height = Math.round(r.height * d);
-      const g = cv.getContext('2d'); g.setTransform(d, 0, 0, d, 0, 0); g.imageSmoothingEnabled = false;
-      const F = [null, g.createPattern(checker('#FFB877', '#FFFFFF'), 'repeat'), '#FFB877', g.createPattern(checker('#FF7A00', '#FFB877'), 'repeat'), '#FF7A00'];
-      const cw = r.width / 6, ch = r.height / 5;
-      MARK.forEach((row, y) => row.forEach((lv, x) => { if (lv) { g.fillStyle = F[lv]; g.fillRect(Math.round(x * cw), Math.round(y * ch), Math.ceil(cw), Math.ceil(ch)); } }));
-    };
-    (document.fonts ? document.fonts.ready : Promise.resolve()).then(paint); addEventListener('resize', paint);
-  })();
-
-  /* ---------- hero to work: an orange pixel curtain sweeps up and dissolves ---------- */
-  const work = document.getElementById('work');
-  const curtain = document.createElement('canvas'); curtain.id = 'curtain'; curtain.setAttribute('aria-hidden', 'true'); document.body.appendChild(curtain);
-  const cg = curtain.getContext('2d'); let CW = 0, CH = 0, CF;
-  function sizeCurtain() {
-    const d = dprOf(); CW = innerWidth; CH = innerHeight; curtain.width = Math.round(CW * d); curtain.height = Math.round(CH * d);
-    cg.setTransform(d, 0, 0, d, 0, 0); cg.imageSmoothingEnabled = false;
-    CF = [null, cg.createPattern(checker('#FFB877', '#FFFFFF'), 'repeat'), '#FFB877', cg.createPattern(checker('#FF7A00', '#FFB877'), 'repeat'), '#FF7A00'];
-  }
-  sizeCurtain(); addEventListener('resize', sizeCurtain);
-  let cz = 0;
-  function drawCurtain(dt) {
-    cg.clearRect(0, 0, CW, CH);
-    if (reduce) return;
-    cz += dt * .00012;
-    const wt = work.getBoundingClientRect().top, q = clamp(1 - wt / CH, 0, 1);
-    if (q <= 0 || q >= 1) return;
-    const amp = Math.pow(Math.sin(Math.PI * q), .7), S = 22, P = [null, new Path2D(), new Path2D(), new Path2D(), new Path2D()];
-    const centre = wt - CH * (.08 + .22 * q), half = CH * .42;
-    for (let y = 0; y < CH; y += S) {
-      const d = (y + S / 2 - centre) / half; const bump = Math.exp(-d * d * 1.6);
-      if (bump < .02) continue;
-      for (let x = 0; x < CW; x += S) {
-        const n = .6 * vn3(x / S / 6 + cz * 4, y / S / 6, cz) + .4 * vn3(x / S / 2.6 + 3, y / S / 2.6, cz * 1.7 + 5);
-        const F = amp * bump * 1.25 + (n - .5) * .9 - .12;
-        if (F <= 0) continue;
-        P[Math.min(4, 1 + Math.floor(F * 4))].rect(x, y, S, S);
-      }
-    }
-    for (let i = 1; i <= 4; i++) { cg.fillStyle = CF[i]; cg.fill(P[i]); }
-  }
-
-  /* ---------- reveal ---------- */
   const projs = [...document.querySelectorAll('.proj')];
-  const rio = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } }), { threshold: .1 });
+  const rio = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } }), { threshold: .25 });
   projs.forEach(p => rio.observe(p));
 
-  /* ---------- films: rebuilt UI scenes ---------- */
   const SPEC = {
-    health: { cursor: 'arrow', l: '#9FD3B4', d: '#2E9E66', scenes: [
-      { dur: 3.8, steps: [1.5, 2.5], cur: [[0, null, .74, .86], [1.2, '[data-c=add]', .5, .5], [1.5, '[data-c=add]', .5, .5, 1], [2.2, '[data-c=o2]', .35, .5], [2.5, '[data-c=o2]', .35, .5, 1], [3.8, '[data-c=o2]', .4, .7]] },
-      { dur: 4.2, steps: [.5, .9, 1.3, 2.2, 3.2], cur: [[0, null, .78, .85], [1.9, '[data-c=r3]', .1, .5], [2.2, '[data-c=r3]', .1, .5, 1], [2.9, '[data-c=y]', .15, .5], [3.2, '[data-c=y]', .15, .5, 1], [4.2, '[data-c=y]', .6, 1.6]] },
-      { dur: 4.2, steps: [2.0, 3.1], type: [[.4, '[data-t=hn]', 'Northfeild Gen. Hosp', 13]], cur: [[0, null, .78, .85], [2.6, '[data-c=use]', .5, .5], [3.0, '[data-c=use]', .5, .5, 1], [4.2, '[data-c=use]', .8, 1.6]] },
-      { dur: 3.2, steps: [.3, .7, 1.1], cnt: [[.3, '[data-n=pg]', 15, 66, 1.3, { suf: '%' }]] },
-      { dur: 3.4, steps: [1.6, 1.9], cur: [[0, null, .25, .82], [1.3, '[data-c=save]', .5, .5], [1.6, '[data-c=save]', .5, .5, 1], [3.4, '[data-c=save]', .7, 2]] },
+    health: { cursor: 'arrow', scenes: [
+      { dur: 4.2, steps: [1.0, 1.8, 2.9], cur: [[0, null, .62, .92], [.9, '[data-c=t1]', .45, .5], [1.7, '[data-c=al]', .55, .45], [2.6, '[data-c=qa]', .5, .5], [2.9, '[data-c=qa]', .5, .5, 1], [4.2, '[data-c=qa]', .45, .8]] },
+      { dur: 4.2, steps: [.3, 2.3, 3.2], cur: [[0, null, .6, .92], [2.0, '[data-c=add]', .35, .5], [2.3, '[data-c=add]', .35, .5, 1], [3.0, '[data-c=o2]', .3, .5], [3.3, '[data-c=o2]', .3, .5, 1], [4.2, '[data-c=o2]', .32, .7]] },
+      { dur: 4.8, steps: [.2, .4, .6, .8, 1.0, 1.2, 3.0], cur: [[0, null, .86, .92], [2.6, '[data-c=sv]', .5, .5], [3.0, '[data-c=sv]', .55, .55], [4.8, '[data-c=sv]', .6, .7]] },
+      { dur: 4.6, steps: [.3, .55, .8, 1.3, 3.0], cur: [[0, null, .7, .92], [2.6, '.r3 .ed', .5, .5], [3.0, '.r3 .ed', .5, .55], [4.6, '.r3 .ed', .5, .6]] },
       { dur: 3.0, steps: [.4], cnt: [[.4, '[data-n=m]', 56, 84, 1.2, { suf: '%' }]] }
     ] },
-    staff: { cursor: 'touch', l: '#F4AFA7', d: '#E5463C', scenes: [
+    staff: { cursor: 'touch', scenes: [
       { dur: 2.8, steps: [], cur: [[0, null, .72, .82], [.7, '[data-c=o3]', .5, .5], [1.4, '[data-c=o2]', .5, .5], [2.1, '[data-c=o1]', .5, .5], [2.8, '[data-c=o1]', .6, .7]] },
       { dur: 3.9, steps: [2.2, 2.5], cnt: [[0, '[data-n=tm]', 3628, 3632, 2.0, { hms: 1 }]], cur: [[0, null, .8, .9], [1.7, '[data-c=co]', .5, .5], [2.2, '[data-c=co]', .5, .5, 1], [3.9, '[data-c=co]', .4, 1.2]] },
       { dur: 2.8, steps: [.2, .35, .5, .65, 1.9], cur: [[0, null, .78, .88], [1.6, '[data-c=ex]', .5, .5], [1.9, '[data-c=ex]', .5, .5, 1], [2.8, '[data-c=ex]', .6, .7]] },
@@ -990,7 +981,7 @@ html.no-notes .sample-note { display: none; }
       { dur: 3.4, steps: [.2, .4, .6, 1.2, 1.5, 1.8], cnt: [[.6, '[data-n=re]', 0, 200, 1.0, { pre: '₹' }]] },
       { dur: 3.8, steps: [2.5, 2.75], type: [[.3, '[data-t=ti]', 'Site visit cab', 16], [1.5, '[data-t=am]', '₹240', 8]], cur: [[0, null, .74, .62], [2.1, '[data-c=add]', .5, .5], [2.5, '[data-c=add]', .5, .5, 1], [3.8, '[data-c=add]', .5, .5]] }
     ] },
-    adani: { cursor: 'touch', l: '#BDB4F3', d: '#6B5BD6', scenes: [
+    adani: { cursor: 'touch', scenes: [
       { dur: 3.4, steps: [.3, 1.0] },
       { dur: 3.2, steps: [.4, .9, 1.6] },
       { dur: 3.4, steps: [.6, 1.5], cnt: [[2.2, '[data-n=bd]', 26, 25, .1, { suf: ' min' }]] },
@@ -999,7 +990,7 @@ html.no-notes .sample-note { display: none; }
     ] }
   };
   const fmt = (v, f) => {
-    if (f.hms) { v = Math.floor(v); const h = Math.floor(v / 3600), m = Math.floor(v % 3600 / 60), s = v % 60; return [h, m, s].map(n => String(n).padStart(2, '0')).join(':'); }
+    if (f.hms) { v = Math.floor(v); return [Math.floor(v / 3600), Math.floor(v % 3600 / 60), v % 60].map(n => String(n).padStart(2, '0')).join(':'); }
     return (f.pre || '') + (f.dec ? v.toFixed(f.dec) : Math.round(v).toLocaleString('en-IN')) + (f.suf || '');
   };
   function keyPos(f, sc, k) {
@@ -1010,32 +1001,26 @@ html.no-notes .sample-note { display: none; }
   }
   function build(stage) {
     const spec = SPEC[stage.dataset.film]; if (!spec) return null;
-    const box = stage.querySelector('.box'), els = [...box.querySelectorAll('.scene')];
+    const box = stage.querySelector('.box'), els = [...box.querySelectorAll(':scope > .scene')];
     const scenes = spec.scenes.map((s, i) => ({ ...s, el: els[i], bg: els[i].dataset.bg, on: [], t0: 0 }));
     let acc = 0; scenes.forEach(s => { s.t0 = acc; acc += s.dur; });
     const cur = document.createElement('div'); cur.className = 'cursor ' + spec.cursor;
     if (spec.cursor === 'arrow') cur.innerHTML = '<svg viewBox="0 0 24 24"><path d="M5 3l14 8-6.2 1.7L10 19z" fill="#111" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>';
     const rip = document.createElement('div'); rip.className = 'rip'; box.appendChild(rip); box.appendChild(cur);
-    const f = { stage, box, spec, scenes, total: acc, cur, rip, t: 0, active: -1, sky: stage.querySelector('.sky'), cut: stage.querySelector('.cut'), vis: false, hv: 0, hover: false, z: Math.random() * 10, drift: 0, cells: null };
-    stage.addEventListener('pointerenter', () => f.hover = true); stage.addEventListener('pointerleave', () => f.hover = false);
-    scenes.forEach(s => { s.el.classList.add('reset'); });
-    return f;
+    return { stage, box, spec, scenes, total: acc, cur, rip, t: 0, active: -1, vis: false };
   }
   function layout(f) {
-    const d = dprOf(), w = f.stage.clientWidth, h = f.stage.clientHeight; if (!w) return;
-    const narrow = w / h < 1.2; f.stage.classList.toggle('narrow', narrow);
+    const w = f.stage.clientWidth, h = f.stage.clientHeight; if (!w || !h) return;
+    const narrow = w / h < 1.1; f.stage.classList.toggle('narrow', narrow);
     f.bw = narrow ? 600 : 960; f.bh = narrow ? 750 : 540; f.s = Math.min(w / f.bw, h / f.bh); f.stage.style.setProperty('--s', f.s.toFixed(4));
-    f.w = w; f.h = h; f.S = narrow ? 12 : 16;
-    [f.sky, f.cut].forEach(c => { c.width = Math.round(w * d); c.height = Math.round(h * d); const g = c.getContext('2d'); g.setTransform(d, 0, 0, d, 0, 0); g.imageSmoothingEnabled = false; });
-    f.cols = Math.ceil(w / f.S); f.rows = Math.ceil(h / f.S); f.pbg = null;
-    const C = 18; f.cc = Math.ceil(w / C); f.cr = Math.ceil(h / C); f.order = new Float32Array(f.cc * f.cr).map(() => Math.random()); f.lvl = new Uint8Array(f.cc * f.cr).map(() => 1 + Math.floor(Math.random() * 4));
   }
-  function fillsFor(g, l, d, bg) { return [null, g.createPattern(checker(l, bg), 'repeat'), l, g.createPattern(checker(d, l), 'repeat'), d]; }
   function enter(f, i) {
-    if (f.active >= 0) { const o = f.scenes[f.active]; o.el.classList.remove('on'); o.el.classList.add('reset'); o.on.forEach((_, k) => o.el.classList.remove('k' + (k + 1))); o.on = []; }
+    if (f.active >= 0) f.scenes[f.active].el.classList.remove('on');
     const s = f.scenes[i]; f.active = i;
+    s.el.classList.add('reset');
+    s.on.forEach((_, k) => s.el.classList.remove('k' + (k + 1))); s.on = [];
     (s.type || []).forEach(([, sel]) => { const e = s.el.querySelector(sel); if (e) { e.textContent = ''; e._t = ''; } });
-    s.el.classList.add('on'); void s.el.offsetWidth; s.el.classList.remove('reset');
+    void s.el.offsetWidth; s.el.classList.remove('reset'); s.el.classList.add('on');
     f.stage.style.backgroundColor = s.bg;
   }
   function apply(f, s, lt) {
@@ -1059,64 +1044,29 @@ html.no-notes .sample-note { display: none; }
     const x = pa[0] + (pb[0] - pa[0]) * k, y = pa[1] + (pb[1] - pa[1]) * k;
     let press = 0, rp = -1;
     for (const q of K) if (q[4]) { const dd = lt - q[0]; if (dd > -.12 && dd < .18) press = 1; if (dd >= 0 && dd < .5) rp = dd / .5; }
-    f.cur.style.opacity = lt > .3 && lt < s.dur - .25 ? 1 : 0;
+    f.cur.style.opacity = lt > .5 && lt < s.dur - .3 ? 1 : 0;
     f.cur.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scale(${press ? .84 : 1})`;
     if (rp >= 0) { f.rip.style.opacity = (1 - rp).toFixed(2); f.rip.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scale(${(.4 + rp * 1.1).toFixed(2)})`; } else f.rip.style.opacity = 0;
-  }
-  function drawSky(f, dt) {
-    const g = f.sky.getContext('2d'), s = f.scenes[f.active], bg = s.bg;
-    if (f.pbg !== bg) { f.F = fillsFor(g, f.spec.l, f.spec.d, bg); f.pbg = bg; }
-    if (!reduce) { f.z += dt * .00012; f.drift += dt * .00012; }
-    f.hv += ((f.hover ? 1 : 0) - f.hv) * .08;
-    g.clearRect(0, 0, f.w, f.h);
-    const P = [null, new Path2D(), new Path2D(), new Path2D(), new Path2D()], band = .15 + f.hv * .09;
-    for (let gy = 0; gy < f.rows; gy++) {
-      const yn = (gy + .5) / f.rows, my = Math.max(1 - smooth(0, band, yn), smooth(1 - band, 1, yn));
-      for (let gx = 0; gx < f.cols; gx++) {
-        const xn = (gx + .5) / f.cols, m = Math.max(my, .55 * Math.max(1 - smooth(0, .05 + f.hv * .03, xn), smooth(.95 - f.hv * .03, 1, xn)));
-        if (m < .05) continue;
-        const n = .6 * vn3(gx / 6 + f.drift, gy / 6, f.z) + .4 * vn3(gx / 2.6 + 5 + f.drift * 3, gy / 2.6, f.z * 1.6 + 9);
-        const F = .8 * m + (n - .5) * (.3 + .9 * m) * 1.4;
-        if (F <= 0) continue;
-        P[Math.min(4, 1 + Math.floor(F * 4))].rect(gx * f.S, gy * f.S, f.S, f.S);
-      }
-    }
-    for (let i = 1; i <= 4; i++) { g.fillStyle = f.F[i]; g.fill(P[i]); }
-  }
-  function drawCut(f, cover) {
-    const g = f.cut.getContext('2d'); g.clearRect(0, 0, f.w, f.h); if (cover <= 0) return;
-    const C = 18, F = fillsFor(g, f.spec.l, f.spec.d, f.scenes[f.active].bg), P = [null, new Path2D(), new Path2D(), new Path2D(), new Path2D()];
-    for (let i = 0; i < f.order.length; i++) if (f.order[i] < cover) P[f.lvl[i]].rect((i % f.cc) * C, Math.floor(i / f.cc) * C, C, C);
-    for (let i = 1; i <= 4; i++) { g.fillStyle = F[i]; g.fill(P[i]); }
   }
   const films = [...document.querySelectorAll('.fstage[data-film]')].map(build).filter(Boolean);
   const relayout = () => films.forEach(layout);
   relayout(); addEventListener('resize', relayout);
   (document.fonts ? document.fonts.ready : Promise.resolve()).then(relayout);
-  const vio = new IntersectionObserver(es => es.forEach(e => { const f = films.find(x => x.stage === e.target); if (f) f.vis = e.isIntersecting; }), { rootMargin: '80px' });
+  const vio = new IntersectionObserver(es => es.forEach(e => { const f = films.find(x => x.stage === e.target); if (f) f.vis = e.isIntersecting; }), { threshold: .2 });
   films.forEach(f => vio.observe(f.stage));
-  const CUT = .26;
-  function step(f, dt) {
-    if (!f.w) layout(f);
-    f.t = (f.t + dt / 1000) % f.total;
-    let i = 0; while (i < f.scenes.length - 1 && f.t >= f.scenes[i + 1].t0) i++;
-    if (i !== f.active) enter(f, i);
-    const s = f.scenes[i], lt = f.t - s.t0;
-    apply(f, s, lt);
-    const cover = Math.max(1 - lt / CUT, (lt - (s.dur - CUT)) / CUT);
-    drawCut(f, reduce ? 0 : clamp(cover, 0, 1));
-    drawSky(f, dt);
-  }
-  if (reduce) {
-    films.forEach(f => { enter(f, 1); const s = f.scenes[1]; apply(f, s, s.dur - .3); f.cur.style.opacity = 0; drawSky(f, 0); });
-    return;
-  }
+  if (reduce) { films.forEach(f => { enter(f, 1); apply(f, f.scenes[1], f.scenes[1].dur - .3); f.cur.style.opacity = 0; }); return; }
   films.forEach(f => enter(f, 0));
   let last = performance.now();
   const tick = now => {
     const dt = Math.min(50, now - last); last = now;
-    drawCurtain(dt);
-    for (const f of films) if (f.vis) step(f, dt);
+    for (const f of films) {
+      if (!f.vis) continue;
+      if (!f.s) layout(f);
+      f.t = (f.t + dt / 1000) % f.total;
+      let i = 0; while (i < f.scenes.length - 1 && f.t >= f.scenes[i + 1].t0) i++;
+      if (i !== f.active) enter(f, i);
+      apply(f, f.scenes[i], f.t - f.scenes[i].t0);
+    }
     requestAnimationFrame(tick);
   };
   requestAnimationFrame(tick);
