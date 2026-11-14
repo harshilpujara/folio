@@ -146,14 +146,20 @@ html.no-notes .sample-note { display: none; }
 .cta .a svg { width: 16px; height: 16px; transition: transform .35s cubic-bezier(.2,.8,.2,1); }
 .cta:hover .a svg, .cta:focus-visible .a svg { transform: rotate(45deg); }
 .cta:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
-.pv { position: relative; display: block; height: clamp(360px, calc(100svh - 360px), 760px); background: var(--bg); overflow: hidden; text-decoration: none; isolation: isolate; }
+.pv { position: relative; display: block; height: clamp(360px, calc(100svh - 360px), 760px); background: var(--bg); overflow: hidden; text-decoration: none; isolation: isolate; transition: background-color .6s ease; }
 .pv:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
-.shot { position: absolute; left: 0; top: 0; opacity: 0; transition: opacity .5s ease; will-change: transform, opacity; transform-origin: 0 0; }
-.shot.on { opacity: 1; }
-.shot img { display: block; width: 100%; height: 100%; }
-.shot.ui img { box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 40px 80px -40px rgba(0,0,0,.35); border-radius: 6px; }
-.shot.phone { background: #111113; border-radius: 34px; padding: 8px; box-shadow: 0 50px 90px -40px rgba(0,0,0,.45), 0 0 0 1px rgba(0,0,0,.1); }
-.shot.phone img { border-radius: 27px; }
+.sh { position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity .38s ease, visibility 0s linear .38s; }
+.sh.on { opacity: 1; visibility: visible; transition: opacity .5s ease .06s, visibility 0s; }
+.sh .bd { position: absolute; inset: 0; }
+.ly.fe { -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); }
+.sh .cv { position: absolute; inset: 0; transform-origin: 0 0; will-change: transform; }
+.ly { position: absolute; display: block; max-width: none; transition: opacity .55s ease, transform .9s cubic-bezier(.16,1,.3,1), filter .55s ease; }
+.ly.r { border-radius: var(--r); }
+.ly.cardy { border-radius: 10px; box-shadow: 0 1px 2px rgba(15,20,40,.06), 0 12px 32px -14px rgba(15,20,40,.22); }
+.sh:not(.on) .ly[data-in], .sh.pre .ly[data-in] { opacity: 0; filter: blur(6px); transition: none; }
+.sh:not(.on) .ly[data-in="up"], .sh.pre .ly[data-in="up"] { transform: translateY(46px); }
+.sh:not(.on) .ly[data-in="zoom"], .sh.pre .ly[data-in="zoom"] { transform: scale(.9); }
+.sh:not(.on) .ly[data-in="left"], .sh.pre .ly[data-in="left"] { transform: translateX(70px); }
 .cur { position: absolute; left: 0; top: 0; z-index: 5; pointer-events: none; opacity: 0; transition: opacity .25s; will-change: transform; }
 .cur.arrow { width: 22px; height: 22px; } .cur.arrow svg { width: 100%; height: 100%; filter: drop-shadow(0 2px 3px rgba(0,0,0,.3)); }
 .cur.touch { width: 34px; height: 34px; margin: -17px 0 0 -17px; border-radius: 50%; background: rgba(20,20,24,.25); box-shadow: 0 0 0 2.5px rgba(255,255,255,.95), 0 4px 12px rgba(0,0,0,.22); }
@@ -176,7 +182,7 @@ html.no-notes .sample-note { display: none; }
   .pr { flex-direction: column; align-items: flex-start; }
   .pv { height: clamp(380px, 62svh, 560px); }
 }
-@media (prefers-reduced-motion: reduce) { .js .proj .rv { opacity: 1; transform: none; transition: none; } .shot { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .js .proj .rv { opacity: 1; transform: none; transition: none; } .sh, .ly { transition: none !important; } }
 
 /* ---------- sample controls ---------- */
 .ctrl { position: fixed; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); translate: -50% 0; z-index: 40; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: center;
@@ -574,110 +580,153 @@ html.no-notes .sample-note { display: none; }
   const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
   const eio = t => t <= 0 ? 0 : t >= 1 ? 1 : -(Math.cos(Math.PI * t) - 1) / 2;
 
-  /* reveal each project as it arrives */
   const projs = [...document.querySelectorAll('.proj')];
   const rio = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } }), { threshold: .18 });
   projs.forEach(p => rio.observe(p));
 
-  /* exact Figma exports; logical size = Figma 1x frame size */
-  const IMG = {
-    h_dash: [583, 336], h_empty: [613, 460], h_filled: [884, 648],
-    s_home: [305, 346], s_tasks: [288, 311], a_journey: [240, 520]
-  };
-  /* camera keys [t, zoom, focusX, focusY, rotX, rotY, rotZ]; cursor keys [t, x, y, tap] in image fractions */
+  /* natural pixel sizes of the exact Figma exports and crops */
+  const N = {"h_todo": [1008, 747], "h_alerts": [1003, 527], "h_track": [1003, 463], "h_quick": [292, 86], "h_nav": [210, 1028], "h_head": [2706, 426], "h_tabs": [2441, 140], "h_table": [2653, 799], "h_row": [2653, 176], "h_snack": [760, 111], "h_steps": [191, 1857], "h_acts": [816, 96], "h_active": [170, 88], "h_pending": [184, 88], "h_prog": [799, 109], "h_emptyst": [1828, 449], "h_addbtn": [500, 73], "a_flight": [863, 562], "a_return": [863, 203], "a_banner": [960, 333], "a_board": [960, 541], "a_head": [960, 204], "h_dash": [2333, 1345], "h_empty": [2451, 1840], "h_filled": [2800, 2053], "s_home": [1220, 1385], "s_tasks": [1154, 1243], "a_journey": [960, 2082]};
+  const SRC = k => (k.startsWith('h_dash') || k === 'h_empty' || k === 'h_filled' || k.startsWith('s_') || k === 'a_journey' ? 'img/ui/' : 'img/rl/') + k + '.webp';
+  /* layer: [key, mode, cx, cy, w, h, in, delay, opts]  mode: cover | fit | box
+     shot: { dur, bg, bgImg, L: layers, N: narrow layers, cam: [[t, zoom, fx, fy]], on: layer index the camera frames, clamp, cur: [[t, layer, x, y, tap]] } */
   const FILMS = {
     health: { cursor: 'arrow', shots: [
-      { img: 'h_dash', kind: 'ui', dur: 4.8, cam: [[0, .92, .5, .5, 16, 0, -3], [1.3, 1, .5, .5, 0, 0, 0], [2.1, 1.9, .3, .5], [3.2, 1.9, .3, .53], [4.0, 1.95, .66, .37], [4.8, 2.0, .66, .39]],
-        cur: [[1.3, .55, .8], [2.2, .32, .39], [3.0, .36, .55], [3.9, .62, .39], [4.8, .66, .42]] },
-      { img: 'h_empty', kind: 'ui', dur: 3.6, cam: [[0, 1, .5, .5], [1.0, 1, .5, .5], [2.0, 1.9, .78, .3], [3.6, 1.95, .8, .28]],
-        cur: [[.4, .5, .8], [1.9, .84, .245], [2.3, .84, .245, 1], [3.6, .845, .25]] },
-      { img: 'h_filled', kind: 'ui', dur: 4.8, cam: [[0, 1.85, .56, .64], [1.5, 1.85, .62, .66], [2.5, 1, .5, .5], [3.2, 1, .5, .5], [4.1, 2.2, .17, .86], [4.8, 2.3, .17, .87]],
-        cur: [[.3, .7, .8], [1.3, .89, .74], [1.6, .89, .74, 1], [2.6, .89, .74]] }
+      { dur: 3.4, bg: '#F1F2F7', L: [['h_dash', 'cover', .5, 0]], on: 0, clamp: 1, cam: [[0, 1, .5, .42], [3.4, 1.14, .66, .3]],
+        cur: [[.6, 0, .55, .72], [2.3, 0, .905, .152], [2.6, 0, .905, .152, 1], [3.4, 0, .91, .16]] },
+      { dur: 2.8, bg: '#F1F2F7', L: [['h_todo', 'box', .5, .5, .6, .84, 'up', 0, 'cardy']], cam: [[0, 1, .5, .5], [1.3, 1, .5, .5], [2.8, 1.32, .66, .42]],
+        cur: [[.5, 0, .3, .98], [1.3, 0, .5, .25], [1.9, 0, .5, .48], [2.8, 0, .88, .48]] },
+      { dur: 2.8, bg: '#F1F2F7', L: [['h_alerts', 'box', .285, .5, .43, .62, 'up', 0, 'cardy'], ['h_track', 'box', .725, .5, .43, .56, 'up', .14, 'cardy']],
+        N: [['h_alerts', 'box', .5, .29, .9, .4, 'up', 0, 'cardy'], ['h_track', 'box', .5, .72, .9, .38, 'up', .14, 'cardy']], cam: [[0, 1, .5, .5], [2.8, 1.05, .5, .5]] },
+      { dur: 3.2, bg: '#F1F2F7', L: [['h_empty', 'cover', .5, .2]], on: 0, clamp: 1, cam: [[0, 1, .5, .42], [1.0, 1, .5, .42], [2.0, 2.4, .858, .248], [3.2, 2.5, .858, .25]],
+        cur: [[.4, 0, .55, .7], [1.9, 0, .86, .248], [2.3, 0, .86, .248, 1], [3.2, 0, .862, .25]] },
+      { dur: 3.6, bg: '#F1F2F7', L: [
+          ['h_steps', 'box', .075, .5, .06, .86, 'left', .3], ['h_addbtn', 'box', .36, .2, .36, .1, 'zoom', 0], ['h_acts', 'box', .76, .2, .34, .1, 'zoom', .08],
+          ['h_tabs', 'box', .56, .42, .78, .08, 'up', .16, 'cardy'], ['h_active', 'box', .44, .62, .09, .08, 'zoom', .26], ['h_pending', 'box', .56, .62, .09, .08, 'zoom', .32],
+          ['h_prog', 'box', .56, .82, .36, .1, 'up', .4]],
+        N: [['h_addbtn', 'box', .5, .14, .84, .1, 'zoom', 0], ['h_acts', 'box', .5, .29, .84, .1, 'zoom', .08], ['h_tabs', 'box', .5, .44, .96, .08, 'up', .16, 'cardy'],
+          ['h_active', 'box', .38, .6, .24, .08, 'zoom', .26], ['h_pending', 'box', .62, .6, .24, .08, 'zoom', .32], ['h_prog', 'box', .5, .78, .84, .1, 'up', .4]],
+        cam: [[0, 1.04, .5, .5], [3.6, 1, .5, .5]] },
+      { dur: 3.4, bg: '#F5F4F3', L: [['h_filled', 'cover', .5, .45]], on: 0, clamp: 1, cam: [[0, 2.0, .58, .62], [1.4, 2.0, .6, .64], [2.5, 1, .5, .5], [3.4, 1.04, .5, .55]] },
+      { dur: 2.8, bg: '#F1F2F7', L: [['h_row', 'box', .5, .38, .86, .14, 'up', 0, 'cardy'], ['h_snack', 'box', .5, .63, .4, .14, 'up', .55]],
+        N: [['h_row', 'box', .5, .4, .96, .14, 'up', 0, 'cardy'], ['h_snack', 'box', .5, .6, .9, .12, 'up', .55]], cam: [[0, 1, .5, .5], [2.8, 1.1, .5, .6]] }
     ] },
     staff: { cursor: 'touch', shots: [
-      { img: 's_home', kind: 'full', dur: 4.4, cam: [[0, 1.05, .5, .5], [1.2, 1.6, .7, .38], [2.5, 1.6, .7, .4], [3.5, 1.55, .42, .62], [4.4, 1.55, .38, .7]],
-        cur: [[1.2, .6, .5], [1.7, .75, .39], [2.0, .75, .39, 1], [2.8, .75, .41], [3.6, .45, .58], [3.9, .45, .58, 1], [4.4, .44, .6]] },
-      { img: 's_tasks', kind: 'full', dur: 4.2, cam: [[0, 1.05, .5, .5], [1.1, 1.55, .42, .56], [2.8, 1.55, .7, .44], [4.2, 1.45, .55, .7]] },
-      { img: 's_home', kind: 'full', dur: 2.6, cam: [[0, 1.55, .36, .82], [2.6, 1.0, .5, .5]] }
+      { dur: 3.0, bgG: 'linear-gradient(90deg, rgba(246,242,234,0) 40%, rgba(239,228,192,.55)), linear-gradient(180deg, #F6F2EA 0%, #F2DCCF 55%, #EE9EA1 100%)', L: [['s_home', 'fit', .5, .5, 1, 1, 'zoom', 0, 'fe']], cam: [[0, 1, .5, .5], [3.0, 1.08, .5, .45]] },
+      { dur: 2.6, bgG: 'linear-gradient(90deg, rgba(246,242,234,0) 40%, rgba(239,228,192,.55)), linear-gradient(180deg, #F6F2EA 0%, #F2DCCF 55%, #EE9EA1 100%)', L: [['s_home', 'fit', .5, .5, 1, 1, '', 0, 'fe']], on: 0, cam: [[0, 1, .5, .5], [.9, 2.3, .73, .37], [2.6, 2.35, .73, .38]],
+        cur: [[1.0, 0, .6, .5], [1.6, 0, .74, .37], [1.9, 0, .74, .37, 1], [2.6, 0, .74, .38]] },
+      { dur: 2.4, bgG: 'linear-gradient(90deg, rgba(246,242,234,0) 40%, rgba(239,228,192,.55)), linear-gradient(180deg, #F6F2EA 0%, #F2DCCF 55%, #EE9EA1 100%)', L: [['s_home', 'fit', .5, .5, 1, 1, '', 0, 'fe']], on: 0, cam: [[0, 2.2, .38, .55], [2.4, 2.2, .46, .68]],
+        cur: [[.6, 0, .4, .6], [1.3, 0, .52, .6], [1.6, 0, .52, .6, 1], [2.4, 0, .52, .62]] },
+      { dur: 3.2, bgG: 'linear-gradient(90deg, rgba(246,242,234,0) 40%, rgba(239,228,192,.55)), linear-gradient(180deg, #F6F2EA 0%, #F2DCCF 55%, #EE9EA1 100%)', L: [['s_tasks', 'fit', .5, .5, 1, 1, 'zoom', 0, 'fe']], on: 0, cam: [[0, 1, .5, .5], [1.0, 1, .5, .5], [2.4, 2.1, .62, .45], [3.2, 2.15, .64, .43]] },
+      { dur: 2.8, bg: '#F3E6DE', L: [['s_home', 'fit', .3, .5, .46, .96, 'up', 0, 'r'], ['s_tasks', 'fit', .7, .5, .46, .96, 'up', .14, 'r']],
+        N: [['s_home', 'fit', .5, .26, .96, .5, 'up', 0, 'r'], ['s_tasks', 'fit', .5, .75, .96, .48, 'up', .14, 'r']], cam: [[0, 1, .5, .5], [2.8, 1.04, .5, .5]] }
     ] },
     adani: { cursor: 'touch', shots: [
-      { img: 'a_journey', kind: 'phone', dur: 2.6, cam: [[0, .88, .5, .5, 22, 0, 12], [1.5, 1, .5, .5, 0, 0, 0], [2.6, 1, .5, .5]] },
-      { img: 'a_journey', kind: 'phone', dur: 7.0, cam: [[0, 1, .5, .5], [.9, 2.0, .5, .23], [2.4, 2.0, .5, .25], [3.2, 2.0, .5, .45], [4.2, 2.0, .5, .62], [5.3, 2.0, .5, .86], [6.3, 2.0, .5, .88], [7.0, 1.1, .5, .5]],
-        cur: [[1.2, .5, .4], [1.7, .25, .345], [2.0, .25, .345, 1], [2.8, .3, .4], [5.4, .3, .9], [5.8, .2, .985], [6.1, .2, .985, 1], [7.0, .25, .95]] }
+      { dur: 3.0, bg: '#FFFFFF', L: [['a_journey', 'fit', .5, .5, .9, .96, 'zoom', 0, 'r']], on: 0, cam: [[0, 1, .5, .5], [3.0, 1.06, .5, .42]] },
+      { dur: 2.6, bg: '#FFFFFF', L: [['a_flight', 'box', .5, .5, .52, .8, 'up', 0]], on: 0, cam: [[0, 1, .5, .5], [1.0, 1, .5, .5], [2.6, 1.5, .5, .2]] },
+      { dur: 2.4, bg: '#FFFFFF', L: [['a_return', 'box', .5, .5, .62, .42, 'zoom', 0]], cam: [[0, 1, .5, .5], [2.4, 1.1, .6, .5]] },
+      { dur: 2.6, bg: '#2B2230', L: [['a_banner', 'cover', 0, .5]], on: 0, clamp: 1, cam: [[0, 1, .3, .5], [2.6, 1.12, .22, .6]] },
+      { dur: 3.0, bg: '#FFFFFF', L: [['a_board', 'box', .5, .5, .58, .9, 'up', 0]], cam: [[0, 1, .5, .5], [3.0, 1.06, .5, .6]],
+        cur: [[.6, 0, .5, .6], [1.6, 0, .25, .93], [1.9, 0, .25, .93, 1], [3.0, 0, .27, .9]] },
+      { dur: 2.6, bg: '#FFFFFF', L: [['a_journey', 'fit', .5, .5, .9, .96, 'fade', 0, 'r']], on: 0, cam: [[0, 2.1, .5, .26], [1.2, 2.1, .5, .3], [2.6, 1, .5, .5]] }
     ] }
   };
   function keys(K, t, n) {
-    const get = (k, j) => k[1 + j] ?? (j > 2 ? 0 : undefined);
-    if (t <= K[0][0]) return Array.from({ length: n }, (_, j) => get(K[0], j) ?? 0);
-    for (let i = 1; i < K.length; i++) if (t <= K[i][0]) {
-      const a = K[i - 1], b = K[i], k = eio((t - a[0]) / Math.max(.001, b[0] - a[0]));
-      return Array.from({ length: n }, (_, j) => (get(a, j) ?? 0) + ((get(b, j) ?? 0) - (get(a, j) ?? 0)) * k);
-    }
-    const L = K[K.length - 1]; return Array.from({ length: n }, (_, j) => get(L, j) ?? 0);
+    if (t <= K[0][0]) return K[0].slice(1, 1 + n);
+    for (let i = 1; i < K.length; i++) if (t <= K[i][0]) { const a = K[i - 1], b = K[i], k = eio((t - a[0]) / Math.max(.001, b[0] - a[0])); return Array.from({ length: n }, (_, j) => a[1 + j] + (b[1 + j] - a[1 + j]) * k); }
+    return K[K.length - 1].slice(1, 1 + n);
   }
   function build(pv) {
     const spec = FILMS[pv.dataset.film]; if (!spec) return null;
     const shots = spec.shots.map(s => {
-      const [w, h] = IMG[s.img], el = document.createElement('div');
-      el.className = 'shot ' + s.kind;
-      const pad = s.kind === 'phone' ? 8 : 0;
-      el.style.width = (w + pad * 2) + 'px'; el.style.height = (h + pad * 2) + 'px';
-      el.innerHTML = `<img src="img/ui/${s.img}.webp" alt="" width="${w}" height="${h}" decoding="async" loading="lazy">`;
+      const el = document.createElement('div'); el.className = 'sh';
+      if (s.bgG) { const bd = document.createElement('div'); bd.className = 'bd g'; bd.style.background = s.bgG; el.appendChild(bd); }
+      const cv = document.createElement('div'); cv.className = 'cv'; el.appendChild(cv);
+      const mk = arr => arr.map(l => {
+        const im = new Image(); im.src = SRC(l[0]); im.alt = ''; im.decoding = 'async'; im.loading = 'lazy'; im.className = 'ly' + (l[8] ? ' ' + l[8] : '');
+        if (l[6]) { im.dataset.in = l[6]; im.style.transitionDelay = (l[7] || 0) + 's'; }
+        if (l[8] === 'r') im.style.setProperty('--r', '18px');
+        cv.appendChild(im); return { l, im };
+      });
+      const wide = mk(s.L), nar = s.N ? mk(s.N) : null;
       pv.appendChild(el);
-      return { ...s, el, img: el.firstChild, w: w + pad * 2, h: h + pad * 2, pad };
+      return { ...s, el, cv, wide, nar };
     });
     let acc = 0; shots.forEach(s => { s.t0 = acc; acc += s.dur; });
     const cur = document.createElement('div'); cur.className = 'cur ' + spec.cursor;
     if (spec.cursor === 'arrow') cur.innerHTML = '<svg viewBox="0 0 24 24"><path d="M5 3l14 8-6.2 1.7L10 19z" fill="#111" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>';
-    const rip = document.createElement('div'); rip.className = 'rip';
-    pv.appendChild(rip); pv.appendChild(cur);
+    const rip = document.createElement('div'); rip.className = 'rip'; pv.appendChild(rip); pv.appendChild(cur);
     return { pv, shots, total: acc, cur, rip, t: 0, active: -1, vis: false, W: 0, H: 0 };
   }
-  function measure(f) { f.W = f.pv.clientWidth; f.H = f.pv.clientHeight; }
-  function place(f, s, lt) {
-    const [z, fx, fy, rx, ry, rz] = keys(s.cam, lt, 6);
-    const full = s.kind === 'full';
-    const fit = full ? Math.max(f.W / s.w, f.H / s.h) : Math.min(f.W * .84 / s.w, f.H * .84 / s.h), S = fit * z;
-    const ox = fx * s.w, oy = fy * s.h;
-    let cx = f.W / 2, cy = f.H / 2;
-    if (full) { /* keep the exported frame covering the stage so its edges never show */
-      cx -= Math.max(0, cx - ox * S); cx += Math.max(0, f.W - (cx + (s.w - ox) * S));
-      cy -= Math.max(0, cy - oy * S); cy += Math.max(0, f.H - (cy + (s.h - oy) * S));
+  function lay(f) {
+    f.W = f.pv.clientWidth; f.H = f.pv.clientHeight; f.narrow = f.W / f.H < 1;
+    const W = f.W, H = f.H;
+    f.shots.forEach(s => {
+      const useN = f.narrow && s.nar;
+      (s.nar || []).forEach(o => o.im.style.display = useN ? '' : 'none');
+      s.wide.forEach(o => o.im.style.display = useN ? 'none' : '');
+      s.layers = useN ? s.nar : s.wide;
+      s.layers.forEach(o => {
+        const [k, mode, cx, cy, w = 1, h = 1] = o.l, [nw, nh] = N[k]; let lw, lh, x, y;
+        let w2 = w, h2 = h; if (f.narrow && !s.nar && mode !== 'cover') { w2 = Math.min(.96, w * 1.7); h2 = Math.min(.92, h * 1.15); }
+        if (mode === 'cover') { const sc = Math.max(W / nw, H / nh); lw = nw * sc; lh = nh * sc; x = (W - lw) * cx; y = (H - lh) * cy; }
+        else { const sc = Math.min(W * w2 / nw, H * h2 / nh); lw = nw * sc; lh = nh * sc; x = W * cx - lw / 2; y = H * cy - lh / 2; }
+        o.r = { x, y, w: lw, h: lh };
+        Object.assign(o.im.style, { left: x.toFixed(1) + 'px', top: y.toFixed(1) + 'px', width: lw.toFixed(1) + 'px', height: lh.toFixed(1) + 'px' });
+      });
+    });
+  }
+  function camera(f, s, lt) {
+    const [z, fx, fy] = keys(s.cam, lt, 3), W = f.W, H = f.H;
+    let FX, FY;
+    if (s.on !== undefined && s.layers[s.on]) { const r = s.layers[s.on].r; FX = r.x + fx * r.w; FY = r.y + fy * r.h; } else { FX = fx * W; FY = fy * H; }
+    let tx = W / 2 - FX, ty = H / 2 - FY;
+    if (z === 1 && (s.on === undefined || !s.clamp)) { /* at rest, frame the composition as laid out */ tx = (W / 2 - FX) * 0; ty = (H / 2 - FY) * 0; }
+    else if (s.on === undefined || !s.clamp) { const k = clamp((z - 1) / .3, 0, 1); tx *= k; ty *= k; }
+    if (s.clamp && s.layers[s.on]) {
+      const r = s.layers[s.on].r;
+      const L = FX + (r.x - FX) * z + tx, R = FX + (r.x + r.w - FX) * z + tx, T = FY + (r.y - FY) * z + ty, B = FY + (r.y + r.h - FY) * z + ty;
+      if (R - L >= W) { if (L > 0) tx -= L; else if (R < W) tx += W - R; }
+      if (B - T >= H) { if (T > 0) ty -= T; else if (B < H) ty += H - B; }
     }
-    s.el.style.transformOrigin = `${ox.toFixed(1)}px ${oy.toFixed(1)}px`;
-    s.el.style.transform = `translate(${(cx - ox).toFixed(1)}px,${(cy - oy).toFixed(1)}px) perspective(1800px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) rotateZ(${rz.toFixed(2)}deg) scale(${S.toFixed(4)})`;
+    s.cv.style.transform = `translate(${(tx + FX * (1 - z)).toFixed(1)}px,${(ty + FY * (1 - z)).toFixed(1)}px) scale(${z.toFixed(4)})`;
   }
   function render(f, t) {
     let a = 0; for (let i = 0; i < f.shots.length; i++) if (t >= f.shots[i].t0) a = i;
     const s = f.shots[a], lt = t - s.t0;
-    if (a !== f.active) { f.shots.forEach((x, i) => x.el.classList.toggle('on', i === a)); f.active = a; }
-    place(f, s, lt);
-    const prev = f.shots[(a - 1 + f.shots.length) % f.shots.length];
-    if (lt < .5 && prev !== s) place(f, prev, prev.dur);
+    if (a !== f.active) {
+      const prev = f.shots[f.active];
+      s.el.classList.add('pre'); void s.el.offsetWidth; s.el.classList.add('on'); s.el.classList.remove('pre');
+      if (prev) prev.el.classList.remove('on');
+      f.active = a; f.pv.style.backgroundColor = s.bg || '#F3E6DE';
+    }
+    camera(f, s, lt);
     const K = s.cur;
     if (!K || lt < K[0][0] - .05) { f.cur.style.opacity = 0; f.rip.style.opacity = 0; return; }
-    const [x, y] = keys(K, lt, 2), r = s.img.getBoundingClientRect(), pr = f.pv.getBoundingClientRect();
-    const px = r.left - pr.left + x * r.width, py = r.top - pr.top + y * r.height;
+    const i = 0; let A = K[0]; let B = K[0];
+    for (let j = 1; j < K.length; j++) { if (lt >= K[j][0]) A = K[j]; else { B = K[j]; break; } B = K[j]; }
+    const pos = q => { const o = s.layers[q[1]]; if (!o) return [0, 0]; const r = o.im.getBoundingClientRect(), pr = f.pv.getBoundingClientRect(); return [r.left - pr.left + q[2] * r.width, r.top - pr.top + q[3] * r.height]; };
+    const pa = pos(A), pb = pos(B), k = A === B ? 1 : eio((lt - A[0]) / Math.max(.001, B[0] - A[0]));
+    const px = pa[0] + (pb[0] - pa[0]) * k, py = pa[1] + (pb[1] - pa[1]) * k;
     let press = 0, rp = -1;
-    for (const k of K) if (k[3]) { const d = lt - k[0]; if (d > -.12 && d < .18) press = 1; if (d >= 0 && d < .5) rp = d / .5; }
+    for (const q of K) if (q[4]) { const d = lt - q[0]; if (d > -.12 && d < .18) press = 1; if (d >= 0 && d < .5) rp = d / .5; }
     f.cur.style.opacity = lt < s.dur - .3 ? 1 : 0;
     f.cur.style.transform = `translate(${px.toFixed(1)}px,${py.toFixed(1)}px) scale(${press ? .84 : 1})`;
     if (rp >= 0) { f.rip.style.opacity = (1 - rp).toFixed(2); f.rip.style.transform = `translate(${px.toFixed(1)}px,${py.toFixed(1)}px) scale(${(.4 + rp * 1.2).toFixed(2)})`; } else f.rip.style.opacity = 0;
   }
   const films = [...document.querySelectorAll('.pv[data-film]')].map(build).filter(Boolean);
-  const all = () => films.forEach(measure);
+  const all = () => films.forEach(lay);
   all(); addEventListener('resize', () => { all(); films.forEach(f => render(f, f.t)); });
   const vio = new IntersectionObserver(es => es.forEach(e => {
     const f = films.find(x => x.pv === e.target); if (!f) return;
-    if (e.isIntersecting && !f.vis) { f.t = 0; f.active = -1; }
+    if (e.isIntersecting && !f.vis) { f.t = 0; f.shots.forEach(s => s.el.classList.remove('on')); f.active = -1; f.shots.forEach(s => s.layers.forEach(o => o.im.loading = 'eager')); }
     f.vis = e.isIntersecting;
-  }), { threshold: .25 });
-  films.forEach(f => { vio.observe(f.pv); render(f, reduce ? f.shots[0].dur : 0); });
+  }), { threshold: .2 });
+  films.forEach(f => { vio.observe(f.pv); render(f, reduce ? f.shots[0].dur - .1 : 0); });
   if (reduce) return;
   let last = performance.now();
   const tick = now => {
     const dt = Math.min(50, now - last) / 1000; last = now;
-    for (const f of films) { if (!f.vis) continue; if (!f.W) measure(f); f.t = (f.t + dt) % f.total; render(f, f.t); }
+    for (const f of films) { if (!f.vis) continue; if (!f.W) lay(f); f.t = (f.t + dt) % f.total; render(f, f.t); }
     requestAnimationFrame(tick);
   };
   requestAnimationFrame(tick);
