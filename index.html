@@ -67,10 +67,11 @@ button { font: inherit; color: inherit; }
 .hero .stage { transform-origin: 50% 40%; will-change: transform; }
 .stage { position: sticky; top: 0; height: 100vh; height: 100svh; }
 .hero-in { position: absolute; left: 0; right: 0; top: 17vh; display: grid; justify-items: center; text-align: center; padding-inline: 24px; }
-h1.hl { margin: 0; font-family: var(--f-display); font-style: normal; font-weight: 400; font-size: clamp(50px, 8.2vw, 118px); line-height: 1.08; letter-spacing: -.035em; display: grid; }
+h1.hl { margin: 0; font-family: var(--f-display); font-style: normal; font-weight: 400; font-size: clamp(40px, 8.2vw, 118px); line-height: 1.08; letter-spacing: -.035em; display: grid; }
 h1.hl .layer { grid-area: 1 / 1; display: flex; flex-wrap: wrap; justify-content: center; column-gap: .24em; max-width: 11em; margin-inline: auto; }
 h1.hl .br { flex-basis: 100%; height: 0; }
 .word { position: relative; display: inline-block; transform-origin: left 70%; will-change: transform; }
+h1.hl .layer { align-content: center; }
 .word[data-side="r"] { transform-origin: right 70%; }
 .js .word { opacity: 0; }
 .mk { position: absolute; top: .66em; width: .16em; height: .16em; min-width: 12px; min-height: 12px; opacity: 0; pointer-events: none;
@@ -191,8 +192,9 @@ html.no-notes .sample-note { display: none; }
   .pill { height: 42px; padding-right: 12px; } .pill .logo { margin-right: 2px; }
   .pill a.l { font-size: 14px; padding: 6px 7px; }
   .pill a.l.hide-sm { display: none; }
-  .call .t { display: none; } .call .c { width: 42px; height: 42px; }
-  .hero-in { top: 15vh; padding-inline: 16px; }
+  .call .c { display: none; } .call .t { height: 42px; padding: 0 16px; font-size: 14px; }
+  .hero-in { top: max(88px, 13vh); padding-inline: 16px; }
+  h1.hl { font-size: clamp(34px, 11.4vw, 62px); line-height: 1.1; }
   .intro { margin-top: 24px; gap: 6px; }
   .intro p { font-size: 16.5px; line-height: 24px; }
   .meta { font-size: 13.5px; margin-top: 22px; flex-direction: column; gap: 14px; }
@@ -202,6 +204,15 @@ html.no-notes .sample-note { display: none; }
   .ctrl .lb { display: none; }
   .ctrl { left: 12px; right: 12px; translate: none; gap: 6px; padding: 7px; }
 }
+@media (max-height: 560px) and (orientation: landscape) {
+  .hero-in { top: 74px; }
+  h1.hl { font-size: clamp(30px, 6.4vw, 56px); }
+  .intro { margin-top: 12px; gap: 2px; } .intro p { font-size: 14.5px; line-height: 21px; }
+  .meta { margin-top: 12px; flex-direction: row; gap: 10px 18px; } .meta .grp { flex-direction: row; } .meta .sep { display: block; }
+  .nav { top: calc(10px + env(safe-area-inset-top, 0px)); }
+  .pv { height: 78svh; } .proj { padding-block: 56px; min-height: 0; } .whead { padding-top: 96px; }
+}
+@media (max-width: 360px) { .intro p { font-size: 15px; line-height: 22px; } .co { width: 30px; height: 30px; } .cos { gap: 5px; } }
 @media (prefers-reduced-motion: reduce) { .js .intro, .js .cos .co { opacity: 1; transform: none; transition: none; } }
 </style>
 </head>
@@ -361,7 +372,7 @@ html.no-notes .sample-note { display: none; }
   let W = 0, H = 0, cols = 0, rows = 0, dpr = 1, cells = [], z = 0, drift = 0;
   function maskAt(xn, yn, narrow, ex = 0) {
     const top = 1 - smooth(.05, (narrow ? .12 : .165) + ex * .4, yn);
-    const bot = smooth((narrow ? .74 : .72) - ex * .8, narrow ? .88 : .86, yn) * (1 - .6 * smooth(.93, .99, yn));
+    const bot = smooth(BOT0 - ex * .8, Math.min(.985, BOT0 + .14), yn) * (1 - .6 * smooth(.93, .99, yn));
     const left = .5 * (1 - smooth(0, .1 + ex * 1.4, xn)), right = .42 * smooth(.92 - ex * 1.4, 1, xn);
     return Math.max(top, bot, left, right);
   }
@@ -372,8 +383,13 @@ html.no-notes .sample-note { display: none; }
     const F = .8 * mm + (n - .5) * (.26 + .9 * mm) * 1.6;
     return F <= 0 ? 0 : Math.min(4, Math.floor(F * 5));
   }
+  let BOT0 = .72;
   function buildCells() {
     cells = []; const narrow = W < 760, diag = Math.hypot(W, H);
+    /* start the bottom cloud band just below the intro, so it never covers text */
+    const hi = document.querySelector('.hero-in'), it = document.getElementById('intro');
+    const ib = hi && it ? hi.offsetTop + it.offsetTop + it.offsetHeight : H * .7;
+    BOT0 = clamp(ib / H + .05, narrow ? .74 : .72, .93);
     for (let gy = 0; gy < rows; gy++) for (let gx = 0; gx < cols; gx++) {
       const x = gx * S, y = gy * S, xn = (x + S / 2) / W, yn = (y + S / 2) / H;
       const dTop = Math.hypot(x - W / 2, y) / diag, dBot = Math.hypot(x - W / 2, H - y) / diag * 1.15;
@@ -538,7 +554,7 @@ html.no-notes .sample-note { display: none; }
 
   paintLogo(); size();
   let started = false;
-  const go = () => { if (started) return; started = true; paintTile(dpr); if (scrollY > 10) { mode = 'live'; intro.classList.add('in'); nav.classList.add('in'); } else startLoad(); };
+  const go = () => { if (started) return; started = true; buildCells(); paintTile(dpr); if (scrollY > 10) { mode = 'live'; intro.classList.add('in'); nav.classList.add('in'); } else startLoad(); };
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => setTimeout(go, 60));
   setTimeout(go, 2500);
   requestAnimationFrame(frame);
