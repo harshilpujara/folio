@@ -46,15 +46,27 @@ button { font: inherit; color: inherit; }
 #fx { z-index: 3; }
 
 /* ---------- nav ---------- */
+@media (max-width: 480px) { .hide-xs { display: none; } }
 .nav { position: fixed; z-index: 20; top: calc(30px + env(safe-area-inset-top, 0px)); left: max(44px, calc((100vw - 1264px) / 2)); right: max(44px, calc((100vw - 1264px) / 2)); display: flex; justify-content: space-between; align-items: center; pointer-events: none; transition: opacity .35s ease, filter .35s ease; }
 .nav > * { pointer-events: auto; }
 .js .nav:not(.in), .nav.away { opacity: 0; filter: blur(10px); }
 .nav.away > * { pointer-events: none; }
-.pill { display: flex; align-items: center; background: var(--paper); border-radius: 999px; height: 48px; padding: 0 20px 0 6px; gap: 4px; }
+.pill { display: flex; align-items: center; background: #F4F4F1; box-shadow: inset 0 0 0 1px #E7E6E1; border-radius: 999px; height: 48px; padding: 0 6px; gap: 4px; }
 .pill .logo { width: 44px; height: 36px; display: grid; place-items: center; margin-right: 14px; }
 .pill .logo canvas { width: 26px; height: 22px; image-rendering: pixelated; }
 .pill a.l { font-size: 15px; text-decoration: none; padding: 6px 9px; }
 .pill a.l:hover { text-decoration: underline; text-underline-offset: 4px; }
+.ask-w { position: relative; margin-left: 6px; }
+.ask { display: inline-flex; align-items: center; gap: 7px; height: 36px; padding: 0 14px 0 12px; border: 0; border-radius: 999px; background: #fff; color: var(--ink); font: 500 14px/1 var(--f-sans, inherit); cursor: pointer;
+  box-shadow: inset 0 0 0 1px #FFC999, 0 1px 2px rgba(255,122,0,.12); transition: box-shadow 250ms cubic-bezier(.22,1,.36,1), background-color 250ms cubic-bezier(.22,1,.36,1); }
+.ask .st { width: 13px; height: 13px; fill: var(--sky-d); transition: transform 400ms cubic-bezier(.34,1.36,.64,1); }
+.ask:hover, .ask:focus-visible, .ask[aria-expanded="true"] { background: #FFF6EC; box-shadow: inset 0 0 0 1px var(--sky-d), 0 2px 8px -2px rgba(255,122,0,.35); outline: none; }
+.ask:hover .st, .ask:focus-visible .st, .ask[aria-expanded="true"] .st { transform: rotate(90deg) scale(1.12); }
+.ask-pop { position: absolute; top: calc(100% + 10px); left: 0; width: 248px; padding: 12px 14px; border-radius: 14px; background: #fff; box-shadow: 0 0 0 1px #E7E6E1, 0 16px 32px -12px rgba(20,20,24,.22); font-size: 13.5px; line-height: 1.45; color: var(--ink-2);
+  transform-origin: 24px top; opacity: 0; transform: scale(.97) translateY(-4px); pointer-events: none; transition: opacity 150ms cubic-bezier(.22,1,.36,1), transform 150ms cubic-bezier(.22,1,.36,1); }
+.ask-pop b { display: block; color: var(--ink); font-weight: 500; margin-bottom: 2px; }
+.ask[aria-expanded="true"] + .ask-pop { opacity: 1; transform: none; pointer-events: auto; transition-duration: 250ms; }
+@media (prefers-reduced-motion: reduce) { .ask .st, .ask-pop { transition: none; } }
 .call { display: inline-flex; gap: 6px; text-decoration: none; }
 .call .t { background: var(--ink); color: var(--paper); border-radius: 999px; height: 48px; padding: 0 24px; display: grid; place-items: center; font-size: 15px; font-weight: 500; }
 .call .c { width: 48px; height: 48px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; transition: transform .4s cubic-bezier(.2,.8,.2,1); }
@@ -62,7 +74,7 @@ button { font: inherit; color: inherit; }
 .call:hover .c { transform: rotate(45deg); }
 
 /* ---------- pinned hero ---------- */
-.hero { position: relative; z-index: 2; height: 360vh; }
+.hero { position: relative; z-index: 2; height: 250vh; }
 .hframe { position: absolute; inset: 14px; border: 1px solid #E6E5E1; border-radius: 28px; pointer-events: none; z-index: 1; }
 .hero .stage { transform-origin: 50% 40%; will-change: transform; }
 .stage { position: sticky; top: 0; height: 100vh; height: 100svh; }
@@ -118,10 +130,54 @@ h1.hl .layer { align-content: center; }
 .sample-note b { font-weight: 500; color: var(--ink); }
 html.no-notes .sample-note { display: none; }
 
+/* ---------- AI side quests ---------- */
+.quests { position: relative; z-index: 4; background: var(--paper); --grid: #ECECE8; overflow-x: clip; }
+.quests > .wrap { position: relative; border-left: 1px solid var(--grid); border-right: 1px solid var(--grid); padding-left: 0; padding-right: 0; }
+.quests .whead { border-top: 1px solid var(--grid); }
+.qgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.q { position: relative; display: flex; flex-direction: column; gap: 22px; padding: 40px 56px 56px; color: inherit; text-decoration: none; border-bottom: 1px solid var(--grid); }
+.q:nth-child(odd) { border-right: 1px solid var(--grid); }
+.qm { position: relative; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 10px; background: #F4F4F1; box-shadow: inset 0 0 0 1px #ECEBE6; }
+.qm img, .qm video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; transition: transform 700ms cubic-bezier(.22, 1, .36, 1); }
+a.q:hover .qm img, a.q:hover .qm video { transform: scale(1.02); }
+.qm.soon { display: grid; place-items: center; background-color: #F6F6F3; background-image: repeating-conic-gradient(#EFEEE9 0 25%, transparent 0 50%); background-size: 22px 22px; }
+.qm.soon span { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); background: #F6F6F3; padding: 6px 10px; border-radius: 999px; box-shadow: inset 0 0 0 1px #E6E5E0; }
+.qb { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+.qn { margin: 0; font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.q h3 { margin: 8px 0 0; font-family: var(--f-display); font-weight: 400; font-size: clamp(28px, 2.6vw, 38px); line-height: 1.05; letter-spacing: -.03em; }
+.q p.d { margin: 10px 0 0; max-width: 40ch; font-size: 15.5px; line-height: 1.5; color: var(--ink-2); }
+.qt { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+.qt span { font-size: 12.5px; line-height: 1; padding: 6px 9px; border-radius: 999px; background: #F4F4F1; box-shadow: inset 0 0 0 1px #E7E6E1; color: var(--ink-2); }
+.qgo { flex: none; width: 44px; height: 44px; display: grid; place-items: center; background: var(--ink); color: var(--paper); transition: transform 250ms cubic-bezier(.22, 1, .36, 1); }
+.qgo svg { width: 15px; height: 15px; transition: transform 350ms cubic-bezier(.2, .8, .2, 1); }
+a.q:hover .qgo svg, a.q:focus-visible .qgo svg { transform: rotate(45deg); }
+a.q:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+.q.slot h3, .q.slot p.d { color: var(--ink-3); }
+.q.slot .qm { aspect-ratio: 16 / 6; }
+@media (max-width: 760px) {
+  .qgrid { grid-template-columns: minmax(0, 1fr); }
+  .q { padding: 28px 20px 36px; gap: 18px; }
+  .q:nth-child(odd) { border-right: 0; }
+}
+
+/* hero: try yapp */
+.tryapp { margin-top: 26px; display: inline-flex; align-items: center; gap: 12px; height: 38px; padding: 0 6px 0 5px; border-radius: 999px; background: #F4F4F1; box-shadow: inset 0 0 0 1px #E7E6E1; color: var(--ink); text-decoration: none; font-size: 14.5px;
+  transition: box-shadow 250ms cubic-bezier(.22, 1, .36, 1), background-color 250ms cubic-bezier(.22, 1, .36, 1); }
+.tryapp .nw { height: 28px; display: grid; place-items: center; padding: 0 10px; border-radius: 999px; background: var(--sky-d); color: #fff; font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+.tryapp .tx { padding-right: 18px; }
+.tryapp .tx b { font-weight: 500; }
+.tryapp .ar { width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; margin-left: -10px; }
+.tryapp .ar svg { width: 12px; height: 12px; transition: transform 350ms cubic-bezier(.2, .8, .2, 1); }
+.tryapp:hover, .tryapp:focus-visible { background: #fff; box-shadow: inset 0 0 0 1px var(--ink-3), 0 6px 18px -10px rgba(20, 20, 24, .3); outline: none; }
+.tryapp:hover .ar svg, .tryapp:focus-visible .ar svg { transform: rotate(45deg); }
+.js .tryapp { opacity: 0; transform: translateY(12px); filter: blur(3px); transition: opacity 500ms cubic-bezier(.22, 1, .36, 1) .45s, transform 500ms cubic-bezier(.22, 1, .36, 1) .45s, filter 500ms cubic-bezier(.22, 1, .36, 1) .45s, box-shadow 250ms, background-color 250ms; }
+.js .intro.in .tryapp { opacity: 1; transform: none; filter: none; }
+@media (max-width: 640px) { .tryapp { font-size: 13.5px; gap: 10px; } .tryapp .tx { padding-right: 14px; } }
+
 /* ---------- work: calm vertical list, exact Figma screens ---------- */
-.work { position: relative; z-index: 4; margin-top: -100vh; margin-top: -100svh; background: var(--paper); --grid: #ECECE8; will-change: transform; overflow-x: clip; }
+.work { position: relative; z-index: 4; margin-top: -16vh; margin-top: -16svh; background: var(--paper); --grid: #ECECE8; overflow-x: clip; }
 .work > .wrap { position: relative; border-left: 1px solid var(--grid); border-right: 1px solid var(--grid); padding-left: 0; padding-right: 0; }
-.whead { position: relative; display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; padding: 140px 56px 44px; border-bottom: 1px solid var(--grid); }
+.whead { position: relative; display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; padding: 64px 56px 44px; border-bottom: 1px solid var(--grid); }
 .whead::before { content: ""; position: absolute; left: 50%; bottom: -1px; width: 100vw; height: 1px; translate: -50% 0; background: var(--grid); }
 .whead h2 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: clamp(48px, 6.4vw, 96px); line-height: .98; letter-spacing: -.035em; }
 .whead p { margin: 0 0 8px; max-width: 30ch; font-size: 16px; line-height: 1.5; color: var(--ink-2); }
@@ -177,19 +233,19 @@ html.no-notes .sample-note { display: none; }
 .cur.touch { width: 34px; height: 34px; margin: -17px 0 0 -17px; border-radius: 50%; background: rgba(20,20,24,.25); box-shadow: 0 0 0 2.5px rgba(255,255,255,.95), 0 4px 12px rgba(0,0,0,.22); }
 .rip { position: absolute; left: 0; top: 0; z-index: 4; width: 46px; height: 46px; margin: -23px 0 0 -23px; border-radius: 50%; border: 2px solid rgba(20,20,24,.55); pointer-events: none; opacity: 0; }
 @media (max-width: 640px) { .cap { top: 5%; } .cap b { font-size: 20px; } }
-.js .proj .rv { opacity: 0; transform: translateY(28px); transition: opacity .8s ease, transform 1s cubic-bezier(.16,1,.3,1); }
-.js .proj.in .rv { opacity: 1; transform: none; }
-.js .proj .pv.rv { transform: translateY(48px) scale(.97); transition-delay: .12s; }
-.js .proj.in .pv.rv { transform: none; }
-.proj .pr.rv { transition-delay: .06s; }
-#ring { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 7; pointer-events: none; display: block; image-rendering: pixelated; }
+:root { --rv-dur: 500ms; --rv-ease: cubic-bezier(.22, 1, .36, 1); --rv-dist: 12px; --rv-blur: 3px; --rv-stagger: 60ms; }
+.js .row .s { opacity: 0; transform: translateY(var(--rv-dist)); filter: blur(var(--rv-blur)); transition: opacity var(--rv-dur) var(--rv-ease), transform var(--rv-dur) var(--rv-ease), filter var(--rv-dur) var(--rv-ease); transition-delay: calc(var(--i, 0) * var(--rv-stagger)); }
+.js .row.in .s { opacity: 1; transform: none; filter: none; }
+.js .pv.row { opacity: 0; transform: translateY(24px) scale(.985); transition: opacity 700ms var(--rv-ease), transform 900ms var(--rv-ease), background-color .6s ease; }
+.js .pv.row.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .js .row .s, .js .pv.row { opacity: 1; transform: none; filter: none; transition: none; } }
 .call .t { transition: background .25s; } .call:hover .t { background: var(--sky-d); }
 @media (max-width: 980px) {
   .phead { grid-template-columns: minmax(0, 1fr); gap: 28px; align-items: start; }
   .pr { justify-content: space-between; flex-wrap: wrap; gap: 28px; }
 }
 @media (max-width: 640px) {
-  .whead { padding: 104px 20px 28px; flex-direction: column; align-items: flex-start; gap: 16px; }
+  .whead { padding: 48px 20px 28px; flex-direction: column; align-items: flex-start; gap: 16px; }
   .proj { padding: 72px 20px; gap: 28px; }
   .pstats { gap: 28px; } .pstats dd { font-size: 12.5px; }
   .pr { flex-direction: column; align-items: flex-start; }
@@ -208,9 +264,10 @@ html.no-notes .sample-note { display: none; }
   .wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
   .nav { left: max(18px, env(safe-area-inset-left, 0px)); right: max(18px, env(safe-area-inset-right, 0px)); top: calc(18px + env(safe-area-inset-top, 0px)); }
   .hframe { inset: 8px; border-radius: 20px; }
-  .pill { height: 42px; padding-right: 12px; } .pill .logo { margin-right: 2px; }
+  .pill { height: 42px; padding-right: 5px; } .pill .logo { margin-right: 2px; }
   .pill a.l { font-size: 14px; padding: 6px 7px; }
   .pill a.l.hide-sm { display: none; }
+  .ask-w { margin-left: 2px; } .ask { height: 32px; padding: 0 11px 0 10px; font-size: 13.5px; } .ask-pop { left: auto; right: -60px; }
   .call .c { display: none; } .call .t { height: 42px; padding: 0 16px; font-size: 14px; }
   .hero-in { top: max(88px, 13vh); padding-inline: 16px; }
   h1.hl { font-size: clamp(34px, 11.4vw, 62px); line-height: 1.1; }
@@ -229,7 +286,7 @@ html.no-notes .sample-note { display: none; }
   .intro { margin-top: 12px; gap: 2px; } .intro p { font-size: 14.5px; line-height: 21px; }
   .meta { margin-top: 12px; flex-direction: row; gap: 10px 18px; } .meta .grp { flex-direction: row; } .meta .sep { display: block; }
   .nav { top: calc(10px + env(safe-area-inset-top, 0px)); }
-  .pv { height: 78svh; } .proj { padding-block: 56px; min-height: 0; } .whead { padding-top: 96px; }
+  .pv { height: 78svh; } .proj { padding-block: 56px; min-height: 0; } .whead { padding-top: 44px; }
 }
 @media (max-width: 360px) { .intro p { font-size: 15px; line-height: 22px; } .co { width: 30px; height: 30px; } .cos { gap: 5px; } }
 @media (prefers-reduced-motion: reduce) { .js .intro, .js .cos .co { opacity: 1; transform: none; transition: none; } }
@@ -244,8 +301,12 @@ html.no-notes .sample-note { display: none; }
     <a class="logo" href="#top" aria-label="Harshil Pujara, home"><canvas id="logoCv" width="13" height="11"></canvas></a>
     <a class="l" href="#work">Work</a>
     <a class="l" href="#work">About</a>
-    <a class="l hide-sm" href="#work">Builds</a>
+    <a class="l hide-sm" href="#quests">Builds</a>
     <a class="l hide-sm" href="#work">Instagram</a>
+    <span class="ask-w">
+      <button type="button" class="ask" id="ask" aria-expanded="false" aria-controls="askPop"><svg class="st" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0 9.6 6.4 16 8 9.6 9.6 8 16 6.4 9.6 0 8 6.4 6.4Z"/></svg><span>Ask<span class="hide-xs"> HarshiLLM</span></span></button>
+      <span class="ask-pop" id="askPop" role="status"><b>HarshiLLM is in training.</b> Soon you can ask it anything about my work. Until then, book a call.</span>
+    </span>
   </nav>
   <a class="call" href="https://cal.com/harshilpujara/30min" target="_blank" rel="noopener" aria-label="Book a call"><span class="t">Book a call</span><span class="c"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a>
 </header>
@@ -288,6 +349,7 @@ html.no-notes .sample-note { display: none; }
               <button type="button" class="co" data-name="Zero Designs" aria-label="Zero Designs"><svg viewBox="0 0 649.9 649.9" aria-hidden="true"><path d="M241.9,10.9c-39.1,10.3-76,27.9-108.6,51.8,10.9-5.1,22.3-9.3,34-12.4,108.4-28.6,219.4,36,248,144.4s-36,219.4-144.3,248S51.5,406.6,22.9,298.3c-7-26.2-8.6-53.6-4.8-80.5-21.5,61.2-24,127.5-7.3,190.2,45.8,173.5,223.6,276.9,397.1,231.1s276.9-223.6,231.1-397.1S415.4-35,241.9,10.9Z"/><path class="hole" d="M167,283.3c0-44.8,36.4-81.1,81.2-81.1,37.9,0,70.7,26.3,79.1,63.2,12.6-66.1-30.8-129.9-96.9-142.4-66.1-12.6-129.9,30.8-142.4,96.9s30.8,129.9,96.9,142.4c14.9,2.8,30.2,2.9,45.1,0-36.9-8.5-63-41.3-62.9-79.2Z"/></svg></button>
             </span></span>
           </div>
+          <a class="tryapp" href="https://useyapp.vercel.app" target="_blank" rel="noopener"><span class="nw">New</span><span class="tx">Try my new app, <b>yapp</b></span><span class="ar"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a>
         </div>
       </div>
     </div>
@@ -295,37 +357,73 @@ html.no-notes .sample-note { display: none; }
 
   <section class="work" id="work" aria-labelledby="workTitle">
     <div class="wrap">
-      <header class="whead"><h2 id="workTitle">Selected work</h2><p>Three products, from enterprise healthcare to field operations and travel.</p><i class="nd bl"></i><i class="nd br"></i></header>
+      <header class="whead row"><h2 id="workTitle" class="s" style="--i:0">Selected work</h2><p class="s" style="--i:1">Three products, from enterprise healthcare to field operations and travel.</p><i class="nd bl"></i><i class="nd br"></i></header>
       <article class="proj" style="--bg:#EEF2F5;--acc:#007F73">
-        <div class="phead">
-          <div class="rv"><p class="pk"><i></i>Capgemini · Healthcare · 2026</p><h3>Helping 1.4M+ doctors carry their professional history</h3></div>
-          <div class="pr rv">
-            <dl class="pstats"><div><dt>84%</dt><dd>Task success, up from 56%</dd></div><div><dt>9%</dt><dd>Drop-off, down from 30%</dd></div></dl>
-            <a class="cta" href="https://kaliyugg.framer.website/healthcare" target="_blank" rel="noopener"><span class="t">Read the case study</span><span class="a"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a>
+        <div class="phead row">
+          <div><p class="pk s" style="--i:0"><i></i>Capgemini · Healthcare · 2026</p><h3 class="s" style="--i:1">Helping 1.4M+ doctors carry their professional history</h3></div>
+          <div class="pr">
+            <dl class="pstats"><div class="s" style="--i:2"><dt>84%</dt><dd>Task success, up from 56%</dd></div><div class="s" style="--i:3"><dt>9%</dt><dd>Drop-off, down from 30%</dd></div></dl>
+            <a class="cta s" style="--i:4" href="https://kaliyugg.framer.website/healthcare" target="_blank" rel="noopener"><span class="t">Read the case study</span><span class="a"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a>
           </div>
         </div>
-        <a class="pv rv" href="https://kaliyugg.framer.website/healthcare" target="_blank" rel="noopener" data-film="health" aria-label="Credentialing case study. Preview of the real screens: the provider dashboard and the hospital affiliations flow, empty and then with a record added."></a>
+        <a class="pv row" href="https://kaliyugg.framer.website/healthcare" target="_blank" rel="noopener" data-film="health" aria-label="Credentialing case study. Preview of the real screens: the provider dashboard and the hospital affiliations flow, empty and then with a record added."></a>
       </article>
       <article class="proj" style="--bg:#F6E9E6;--acc:#E52421">
-        <div class="phead">
-          <div class="rv"><p class="pk"><i></i>Zero Designs · Field operations · 2024</p><h3>A field app that keeps up with staff on the move</h3></div>
-          <div class="pr rv">
-            <dl class="pstats"><div><dt>1:20</dt><dd>Minutes navigating, down from 3:45</dd></div><div><dt>+50%</dt><dd>Task success in testing</dd></div></dl>
-            <a class="cta" href="https://kaliyugg.framer.website/staffcare" target="_blank" rel="noopener"><span class="t">Read the case study</span><span class="a"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a>
+        <div class="phead row">
+          <div><p class="pk s" style="--i:0"><i></i>Zero Designs · Field operations · 2024</p><h3 class="s" style="--i:1">A field app that keeps up with staff on the move</h3></div>
+          <div class="pr">
+            <dl class="pstats"><div class="s" style="--i:2"><dt>1:20</dt><dd>Minutes navigating, down from 3:45</dd></div><div class="s" style="--i:3"><dt>+50%</dt><dd>Task success in testing</dd></div></dl>
+            <a class="cta s" style="--i:4" href="https://kaliyugg.framer.website/staffcare" target="_blank" rel="noopener"><span class="t">Read the case study</span><span class="a"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a>
           </div>
         </div>
-        <a class="pv rv" href="https://kaliyugg.framer.website/staffcare" target="_blank" rel="noopener" data-film="staff" aria-label="Staffcare case study. Preview of the real screens: the home screen with check-out and quick tasks, and the task map with a route."></a>
+        <a class="pv row" href="https://kaliyugg.framer.website/staffcare" target="_blank" rel="noopener" data-film="staff" aria-label="Staffcare case study. Preview of the real screens: the home screen with check-out and quick tasks, and the task map with a route."></a>
       </article>
       <article class="proj" style="--bg:#E9EEF7;--acc:#2E6BD6">
-        <div class="phead">
-          <div class="rv"><p class="pk"><i></i>Adani Digital Labs · Travel · 2023</p><h3>One calm timeline for anxious flyers</h3></div>
-          <div class="pr rv">
-            <dl class="pstats"><div><dt>3.1</dt><dd>Anxiety score, down from 7.2</dd></div><div><dt>8s</dt><dd>To find the gate, down from 30s</dd></div></dl>
-            <a class="cta" href="https://kaliyugg.framer.website/adani" target="_blank" rel="noopener"><span class="t">Read the case study</span><span class="a"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a>
+        <div class="phead row">
+          <div><p class="pk s" style="--i:0"><i></i>Adani Digital Labs · Travel · 2023</p><h3 class="s" style="--i:1">One calm timeline for anxious flyers</h3></div>
+          <div class="pr">
+            <dl class="pstats"><div class="s" style="--i:2"><dt>3.1</dt><dd>Anxiety score, down from 7.2</dd></div><div class="s" style="--i:3"><dt>8s</dt><dd>To find the gate, down from 30s</dd></div></dl>
+            <a class="cta s" style="--i:4" href="https://kaliyugg.framer.website/adani" target="_blank" rel="noopener"><span class="t">Read the case study</span><span class="a"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a>
           </div>
         </div>
-        <a class="pv rv" href="https://kaliyugg.framer.website/adani" target="_blank" rel="noopener" data-film="adani" aria-label="Adani One case study. Preview of the real My Journey screen: the flight card, return fares, the travel checklist and the before-you-board timeline."></a>
+        <a class="pv row" href="https://kaliyugg.framer.website/adani" target="_blank" rel="noopener" data-film="adani" aria-label="Adani One case study. Preview of the real My Journey screen: the flight card, return fares, the travel checklist and the before-you-board timeline."></a>
       </article>
+    </div>
+  </section>
+
+  <section class="quests" id="quests" aria-labelledby="questTitle">
+    <div class="wrap">
+      <header class="whead row"><h2 id="questTitle" class="s" style="--i:0">AI side quests</h2><p class="s" style="--i:1">Small products I vibe-code with AI, outside the day job.</p><i class="nd bl"></i><i class="nd br"></i></header>
+      <div class="qgrid">
+        <a class="q row" href="https://useyapp.vercel.app" target="_blank" rel="noopener">
+          <div class="qm s" style="--i:0"><video muted loop playsinline preload="none" poster="img/v3/q_yapp.webp" data-src="" aria-hidden="true"></video><img src="img/v3/q_yapp.webp" alt="The yapp landing page: Talk instead of typing." loading="lazy" decoding="async"></div>
+          <div class="qb">
+            <div class="s" style="--i:1"><p class="qn">Side quest 01</p><h3>yapp</h3><p class="d">Talk instead of typing. Free, open-source voice-to-text for Windows: press Ctrl+Space in any app, talk, and clean text lands at your cursor.</p><div class="qt"><span>Rust</span><span>Open source</span><span>Windows</span></div></div>
+            <span class="qgo s" style="--i:2"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 10 10 4M5 4h5v5"/></svg></span>
+          </div>
+        </a>
+        <div class="q row">
+          <div class="qm soon s" style="--i:0"><span>Video soon</span></div>
+          <div class="qb">
+            <div class="s" style="--i:1"><p class="qn">Side quest 02</p><h3>Debrief</h3><p class="d">Write-up and demo coming soon.</p></div>
+            
+          </div>
+        </div>
+        <div class="q row slot">
+          <div class="qm soon s" style="--i:0"><span>Video soon</span></div>
+          <div class="qb">
+            <div class="s" style="--i:1"><p class="qn">Side quest 03</p><h3>Next quest</h3><p class="d">In the works.</p></div>
+            
+          </div>
+        </div>
+        <div class="q row slot">
+          <div class="qm soon s" style="--i:0"><span>Video soon</span></div>
+          <div class="qb">
+            <div class="s" style="--i:1"><p class="qn">Side quest 04</p><h3>Next quest</h3><p class="d">In the works.</p></div>
+            
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </main>
@@ -503,41 +601,7 @@ html.no-notes .sample-note { display: none; }
   /* ---------- loop ---------- */
   const workEl = document.getElementById('work'), heroStage = document.querySelector('.hero .stage');
   const ease2 = t => t * t * (3 - 2 * t);
-  /* hero to work: the headline's pixel mark opens into a window onto the work grid */
-  const ring = document.createElement('canvas'); ring.id = 'ring'; ring.setAttribute('aria-hidden', 'true'); document.body.appendChild(ring);
-  const rg = ring.getContext('2d'); let RF = null, ringOn = false;
-  function sizeRing() { const d = Math.min(2, devicePixelRatio || 1); ring.width = Math.round(innerWidth * d); ring.height = Math.round(innerHeight * d); rg.setTransform(d, 0, 0, d, 0, 0); rg.imageSmoothingEnabled = false; RF = fillsFor(rg); }
-  sizeRing(); addEventListener('resize', sizeRing);
-  const hsh = (x, y) => { const v = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return v - Math.floor(v); };
-  function portal() {
-    const wt = workEl.offsetTop - scrollY, ov = clamp(1 - wt / H, 0, 1);
-    if (ov > 0 && ov < 1 && !reduce) {
-      const e = inOut(ov);
-      heroStage.style.transform = `scale(${(1 - .06 * e).toFixed(4)})`; heroStage.style.opacity = (1 - .55 * e).toFixed(3);
-      const r = tileEl.getBoundingClientRect(), cw = r.width / 6, ch = r.height / 5;
-      const h0 = { l: r.left + cw * 2, t: r.top + ch, r: r.left + cw * 4, b: r.top + ch * 3 };
-      const L = h0.l * (1 - e), T = h0.t * (1 - e), R = h0.r + (W - h0.r) * e, B = h0.b + (H - h0.b) * e;
-      workEl.style.transform = `translateY(${(-wt).toFixed(1)}px)`;
-      workEl.style.clipPath = `inset(${T.toFixed(1)}px ${(W - R).toFixed(1)}px calc(100% - ${B.toFixed(1)}px) ${L.toFixed(1)}px)`;
-      rg.clearRect(0, 0, W, H); ringOn = true;
-      const cs = Math.max(4, Math.min(24, cw + (24 - cw) * e)), band = 2, fade = smooth(.55, .95, e);
-      const P = [null, new Path2D(), new Path2D(), new Path2D(), new Path2D()];
-      for (let gy = -band; gy < Math.ceil((B - T) / cs) + band; gy++) for (let gx = -band; gx < Math.ceil((R - L) / cs) + band; gx++) {
-        const x = L + gx * cs, y = T + gy * cs;
-        if (x >= L - .5 && x + cs <= R + .5 && y >= T - .5 && y + cs <= B + .5) continue;
-        const out = Math.max(L - x - cs, x - R, T - y - cs, y - B, 0) / cs;
-        const hv = hsh(gx, gy);
-        if (hv < fade || out > band - 1 + (1 - fade) * .5 && hv < .5) continue;
-        P[1 + Math.floor(hsh(gx + 7, gy - 3) * 4)].rect(Math.round(x), Math.round(y), Math.ceil(cs), Math.ceil(cs));
-      }
-      for (let lv = 1; lv <= 4; lv++) { rg.fillStyle = RF[lv]; rg.fill(P[lv]); }
-    } else {
-      workEl.style.transform = ''; workEl.style.clipPath = '';
-      heroStage.style.transform = ov >= 1 ? 'scale(.94)' : ''; heroStage.style.opacity = ov >= 1 ? '.45' : '';
-      if (ringOn) { rg.clearRect(0, 0, W, H); ringOn = false; }
-    }
-  }
-  let last = performance.now();
+  let last = performance.now(), skyOff = 0;
   function frame(now) {
     const dt = Math.min(50, now - last); last = now;
     if (!reduce) { z += dt * .00006; drift += dt * .000085; }
@@ -550,7 +614,10 @@ html.no-notes .sample-note { display: none; }
       if (!nav.classList.contains('in') && now - loadEnd > 380) nav.classList.add('in');
       nav.classList.toggle('away', m > .01 && m < .995);
     }
-    if (workEl && heroStage) portal();
+    /* the sky canvases are fixed: once the stage unpins, carry them up with it */
+    const off = Math.min(0, hero.getBoundingClientRect().bottom - H);
+    if (off !== skyOff) { skyOff = off; sky.style.transform = fx.style.transform = off ? `translate3d(0,${off.toFixed(1)}px,0)` : ''; }
+    if (off < -H) { requestAnimationFrame(frame); return; }
     if (mode !== 'wait') { applyWords(); drawSky(); drawFx(); }
     requestAnimationFrame(frame);
   }
@@ -593,13 +660,25 @@ html.no-notes .sample-note { display: none; }
   const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
   const eio = t => t <= 0 ? 0 : t >= 1 ? 1 : -(Math.cos(Math.PI * t) - 1) / 2;
 
-  const projs = [...document.querySelectorAll('.proj')];
-  const rio = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } }), { threshold: .18 });
-  projs.forEach(p => rio.observe(p));
+  const ask = document.getElementById('ask');
+  if (ask) {
+    ask.addEventListener('click', e => { e.stopPropagation(); ask.setAttribute('aria-expanded', ask.getAttribute('aria-expanded') !== 'true'); });
+    addEventListener('click', () => ask.setAttribute('aria-expanded', 'false'));
+    addEventListener('keydown', e => { if (e.key === 'Escape') ask.setAttribute('aria-expanded', 'false'); });
+  }
+  const qv = new IntersectionObserver(es => es.forEach(e => {
+    const v = e.target; if (!v.dataset.src) return;
+    if (e.isIntersecting) { if (!v.src) { v.src = v.dataset.src; v.nextElementSibling && v.nextElementSibling.remove(); } v.play().catch(() => {}); } else v.pause();
+  }), { threshold: .25 });
+  document.querySelectorAll('.qm video').forEach(v => qv.observe(v));
+  /* each row reveals itself as it scrolls in; its pieces follow with a short stagger */
+  const rio = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); rio.unobserve(e.target); } }), { threshold: .15, rootMargin: '0px 0px -6% 0px' });
+  document.querySelectorAll('.row').forEach(r => rio.observe(r));
 
   /* natural pixel sizes of the exact Figma exports and crops */
-  const N = {"h_todo": [1008, 747], "h_alerts": [1003, 527], "h_track": [1003, 463], "h_quick": [292, 86], "h_nav": [210, 1028], "h_head": [2706, 426], "h_tabs": [2441, 140], "h_table": [2653, 799], "h_row": [2653, 176], "h_snack": [760, 111], "h_steps": [191, 1857], "h_acts": [816, 96], "h_active": [170, 88], "h_pending": [184, 88], "h_prog": [799, 109], "h_emptyst": [1828, 449], "h_addbtn": [500, 73], "a_flight": [863, 562], "a_return": [863, 203], "a_banner": [960, 333], "a_board": [960, 541], "a_head": [960, 204], "h_dash": [2333, 1345], "h_empty": [2451, 1840], "h_filled": [2800, 2053], "s_home": [1220, 1385], "s_tasks": [1154, 1243], "a_journey": [960, 2082]};
-  const SRC = k => (k.startsWith('h_dash') || k === 'h_empty' || k === 'h_filled' || k.startsWith('s_') || k === 'a_journey' ? 'img/ui/' : 'img/rl/') + k + '.webp';
+  const N = {"h_todo": [1008, 747], "h_alerts": [1003, 527], "h_track": [1003, 463], "h_quick": [292, 86], "h_nav": [210, 1028], "h_head": [2706, 426], "h_tabs": [2441, 140], "h_table": [2653, 799], "h_row": [2653, 176], "h_snack": [760, 111], "h_steps": [191, 1857], "h_acts": [816, 96], "h_active": [170, 88], "h_pending": [184, 88], "h_prog": [799, 109], "h_emptyst": [1828, 449], "h_addbtn": [500, 73], "a_flight": [863, 562], "a_return": [863, 203], "a_banner": [960, 333], "a_board": [960, 541], "a_head": [960, 204], "h_dash": [2333, 1345], "h_empty": [2451, 1840], "h_filled": [2800, 2053], "s_home": [1220, 1385], "s_tasks": [1154, 1243], "a_journey": [960, 2082], "a_bag": [954, 336], "a_cab": [954, 501], "a_fl": [1011, 657], "a_gate": [957, 429], "a_help": [951, 567], "a_page": [750, 6914], "a_term": [954, 429], "a_wx": [951, 642], "sc_finbtn": [1199, 208], "sc_finish": [900, 1302], "sc_home": [900, 1947], "sc_list": [900, 1411], "sc_map": [900, 1947], "sc_map3": [900, 1947], "sc_prog": [1206, 555], "sc_quick": [1242, 567], "sc_route": [900, 1947], "sc_start": [956, 149], "sc_stats2": [1218, 244], "sc_stats3": [1218, 244], "sc_welcome": [1188, 450], "@a_page": [375, 812]};
+  const V3 = new Set(["a_bag", "a_cab", "a_fl", "a_gate", "a_help", "a_page", "a_term", "a_wx", "sc_finbtn", "sc_finish", "sc_home", "sc_list", "sc_map", "sc_map3", "sc_prog", "sc_quick", "sc_route", "sc_start", "sc_stats2", "sc_stats3", "sc_welcome"]);
+  const SRC = k => V3.has(k) ? 'img/v3/' + k + '.webp' : (k.startsWith('h_dash') || k === 'h_empty' || k === 'h_filled' || k.startsWith('s_') || k === 'a_journey' ? 'img/ui/' : 'img/rl/') + k + '.webp';
   const G = 'linear-gradient(90deg, rgba(246,242,234,0) 40%, rgba(239,228,192,.55)), linear-gradient(180deg, #F6F2EA 0%, #F2DCCF 55%, #EE9EA1 100%)';
   const RISE = [[0, 0, .3, .9, 0], [1.3, 0, 0, 1, 1]];
   const pop = (t, dx, dy, s, end) => [[0, 0, 0, 1, 0], [t, 0, 0, 1, 0], [t + .05, 0, 0, 1, 1], [t + .85, dx, dy, s, 1], [end, dx * 1.03, dy, s * 1.01, 1]];
@@ -641,39 +720,52 @@ html.no-notes .sample-note { display: none; }
         cam: [[0, 1, .5, .55], [3.0, 1.06, .5, .62]] }
     ] },
     staff: { cursor: 'touch', shots: [
-      { dur: 3.0, bgG: G, cap: ['Zero Designs · Field operations', 'A field app for staff on the move'],
-        L: [{ k: 's_home', m: 'fit', cx: .5, cy: .64, w: 1, h: .76, c: 'fe', a: RISE }], cam: [[0, 1, .5, .5, 24], [1.4, 1, .5, .5, 0], [3, 1.03, .5, .55, 0]] },
-      { dur: 2.6, bgG: G, L: [{ k: 's_home', m: 'fit', cx: .5, cy: .5, w: 1, h: 1, c: 'fe' }], on: 0, cam: [[0, 1, .5, .5], [.8, 2.3, .73, .37], [2.6, 2.35, .73, .38]],
-        cur: [[.9, 0, .6, .5], [1.5, 0, .74, .37], [1.8, 0, .74, .37, 1], [2.6, 0, .74, .38]] },
-      { dur: 2.2, bgG: G, L: [{ k: 's_home', m: 'fit', cx: .5, cy: .5, w: 1, h: 1, c: 'fe' }], on: 0, cam: [[0, 2.2, .38, .55], [2.2, 2.2, .46, .68]],
-        cur: [[.5, 0, .4, .6], [1.2, 0, .52, .6], [1.5, 0, .52, .6, 1], [2.2, 0, .52, .62]] },
-      { dur: 3.0, bgG: G, cap: ['Tasks', 'The next job first, the map right behind it'],
-        L: [{ k: 's_home', m: 'fit', cx: .5, cy: .64, w: .7, h: .74, c: 'fe car', a: [[0, 0, 0, 1, 1], [.5, 0, 0, 1, 1], [2.1, -.5, 0, .82, 1], [3, -.52, 0, .82, 1]] },
-            { k: 's_tasks', m: 'fit', cx: .5, cy: .64, w: .7, h: .74, c: 'fe car', a: [[0, .5, 0, .82, 1], [.5, .5, 0, .82, 1], [2.1, 0, 0, 1, 1], [3, 0, 0, 1.02, 1]] }] },
-      { dur: 2.8, bgG: G, L: [{ k: 's_tasks', m: 'fit', cx: .5, cy: .5, w: 1, h: 1, c: 'fe' }], on: 0, cam: [[0, 1, .5, .5], [.6, 1, .5, .5], [2.0, 2.1, .62, .45], [2.8, 2.15, .64, .43]] },
-      { dur: 3.0, bg: '#F3E6DE', cap: ['3:45 → 1:20', 'Minutes spent navigating. Task success up 50% in testing.'],
-        L: [{ k: 's_home', m: 'fit', cx: .32, cy: .66, w: .46, h: .66, i: 'up', d: .1, c: 'r' }, { k: 's_tasks', m: 'fit', cx: .68, cy: .66, w: .46, h: .66, i: 'up', d: .22, c: 'r' }],
-        N: [{ k: 's_home', m: 'fit', cx: .5, cy: .45, w: .96, h: .36, i: 'up', d: .1, c: 'r' }, { k: 's_tasks', m: 'fit', cx: .5, cy: .8, w: .96, h: .34, i: 'up', d: .22, c: 'r' }] }
+      { dur: 3.4, bg: '#EFEDEA', cap: ['Zero Designs · Field operations', 'A field app for staff on the move'],
+        L: [{ k: 'sc_home', m: 'box', cy: .62, w: .3, h: .72, c: 'cardy', cx: .5, a: RISE }, { k: 'sc_map', m: 'box', cx: .25, cy: .67, w: .26, h: .6, c: 'cardy', i: 'up', d: .55 }, { k: 'sc_route', m: 'box', cx: .75, cy: .67, w: .26, h: .6, c: 'cardy', i: 'up', d: .65 }],
+        N: [{ k: 'sc_home', m: 'box', cy: .63, w: .66, h: .74, c: 'cardy', cx: .5, a: RISE }], cam: [[0, 1, .5, .5, 22], [1.4, 1, .5, .5, 0], [3.4, 1.02, .5, .55, 0]] },
+      { dur: 3.8, bg: '#EFEDEA', cap: ['Home', 'The shift, the clock and the next job'],
+        L: [{ k: 'sc_home', m: 'box', cy: .62, w: .3, h: .72, c: 'cardy', cx: .5 },
+            { k: 'sc_welcome', m: 'in', p: 0, b: [3.7, 15.4, 96.3, 31.6], c: 'pop', a: pop(.5, -.25, .02, 1.75, 3.8) },
+            { k: 'sc_quick', m: 'in', p: 0, b: [1.6, 33.6, 98.4, 54.0], c: 'pop', a: pop(1.2, .25, .06, 1.65, 3.8) }],
+        cur: [[2.2, 2, .7, 1.1], [2.8, 2, .27, .42], [3.0, 2, .27, .42, 1], [3.8, 2, .27, .42]] },
+      { dur: 3.6, bg: '#EFEDEA', cap: ['Tasks', 'Every job for the day, on one map'],
+        L: [{ k: 'sc_map', m: 'box', cy: .62, w: .3, h: .72, c: 'cardy', cx: .5 }, { k: 'sc_stats2', m: 'in', p: 0, b: [2.6, 77.6, 97.4, 86.4], c: 'pop', a: pop(.7, .25, -.14, 1.75, 3.6) }],
+        cam: [[0, 1, .5, .5], [3.6, 1.04, .5, .5]], cur: [[2.1, 0, .5, .95], [2.4, 0, .5, .95, 1], [3.1, 0, .5, .62], [3.6, 0, .5, .62]] },
+      { dur: 3.6, bg: '#EFEDEA', cap: ['Swipe up', 'The day’s jobs, in order'],
+        L: [{ k: 'sc_map', m: 'box', cy: .62, w: .3, h: .72, c: 'cardy', cx: .5 }, { k: 'sc_list', m: 'in', p: 0, b: [0, 27.5, 100, 100], a: [[0, 0, .55, 1, 1], [.9, 0, 0, 1, 1]] },
+            { k: 'sc_start', m: 'in', p: 1, b: [5.5, 38.4, 80.0, 45.8], c: 'pop', a: pop(1.4, 0, -.02, 1.18, 3.6) }],
+        cur: [[1.6, 2, .8, 1.8], [2.4, 2, .5, .5], [2.6, 2, .5, .5, 1], [3.6, 2, .5, .5]] },
+      { dur: 3.6, bg: '#EFEDEA', cap: ['On the way', 'The route and the job, together'],
+        L: [{ k: 'sc_route', m: 'box', cy: .62, w: .3, h: .72, c: 'cardy', cx: .5 }, { k: 'sc_prog', m: 'in', p: 0, b: [3.0, 68.6, 97.0, 88.6], c: 'pop', a: pop(.8, .25, -.2, 1.7, 3.6) }],
+        cam: [[0, 1, .5, .5], [3.6, 1.05, .5, .45]], cur: [[2.2, 1, .3, 1.3], [2.8, 1, .76, .8], [3.0, 1, .76, .8, 1], [3.6, 1, .76, .8]] },
+      { dur: 3.2, bg: '#EFEDEA',
+        L: [{ k: 'sc_route', m: 'box', cy: .62, w: .3, h: .72, c: 'cardy', cx: .5 }, { k: 'sc_finish', m: 'in', p: 0, b: [0, 33.2, 100, 100], a: [[0, 0, .55, 1, 1], [.8, 0, 0, 1, 1]] },
+            { k: 'sc_finbtn', m: 'in', p: 1, b: [3.6, 84.2, 97.0, 95.4], c: 'pop', a: pop(1.2, 0, -.02, 1.14, 3.2) }],
+        cam: [[0, 1, .5, .5], [.9, 1, .5, .5], [3.2, 1.25, .5, .78]], cur: [[1.4, 2, .8, 2.2], [2.1, 2, .5, .5], [2.3, 2, .5, .5, 1], [3.2, 2, .5, .5]] },
+      { dur: 3.6, bg: '#EFEDEA', cap: ['3:45 → 1:20', 'Minutes spent navigating. Task success up 50% in testing.'],
+        L: [{ k: 'sc_map3', m: 'box', cy: .62, w: .3, h: .72, c: 'cardy', cx: .5 }, { k: 'sc_stats3', m: 'in', p: 0, b: [2.6, 77.6, 97.4, 86.4], c: 'pop', a: pop(.6, .25, -.14, 1.8, 3.6) },
+            { k: 'sc_home', m: 'box', cx: .22, cy: .67, w: .26, h: .6, c: 'cardy', i: 'left', d: .9 }],
+        N: [{ k: 'sc_map3', m: 'box', cy: .63, w: .66, h: .74, c: 'cardy', cx: .5 }, { k: 'sc_stats3', m: 'in', p: 0, b: [2.6, 77.6, 97.4, 86.4], c: 'pop', a: pop(.6, .25, -.14, 1.8, 3.6) }] }
     ] },
     adani: { cursor: 'touch', shots: [
-      { dur: 3.2, bg: '#FFFFFF', cap: ['Adani Digital Labs · Travel', 'The whole trip, in one timeline'],
-        L: [{ k: 'a_journey', m: 'box', cx: .5, cy: .64, ty: .27, w: .36, h: .78, c: 'r cardy', a: [[0, 0, .3, .9, 0], [1.3, 0, 0, 1, 1], [3.2, 0, -.03, 1.02, 1]] }],
-        cam: [[0, 1, .5, .5, 24], [1.4, 1, .5, .5, 0]] },
-      { dur: 3.8, bg: '#FFFFFF', cap: ['My Journey', 'Answers before anyone has to ask'],
-        L: [{ k: 'a_journey', m: 'box', cx: .5, cy: .64, ty: .27, w: .36, h: .74, c: 'r cardy' },
-            { k: 'a_flight', m: 'in', p: 0, b: [5, 11.5, 95, 38.6], c: 'pop', a: pop(.5, -.27, .05, 1.3, 3.8) },
-            { k: 'a_board', m: 'box', cx: .79, cy: .66, w: .3, h: .4, i: 'left', d: 1.3, c: 'r cardy' }],
-        N: [{ k: 'a_journey', m: 'fit', cx: .5, cy: .64, w: .9, h: .74, c: 'r' },
-            { k: 'a_flight', m: 'in', p: 0, b: [5, 11.5, 95, 38.6], c: 'pop', a: pop(.5, -.2, -.02, 1.45, 3.8) },
-            { k: 'a_board', m: 'in', p: 0, b: [0, 74, 100, 100], c: 'pop', a: pop(1.4, .2, -.06, 1.4, 3.8) }] },
-      { dur: 2.8, bg: '#FFFFFF', cap: ['Travel checklist', 'Help that shows up at the right moment'],
-        L: [{ k: 'a_banner', m: 'box', cx: .5, cy: .64, w: .7, h: .6, i: 'up', d: .1, c: 'r cardy' }], cam: [[0, 1, .5, .5], [2.8, 1.05, .5, .6]] },
-      { dur: 2.8, bg: '#FFFFFF', L: [{ k: 'a_board', m: 'box', cx: .5, cy: .5, w: .56, h: .86, i: 'up' }], cam: [[0, 1, .5, .5], [2.8, 1.06, .5, .6]],
-        cur: [[.6, 0, .5, .6], [1.5, 0, .25, .93], [1.8, 0, .25, .93, 1], [2.8, 0, .27, .9]] },
-      { dur: 3.2, bg: '#FFFFFF', cap: ['Anxiety score 7.2 → 3.1', 'Finding the gate went from 30 seconds to 8'],
-        L: [{ k: 'a_journey', m: 'box', cx: .3, cy: .66, ty: .3, w: .3, h: .7, i: 'up', d: .1, c: 'r cardy' }, { k: 'a_flight', m: 'box', cx: .7, cy: .5, w: .36, h: .34, i: 'up', d: .3, c: 'r cardy' },
-            { k: 'a_board', m: 'box', cx: .7, cy: .84, w: .36, h: .26, i: 'up', d: .45, c: 'r cardy' }],
-        N: [{ k: 'a_journey', m: 'fit', cx: .5, cy: .64, w: .9, h: .72, c: 'r', i: 'up', d: .1 }] }
+      { dur: 3.4, bg: '#F1F2F4', cap: ['Adani Digital Labs · Travel', 'The whole trip, in one timeline'],
+        L: [{ k: '@a_page', m: 'box', cx: .5, cy: .62, w: .3, h: .72, c: 'cardy', a: RISE, sc: [[0, 0], [1.6, 0], [3.4, .12]] },
+            { k: '@a_page', m: 'box', cx: .25, cy: .67, w: .26, h: .6, c: 'cardy', i: 'up', d: .55, sc: [[0, .42]] },
+            { k: '@a_page', m: 'box', cx: .75, cy: .67, w: .26, h: .6, c: 'cardy', i: 'up', d: .65, sc: [[0, .86]] }],
+        N: [{ k: '@a_page', m: 'box', cx: .5, cy: .63, w: .66, h: .74, c: 'cardy', a: RISE, sc: [[0, 0], [1.6, 0], [3.4, .12]] }], cam: [[0, 1, .5, .5, 22], [1.4, 1, .5, .5, 0], [3.4, 1.02, .5, .55, 0]] },
+      { dur: 3.8, bg: '#F1F2F4', cap: ['My Journey', 'Flights first, every detail a tap away'],
+        L: [{ k: '@a_page', m: 'box', cx: .5, cy: .62, w: .3, h: .72, c: 'cardy', sc: [[0, 0]] }, { k: 'a_fl', m: 'in', p: 0, b: [4.27, 13.9, 94.1, 40.9], c: 'pop', a: pop(.5, -.25, .02, 1.55, 3.8) },
+            { k: 'a_term', m: 'box', cx: .79, cy: .5, w: .25, h: .22, c: 'cardy', i: 'left', d: 1.3 }, { k: 'a_gate', m: 'box', cx: .79, cy: .77, w: .25, h: .22, c: 'cardy', i: 'left', d: 1.5 }],
+        N: [{ k: '@a_page', m: 'box', cx: .5, cy: .63, w: .66, h: .74, c: 'cardy', sc: [[0, 0]] }, { k: 'a_fl', m: 'in', p: 0, b: [4.27, 13.9, 94.1, 40.9], c: 'pop', a: pop(.5, 0, .03, 1.2, 3.8) }] },
+      { dur: 3.8, bg: '#F1F2F4', cap: ['Before you leave', 'Help that shows up at the right moment'],
+        L: [{ k: '@a_page', m: 'box', cx: .5, cy: .62, w: .3, h: .72, c: 'cardy', sc: [[0, 0], [.3, 0], [1.6, .287]] }, { k: 'a_cab', m: 'in', p: 0, b: [10.9, 8.0, 95.7, 28.6], c: 'pop', a: pop(1.8, .25, .02, 1.6, 3.8) }],
+        cur: [[2.5, 1, .5, 1.5], [3.0, 1, .2, .86], [3.2, 1, .2, .86, 1], [3.8, 1, .2, .86]] },
+      { dur: 3.6, bg: '#F1F2F4', cap: ['At the airport', 'Terminal and gate, right when you need them'],
+        L: [{ k: '@a_page', m: 'box', cx: .5, cy: .62, w: .3, h: .72, c: 'cardy', sc: [[0, .287], [.2, .287], [1.5, .49]] }, { k: 'a_gate', m: 'in', p: 0, b: [10.9, 14.5, 96.0, 32.1], c: 'pop', a: pop(1.7, -.25, .02, 1.6, 3.6) }] },
+      { dur: 3.8, bg: '#F1F2F4', cap: ['Anxiety score 7.2 → 3.1', 'Finding the gate went from 30 seconds to 8'],
+        L: [{ k: '@a_page', m: 'box', cx: .5, cy: .62, w: .3, h: .72, c: 'cardy', sc: [[0, .49], [.3, .49], [3.2, 1]] }, { k: 'a_bag', m: 'box', cx: .2, cy: .48, w: .24, h: .2, c: 'cardy', i: 'up', d: .7 },
+            { k: 'a_wx', m: 'box', cx: .8, cy: .52, w: .24, h: .3, c: 'cardy', i: 'up', d: .9 }, { k: 'a_help', m: 'box', cx: .2, cy: .78, w: .24, h: .26, c: 'cardy', i: 'up', d: 1.1 }],
+        N: [{ k: '@a_page', m: 'box', cx: .5, cy: .63, w: .66, h: .74, c: 'cardy', sc: [[0, .49], [.3, .49], [3.2, 1]] }] }
     ] }
   };
   function keys(K, t, n) {
@@ -691,6 +783,7 @@ html.no-notes .sample-note { display: none; }
       const mk = arr => arr.map(l => {
         let e;
         if (l.k[0] === '#') { e = document.createElement('div'); e.style.background = l.k; }
+        else if (l.k[0] === '@') { e = document.createElement('div'); e.style.backgroundImage = `url(${SRC(l.k.slice(1))})`; e.style.backgroundSize = '100% auto'; e.style.backgroundRepeat = 'no-repeat'; e.style.backgroundColor = '#fff'; }
         else { e = new Image(); e.src = SRC(l.k); e.alt = ''; e.decoding = 'async'; e.loading = 'lazy'; }
         e.className = 'ly' + (l.c ? ' ' + l.c : '') + (l.a ? ' kf' : '');
         if (l.i) { e.dataset.in = l.i; e.style.transitionDelay = (l.d || 0) + 's'; }
@@ -719,7 +812,7 @@ html.no-notes .sample-note { display: none; }
         if (l.m === 'in') { const P = s.layers[l.p].r, b = l.b; x = P.x + P.w * b[0] / 100; y = P.y + P.h * b[1] / 100; lw = P.w * (b[2] - b[0]) / 100; lh = P.h * (b[3] - b[1]) / 100; }
         else {
           const [nw, nh] = N[l.k]; let w2 = l.w ?? 1, h2 = l.h ?? 1;
-          if (f.narrow && !s.nar && l.m !== 'cover') { w2 = Math.min(.96, w2 * 1.7); h2 = Math.min(.9, h2 * 1.1); }
+          if (f.narrow && !s.nar && l.m !== 'cover') { w2 = Math.min(.96, w2 * 1.7); if (nw > nh) h2 = Math.min(.9, h2 * 1.1); }
           if (l.m === 'cover') { const sc = Math.max(W / nw, H / nh); lw = nw * sc; lh = nh * sc; x = (W - lw) * l.cx; y = (H - lh) * l.cy; }
           else { const tall = l.ty !== undefined && !f.narrow; if (tall) h2 = 9; const sc = Math.min(W * w2 / nw, H * h2 / nh); lw = nw * sc; lh = nh * sc; x = W * l.cx - lw / 2; y = tall ? H * l.ty : H * l.cy - lh / 2; }
         }
@@ -731,9 +824,10 @@ html.no-notes .sample-note { display: none; }
   function animLayers(f, s, lt) {
     const W = f.W, H = f.H;
     s.layers.forEach(o => {
+      if (o.l.sc) o.e.style.backgroundPositionY = (keys(o.l.sc, lt, 1)[0] * 100).toFixed(2) + '%';
       const a = o.l.a; if (!a) return;
       let [dx, dy, sc, op, cl] = keys(a, lt, 5);
-      if (f.narrow) { dy += dx * .45; dx *= .18; if (o.l.m === 'in') sc = 1 + (sc - 1) * 1.3; }
+      if (f.narrow) { dy += dx * .45; dx *= o.l.m === 'in' ? 0 : .18; if (o.l.m === 'in') sc = Math.min(1 + (sc - 1) * 1.3, Math.max(1, .94 * W / o.r.w)); }
       if (o.l.c && o.l.c.includes('car')) { const off = Math.abs(dx) / .58; op *= 1 - .55 * Math.min(1, off); }
       o.e.style.transform = `translate(${(dx * W).toFixed(1)}px,${(dy * H).toFixed(1)}px) scale(${sc.toFixed(4)})`;
       o.e.style.opacity = op.toFixed(3);
