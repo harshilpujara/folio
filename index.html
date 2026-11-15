@@ -216,21 +216,21 @@ a.q:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
 .qstage { display: none; }
 .quests.gl .qgrid { display: none; }
 .quests.gl .qstage { display: block; }
-.qstage { position: relative; width: 100vw; margin-left: calc(50% - 50vw); height: clamp(520px, 82svh, 900px); background: #F2F2F0; cursor: grab; outline: none; touch-action: pan-y; user-select: none; -webkit-user-select: none; border-top: 1px solid var(--grid); border-bottom: 1px solid var(--grid); overflow: hidden; }
+.qstage { position: relative; width: 100%; height: clamp(520px, 82svh, 900px); background: #F2F2F0; cursor: grab; outline: none; touch-action: pan-y; user-select: none; -webkit-user-select: none; border-top: 1px solid var(--grid); border-bottom: 1px solid var(--grid); overflow: hidden; }
 .qstage.dragging, .qstage.dragging .qov { cursor: grabbing; }
 .qstage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .qstage:focus-visible { box-shadow: inset 0 0 0 2px var(--sky-d); }
 .qov { --u: 8px; position: absolute; z-index: 2; display: block; border-radius: calc(var(--u) * 3.4); color: #141414; text-decoration: none; opacity: 0; pointer-events: none; -webkit-user-drag: none; }
 .qov:not([href]) { cursor: grab; }
-.qpanel { position: absolute; left: calc(var(--u) * 2); right: calc(var(--u) * 2); bottom: calc(var(--u) * 2); height: calc(var(--u) * 15.5); border-radius: calc(var(--u) * 1.4); background: rgba(255,255,255,.94); box-shadow: 0 calc(var(--u) * .6) calc(var(--u) * 3) rgba(20,16,40,.12);
+.qpanel { position: absolute; left: calc(var(--u) * 2); right: calc(var(--u) * 2); bottom: calc(var(--u) * 2); height: calc(var(--u) * 12); border-radius: calc(var(--u) * 1.4); background: rgba(255,255,255,.94); box-shadow: 0 calc(var(--u) * .6) calc(var(--u) * 3) rgba(20,16,40,.12);
   transition: transform 250ms cubic-bezier(.22, 1, .36, 1), background-color 250ms cubic-bezier(.22, 1, .36, 1), box-shadow 250ms cubic-bezier(.22, 1, .36, 1); }
 .qpanel > .vk, .qpanel > .vn, .qpanel > .vl { position: absolute; left: calc(var(--u) * 2.6); white-space: nowrap; line-height: 1; }
 .qpanel > .vk { top: calc(var(--u) * (4.1 - 1.25 * .78)); font: 500 calc(var(--u) * 1.25) "Geist Mono", ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; color: #8A8A84; }
-.qpanel > .vn { top: calc(var(--u) * (9.3 - 4.4 * .8)); font: 400 calc(var(--u) * 4.4) "Averia Serif Libre", Georgia, serif; letter-spacing: -.03em; }
-.qpanel > .vl { top: calc(var(--u) * (12.6 - 1.6 * .76)); font: 400 calc(var(--u) * 1.6) Geist, system-ui, sans-serif; color: #4A4A45; }
+.qpanel > .vn { top: calc(var(--u) * (5.7 - 4.4 * .8)); font: 400 calc(var(--u) * 4.4) "Averia Serif Libre", Georgia, serif; letter-spacing: -.03em; }
+.qpanel > .vl { top: calc(var(--u) * (9.1 - 1.6 * .76)); font: 400 calc(var(--u) * 1.6) Geist, system-ui, sans-serif; color: #4A4A45; }
 .qov.dark { color: #fff; } .qov.dark .qpanel { background: rgba(28,29,34,.92); } .qov.dark .vk { color: rgba(255,255,255,.5); } .qov.dark .vl { color: rgba(255,255,255,.66); }
 .qov.muted { color: #8E8D87; } .qov.muted .vl { color: #9C9B95; }
-.qgo2 { position: absolute; right: calc(var(--u) * 2.6); top: calc(var(--u) * 5.25); height: calc(var(--u) * 5); width: calc(var(--u) * 17); display: flex; border: 1px solid #141414; background: #fff; overflow: hidden; }
+.qgo2 { position: absolute; right: calc(var(--u) * 2.6); top: calc(var(--u) * 3.5); height: calc(var(--u) * 5); width: calc(var(--u) * 17); display: flex; border: 1px solid #141414; background: #fff; overflow: hidden; }
 .qgo2[hidden] { display: none; }
 .qgo2 .t { position: relative; flex: 1; display: flex; align-items: center; padding-left: calc(var(--u) * 2.1); font: 500 calc(var(--u) * 1.55) Geist, system-ui, sans-serif; color: #141414; transition: color 200ms ease; }
 .qgo2 .a { position: relative; width: calc(var(--u) * 5); background: #141414; color: #fff; display: grid; place-items: center; }
@@ -241,8 +241,8 @@ a.q:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
 .qov.tall .qpanel { left: 0; right: 0; bottom: 0; top: 0; height: auto; background: none; box-shadow: none; border-radius: 0; }
 .qov.tall .qpanel > .vk, .qov.tall .qpanel > .vn, .qov.tall .qpanel > .vl { left: calc(var(--u) * 6); }
 .qov.tall .qpanel > .vk { top: calc(var(--u) * (var(--my) + 9 - 3 * .78)); font-size: calc(var(--u) * 3); }
-.qov.tall .qpanel > .vn { top: calc(var(--u) * (var(--my) + 20 - 10 * .8)); font-size: calc(var(--u) * 10); }
-.qov.tall .qpanel > .vl { top: calc(var(--u) * (var(--my) + 28 - 3.9 * .76)); font-size: calc(var(--u) * 3.9); }
+.qov.tall .qpanel > .vn { top: calc(var(--u) * (var(--my) + 14 - 10 * .8)); font-size: calc(var(--u) * 10); }
+.qov.tall .qpanel > .vl { top: calc(var(--u) * (var(--my) + 22 - 3.9 * .76)); font-size: calc(var(--u) * 3.9); }
 .qov.tall .qgo2 { left: calc(var(--u) * 6); right: calc(var(--u) * 6); top: auto; bottom: calc(var(--u) * 6); width: auto; height: calc(var(--u) * 13); }
 .qov.tall .qgo2 .t { font-size: calc(var(--u) * 4); padding-left: calc(var(--u) * 5.5); }
 .qov.tall .qgo2 .a { width: calc(var(--u) * 13); }
@@ -506,7 +506,7 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
         <canvas id="qcv" aria-hidden="true"></canvas>
         <a class="qov" id="qov" target="_blank" rel="noopener">
           <span class="qpanel">
-            <span class="vk"></span><span class="vn"></span><span class="vl"></span>
+            <span class="vn"></span><span class="vl"></span>
             <span class="qgo2 gcta"><span class="t">Try yapp</span><span class="a"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 10 10 4M5 4h5v5"/></svg></span></span>
           </span>
         </a>
@@ -516,28 +516,28 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
         <a class="q row" href="https://useyapp.vercel.app" target="_blank" rel="noopener">
           <div class="qm s" style="--i:0"><video muted loop playsinline preload="none" poster="img/v3/q_yapp.webp" data-src="" aria-hidden="true"></video><img src="img/v3/q_yapp.webp" alt="The yapp landing page: Talk instead of typing." loading="lazy" decoding="async"></div>
           <div class="qb">
-            <div class="s" style="--i:1"><p class="qn">Side quest 01</p><h3>yapp</h3><p class="d">Talk instead of typing. Free, open-source voice-to-text for Windows: press Ctrl+Space in any app, talk, and clean text lands at your cursor.</p><div class="qt"><span>Rust</span><span>Open source</span><span>Windows</span></div></div>
+            <div class="s" style="--i:1"><h3>yapp</h3><p class="d">Talk instead of typing. Free, open-source voice-to-text for Windows: press Ctrl+Space in any app, talk, and clean text lands at your cursor.</p><div class="qt"><span>Rust</span><span>Open source</span><span>Windows</span></div></div>
             <span class="qgo s" style="--i:2"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 10 10 4M5 4h5v5"/></svg></span>
           </div>
         </a>
         <div class="q row">
           <div class="qm soon s" style="--i:0"><span>Video soon</span></div>
           <div class="qb">
-            <div class="s" style="--i:1"><p class="qn">Side quest 02</p><h3>Debrief</h3><p class="d">Write-up and demo coming soon.</p></div>
+            <div class="s" style="--i:1"><h3>Debrief</h3><p class="d">Write-up and demo coming soon.</p></div>
             
           </div>
         </div>
         <div class="q row slot">
           <div class="qm soon s" style="--i:0"><span>Video soon</span></div>
           <div class="qb">
-            <div class="s" style="--i:1"><p class="qn">Side quest 03</p><h3>Next quest</h3><p class="d">In the works.</p></div>
+            <div class="s" style="--i:1"><h3>Next quest</h3><p class="d">In the works.</p></div>
             
           </div>
         </div>
         <div class="q row slot">
           <div class="qm soon s" style="--i:0"><span>Video soon</span></div>
           <div class="qb">
-            <div class="s" style="--i:1"><p class="qn">Side quest 04</p><h3>Next quest</h3><p class="d">In the works.</p></div>
+            <div class="s" style="--i:1"><h3>Next quest</h3><p class="d">In the works.</p></div>
             
           </div>
         </div>
@@ -1108,7 +1108,7 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
   const POST_FS = `#version 300 es
   precision highp float;
   in vec2 vUv; out vec4 o;
-  uniform sampler2D tScene; uniform vec3 uBg; uniform float uZone, uK, uFlare, uFlarePow, uAber, uBlur, uSmear, uSat, uRim, uRimW, uRimHue, uCY;
+  uniform sampler2D tScene; uniform vec3 uBg; uniform vec2 uRes; uniform float uCell, uDot; uniform float uZone, uK, uFlare, uFlarePow, uAber, uBlur, uSmear, uSat, uRim, uRimW, uRimHue, uCY;
   vec2 remap(vec2 uv, float t, float kS, float mS) {
     float k = max(uK * kS, 1e-3);
     float g = (1.0 - exp(-k * t)) / k;
@@ -1122,26 +1122,36 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
   float cover(vec3 c) { return clamp(distance(c, uBg) * 2.4, 0.0, 1.0); }
   vec3 hue(vec3 c, float a) { const vec3 k = vec3(0.57735); float ca = cos(a); return c * ca + cross(k, c) * sin(a) + k * dot(k, c) * (1.0 - ca); }
   vec3 vivid(vec3 c) { float l = dot(c, vec3(0.299, 0.587, 0.114)); c = max(mix(vec3(l), c, 1.7), 0.0); return clamp(c / max(max(c.r, max(c.g, c.b)), 0.2) * 0.96, 0.0, 1.0); }
+  float zt(float x) { return clamp((abs(x * 2.0 - 1.0) - uZone) / max(1.0 - uZone, 1e-3), 0.0, 1.0); }
   void main() {
-    float sx = vUv.x * 2.0 - 1.0;
-    float t = clamp((abs(sx) - uZone) / max(1.0 - uZone, 1e-3), 0.0, 1.0);
-    if (t <= 0.0) { o = vec4(textureLod(tScene, vUv, 0.0).rgb, 1.0); return; }
+    vec2 px = vUv * uRes;
+    /* nested pixel grid: tier is picked per coarse 22px cell so finer cells always align inside it */
+    float tc = zt((floor(px.x / uCell) + 0.5) * uCell / uRes.x);
+    if (tc <= 0.0 && zt(vUv.x) <= 0.0) { o = vec4(textureLod(tScene, vUv, 0.0).rgb, 1.0); return; }
+    float S = uCell * (tc < 0.3 ? 0.25 : tc < 0.62 ? 0.5 : 1.0);
+    vec2 uv = (floor(px / S) + 0.5) * S / uRes;
+    float sx = uv.x * 2.0 - 1.0;
+    float t = zt(uv.x);
+    if (t <= 0.0) { o = vec4(textureLod(tScene, uv, 0.0).rgb, 1.0); return; }
     float s = sx < 0.0 ? -1.0 : 1.0, lod = uBlur * t * t, dx = uSmear * (1.0 - uZone) * t * t;
     vec3 col;
     for (int c = 0; c < 3; c++) {
-      float ch = float(c) - 1.0; vec2 z = remap(vUv, t, 1.0 + ch * uAber, 1.0 + ch * uAber * 2.0); float sum = 0.0;
+      float ch = float(c) - 1.0; vec2 z = remap(uv, t, 1.0 + ch * uAber, 1.0 + ch * uAber * 2.0); float sum = 0.0;
       for (int i = 0; i < 4; i++) sum += textureLod(tScene, vec2(0.5 + 0.5 * s * (z.x - float(i) / 3.0 * dx), z.y), lod)[c];
       col[c] = sum * 0.25;
     }
     float l = dot(col, vec3(0.299, 0.587, 0.114));
     col = clamp(mix(vec3(l), col, 1.0 + uSat * t), 0.0, 1.0);
     if (uRim > 0.0) {
-      vec3 o1 = tap(vUv, s, t, 1.0 + uRimW, lod + 0.7), o2 = tap(vUv, s, t, 1.0 + 2.2 * uRimW, lod + 1.3);
+      vec3 o1 = tap(uv, s, t, 1.0 + uRimW, lod + 0.7), o2 = tap(uv, s, t, 1.0 + 2.2 * uRimW, lod + 1.3);
       float c0 = cover(col), c1 = cover(o1), c2 = cover(o2);
       float r1 = clamp(c1 - c0, 0.0, 1.0), r2 = clamp(c2 - max(c0, c1), 0.0, 1.0), w = uRim * sqrt(t);
       col = mix(col, vivid(hue(o1, -uRimHue)), clamp(r1 * w, 0.0, 1.0));
       col = mix(col, mix(vivid(hue(o2, -uRimHue * 1.35)), vec3(1.0), 0.4), clamp(r2 * w, 0.0, 1.0));
     }
+    /* the site's pixel language: faint cells drop out, half-covered cells become a 2px checker */
+    float cv = cover(col), chk = mod(floor(px.x / uDot) + floor(px.y / uDot), 2.0);
+    if (cv < 0.1) col = uBg; else if (cv < 0.42) col = chk > 0.5 ? col : uBg;
     o = vec4(col, 1.0);
   }`;
   const mk = (vs, fs) => { const p = gl.createProgram(); for (const [t, src] of [[gl.VERTEX_SHADER, vs], [gl.FRAGMENT_SHADER, fs]]) { const s = gl.createShader(t); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { console.warn(gl.getShaderInfoLog(s)); return null; } gl.attachShader(p, s); } gl.linkProgram(p); return gl.getProgramParameter(p, gl.LINK_STATUS) ? p : null; };
@@ -1150,7 +1160,7 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
   sec.classList.add('gl');
   const loc = (p, names) => Object.fromEntries(names.map(k => [k, gl.getUniformLocation(p, k)]));
   const CU = loc(cardP, ['uProj', 'uPos', 'uRy', 'uSize', 'uMedia', 'uInfo', 'uMRect', 'uMFit', 'uCardBg', 'uInfoA', 'uZoom', 'uRadius', 'uSheen', 'uAngle', 'uFade', 'uHasMedia']);
-  const PU = loc(postP, ['tScene', 'uBg', 'uZone', 'uK', 'uFlare', 'uFlarePow', 'uAber', 'uBlur', 'uSmear', 'uSat', 'uRim', 'uRimW', 'uRimHue', 'uCY']);
+  const PU = loc(postP, ['tScene', 'uBg', 'uRes', 'uCell', 'uDot', 'uZone', 'uK', 'uFlare', 'uFlarePow', 'uAber', 'uBlur', 'uSmear', 'uSat', 'uRim', 'uRimW', 'uRimHue', 'uCY']);
   const quad = gl.createVertexArray(); gl.bindVertexArray(quad);
   const vb = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, vb); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-.5, -.5, .5, -.5, -.5, .5, .5, .5]), gl.STATIC_DRAW);
   const aP = gl.getAttribLocation(cardP, 'aP'); gl.enableVertexAttribArray(aP); gl.vertexAttribPointer(aP, 2, gl.FLOAT, false, 0, 0);
@@ -1215,7 +1225,6 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
     if (L.panel) { g.save(); g.shadowColor = 'rgba(20,16,40,.12)'; g.shadowBlur = 3 * u; g.shadowOffsetY = .6 * u; g.fillStyle = c.dark ? 'rgba(28,29,34,.92)' : 'rgba(255,255,255,.94)'; rr(g, L.panel.x, L.panel.y, L.panel.w, L.panel.h, L.panel.r); g.fill(); g.restore(); }
     const ink = c.dark ? '#FFFFFF' : c.muted ? '#8E8D87' : '#141414', ink2 = c.dark ? 'rgba(255,255,255,.66)' : c.muted ? '#9C9B95' : '#4A4A45', ink3 = c.dark ? 'rgba(255,255,255,.5)' : '#8A8A84';
     g.textBaseline = 'alphabetic';
-    g.font = `500 ${L.fk}px "Geist Mono", ui-monospace, monospace`; g.fillStyle = ink3; if ('letterSpacing' in g) g.letterSpacing = (L.fk * .08) + 'px'; g.fillText(c.kicker.toUpperCase(), L.tx, L.yk);
     if ('letterSpacing' in g) g.letterSpacing = (-L.ft * .03) + 'px';
     g.font = `400 ${L.ft}px "Averia Serif Libre", Georgia, serif`; g.fillStyle = ink; g.fillText(c.name, L.tx, L.yt);
     if ('letterSpacing' in g) g.letterSpacing = '0px';
@@ -1230,13 +1239,13 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
   }
   function layout(c, Wp, Hp, u) {
     if (!tall) {
-      const ph = 15.5 * u, panel = { x: 2 * u, y: Hp - 2 * u - ph, w: Wp - 4 * u, h: ph, r: 1.4 * u }, tx = panel.x + 2.6 * u;
+      const ph = 12 * u, panel = { x: 2 * u, y: Hp - 2 * u - ph, w: Wp - 4 * u, h: ph, r: 1.4 * u }, tx = panel.x + 2.6 * u;
       const ctaH = 5 * u, ctaW = c.cta ? 17 * u : 0;
-      return { panel, tx, yk: panel.y + 4.1 * u, yt: panel.y + 9.3 * u, yl: panel.y + 12.6 * u, fk: 1.25 * u, ft: 4.4 * u, fl: 1.6 * u,
+      return { panel, tx, yt: panel.y + 5.7 * u, yl: panel.y + 9.1 * u, fk: 1.25 * u, ft: 4.4 * u, fl: 1.6 * u,
         cta: { x: panel.x + panel.w - 2.6 * u - ctaW, y: panel.y + (ph - ctaH) / 2, w: ctaW, h: ctaH, f: 1.55 * u } };
     }
     const my = mediaRect()[3] * Hp, tx = 6 * u;
-    return { panel: null, tx, yk: my + 9 * u, yt: my + 20 * u, yl: my + 28 * u, fk: 3 * u, ft: 10 * u, fl: 3.9 * u,
+    return { panel: null, tx, yt: my + 14 * u, yl: my + 22 * u, fk: 3 * u, ft: 10 * u, fl: 3.9 * u,
       cta: { x: tx, y: Hp - 6 * u - 13 * u, w: Wp - 12 * u, h: 13 * u, f: 4 * u } };
   }
 
@@ -1279,10 +1288,10 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
   ov.addEventListener('pointerenter', () => hoverT = 1); ov.addEventListener('pointerleave', () => hoverT = 0);
 
   /* overlay content (crisp HTML for the settled card) */
-  const ovK = ov.querySelector('.vk'), ovT = ov.querySelector('.vn'), ovL = ov.querySelector('.vl'), ovA = ov.querySelector('.qgo2'), count = sec.querySelector('.qcount b');
+  const ovT = ov.querySelector('.vn'), ovL = ov.querySelector('.vl'), ovA = ov.querySelector('.qgo2'), count = sec.querySelector('.qcount b');
   function setOverlay(i) {
     const c = CARDS[i];
-    ovK.textContent = c.kicker; ovT.textContent = c.name; ovL.textContent = c.line;
+    ovT.textContent = c.name; ovL.textContent = c.line;
     ov.classList.toggle('dark', !!c.dark); ov.classList.toggle('muted', !!c.muted);
     if (c.href) { ov.setAttribute('href', c.href); ov.setAttribute('aria-label', `${c.name}: ${c.line} Opens in a new tab.`); ovA.hidden = false; ovA.querySelector('.t').textContent = c.cta; } else { ov.removeAttribute('href'); ov.setAttribute('aria-label', `${c.name}: ${c.line}`); ovA.hidden = true; }
     if (count) count.textContent = String(i + 1).padStart(2, '0');
@@ -1344,7 +1353,7 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
     gl.useProgram(postP); gl.bindVertexArray(empty);
     gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, sceneTex); gl.uniform1i(PU.tScene, 0);
     const zone = Math.min(.97, sideInner + P.zone * (1 - sideInner));
-    gl.uniform3f(PU.uBg, BG[0], BG[1], BG[2]); gl.uniform1f(PU.uCY, .5);
+    gl.uniform3f(PU.uBg, BG[0], BG[1], BG[2]); gl.uniform1f(PU.uCY, .5); gl.uniform2f(PU.uRes, cv.width, cv.height); gl.uniform1f(PU.uCell, 22 * dpr); gl.uniform1f(PU.uDot, 2 * dpr);
     gl.uniform1f(PU.uZone, Math.max(.05, zone - P.speedZone * q)); gl.uniform1f(PU.uK, P.stretch * (1 + q)); gl.uniform1f(PU.uFlare, P.flare * (1 + .35 * q)); gl.uniform1f(PU.uFlarePow, P.flarePow);
     gl.uniform1f(PU.uAber, P.aberration); gl.uniform1f(PU.uBlur, P.blur); gl.uniform1f(PU.uSmear, P.smear * (1 + q)); gl.uniform1f(PU.uSat, P.saturate);
     gl.uniform1f(PU.uRim, P.rim); gl.uniform1f(PU.uRimW, P.rimWidth); gl.uniform1f(PU.uRimHue, P.rimHue * Math.PI / 180);
