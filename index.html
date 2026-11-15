@@ -189,7 +189,13 @@ html.no-notes .sample-note { display: none; }
 .ds-row .c5 svg { width: 24px; height: 24px; }
 
 /* ---------- AI side quests ---------- */
-.quests { position: relative; z-index: 4; background: var(--paper); --grid: #ECECE8; overflow-x: clip; }
+.quests { position: relative; z-index: 5; overflow-x: clip; background: #0D0D0F; color: #F2F2F0; --grid: #232327; --ink: #F2F2F0; --ink-2: rgba(242,242,240,.62); --ink-3: rgba(242,242,240,.42); }
+.quests .whead p { color: rgba(242,242,240,.6); }
+.quests .qm, .quests .qm.soon { background-color: #17171A; box-shadow: inset 0 0 0 1px #26262B; }
+.quests .qm.soon { background-image: repeating-conic-gradient(#1D1D21 0 25%, transparent 0 50%); }
+.quests .qm.soon span { background: #17171A; box-shadow: inset 0 0 0 1px #2C2C31; }
+.quests .qt span { background: #1A1A1E; box-shadow: inset 0 0 0 1px #2C2C31; }
+.quests .qgo { background: #F2F2F0; color: #0D0D0F; }
 .quests > .wrap { position: relative; border-left: 1px solid var(--grid); border-right: 1px solid var(--grid); padding-left: 0; padding-right: 0; }
 .quests .whead { border-top: 1px solid var(--grid); }
 .qgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -212,11 +218,15 @@ a.q:hover .qgo svg, a.q:focus-visible .qgo svg { transform: rotate(45deg); }
 a.q:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
 .q.slot h3, .q.slot p.d { color: var(--ink-3); }
 .q.slot .qm { aspect-ratio: 16 / 6; }
+/* pixel transition: dark cells grow up out of the section into the white above it */
+.qpx { position: absolute; left: 0; right: 0; bottom: 100%; width: 100%; height: 64vh; height: 64svh; display: block; pointer-events: none; image-rendering: pixelated; }
+.quests > .wrap { position: relative; z-index: 1; }
+
 /* stretch carousel */
 .qstage { display: none; }
 .quests.gl .qgrid { display: none; }
 .quests.gl .qstage { display: block; }
-.qstage { position: relative; width: 100%; height: clamp(520px, 82svh, 900px); background: #F2F2F0; cursor: grab; outline: none; touch-action: pan-y; user-select: none; -webkit-user-select: none; border-top: 1px solid var(--grid); border-bottom: 1px solid var(--grid); overflow: hidden; }
+.qstage { position: relative; width: 100%; height: clamp(520px, 82svh, 900px); background: #101012; cursor: grab; outline: none; touch-action: pan-y; user-select: none; -webkit-user-select: none; border-top: 1px solid var(--grid); border-bottom: 1px solid var(--grid); overflow: hidden; }
 .qstage.dragging, .qstage.dragging .qov { cursor: grabbing; }
 .qstage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .qstage:focus-visible { box-shadow: inset 0 0 0 2px var(--sky-d); }
@@ -228,8 +238,8 @@ a.q:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
 .qpanel > .vk { top: calc(var(--u) * (4.1 - 1.25 * .78)); font: 500 calc(var(--u) * 1.25) "Geist Mono", ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; color: #8A8A84; }
 .qpanel > .vn { top: calc(var(--u) * (5.7 - 4.4 * .8)); font: 400 calc(var(--u) * 4.4) "Averia Serif Libre", Georgia, serif; letter-spacing: -.03em; }
 .qpanel > .vl { top: calc(var(--u) * (9.1 - 1.6 * .76)); font: 400 calc(var(--u) * 1.6) Geist, system-ui, sans-serif; color: #4A4A45; }
-.qov.dark { color: #fff; } .qov.dark .qpanel { background: rgba(28,29,34,.92); } .qov.dark .vk { color: rgba(255,255,255,.5); } .qov.dark .vl { color: rgba(255,255,255,.66); }
-.qov.muted { color: #8E8D87; } .qov.muted .vl { color: #9C9B95; }
+.qov.dark { color: #fff; } .qov.dark .qpanel { background: rgba(38,39,45,.92); } .qov.dark .vk { color: rgba(255,255,255,.5); } .qov.dark .vl { color: rgba(255,255,255,.66); }
+.qov.muted { color: #8E8D87; } .qov.muted .vl { color: #9C9B95; } .qov.dark.muted { color: #8C8C93; } .qov.dark.muted .vl { color: #6C6C73; }
 .qgo2 { position: absolute; right: calc(var(--u) * 2.6); top: calc(var(--u) * 3.5); height: calc(var(--u) * 5); width: calc(var(--u) * 17); display: flex; border: 1px solid #141414; background: #fff; overflow: hidden; }
 .qgo2[hidden] { display: none; }
 .qgo2 .t { position: relative; flex: 1; display: flex; align-items: center; padding-left: calc(var(--u) * 2.1); font: 500 calc(var(--u) * 1.55) Geist, system-ui, sans-serif; color: #141414; transition: color 200ms ease; }
@@ -247,13 +257,13 @@ a.q:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
 .qov.tall .qgo2 .t { font-size: calc(var(--u) * 4); padding-left: calc(var(--u) * 5.5); }
 .qov.tall .qgo2 .a { width: calc(var(--u) * 13); }
 .qov.tall:hover .qpanel { transform: none; background: none; box-shadow: none; }
-.qctl { position: absolute; left: 50%; bottom: clamp(14px, 3.2%, 28px); translate: -50% 0; z-index: 3; display: flex; align-items: center; gap: 6px; padding: 4px; border-radius: 999px; background: rgba(255,255,255,.82); box-shadow: inset 0 0 0 1px #E4E3DE, 0 6px 18px -10px rgba(20,20,24,.25); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); cursor: default; }
+.qctl { position: absolute; left: 50%; bottom: clamp(14px, 3.2%, 28px); translate: -50% 0; z-index: 3; display: flex; align-items: center; gap: 6px; padding: 4px; border-radius: 999px; background: rgba(24,24,28,.78); box-shadow: inset 0 0 0 1px #2C2C31, 0 8px 22px -10px rgba(0,0,0,.6); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); cursor: default; }
 .qcount { font-family: var(--f-mono); font-size: 12px; letter-spacing: .06em; color: var(--ink-3); padding: 0 6px; min-width: 64px; text-align: center; }
 .qcount b { font-weight: 500; color: var(--ink); }
 .qb2 { width: 34px; height: 34px; display: grid; place-items: center; border: 0; border-radius: 50%; background: transparent; color: var(--ink); cursor: pointer; padding: 0; transition: background-color 150ms ease; }
 .qb2 svg { width: 14px; height: 14px; }
-.qb2:hover, .qb2:focus-visible { background: #EDECE7; outline: none; }
-.qhint { font-family: var(--f-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); padding: 0 10px 0 8px; border-left: 1px solid #E4E3DE; transition: opacity 250ms ease; }
+.qb2:hover, .qb2:focus-visible { background: #2A2A2F; outline: none; }
+.qhint { font-family: var(--f-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); padding: 0 10px 0 8px; border-left: 1px solid #2C2C31; transition: opacity 250ms ease; }
 .qstage.dragging .qhint { opacity: .3; }
 @media (max-width: 760px) { .qstage { height: clamp(520px, 80svh, 760px); } .qhint { display: none; } }
 
@@ -500,6 +510,7 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
   </section>
 
   <section class="quests" id="quests" aria-labelledby="questTitle">
+    <canvas class="qpx" id="qpx" aria-hidden="true"></canvas>
     <div class="wrap">
       <header class="whead row"><h2 id="questTitle" class="s" style="--i:0">AI side quests</h2><p class="s" style="--i:1">Small products I vibe-code with AI, outside the day job.</p><i class="nd bl"></i><i class="nd br"></i></header>
       <div class="qstage" id="qstage" tabindex="0" role="group" aria-roledescription="carousel" aria-label="AI side quests. Drag, swipe or use the arrow keys.">
@@ -1051,7 +1062,7 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
   const gl = cv.getContext('webgl2', { antialias: false, alpha: false, premultipliedAlpha: false, preserveDrawingBuffer: false });
   if (!gl) return;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const BG = [0xF2 / 255, 0xF2 / 255, 0xF0 / 255];
+  const BG = [0x10 / 255, 0x10 / 255, 0x12 / 255];
 
   /* tuned values: card size, spacing, depth, and the stretch look */
   const P = { hFrac: .627, wFrac: .56, wFracTall: .8, gap: .17, gapTall: .1, depthRatio: .515, fov: 32, radius: .034, sheen: .14,
@@ -1060,9 +1071,9 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
 
   const CARDS = [
     { kicker: 'Side quest 01 · Open source', name: 'yapp', line: 'Talk instead of typing. Voice-to-text for Windows.', tags: ['Rust', 'Open source', 'Windows'], href: 'https://useyapp.vercel.app', cta: 'Try yapp', video: 'img/q/yapp.mp4', poster: 'img/q/yapp.webp', bg: '#F4F1FB' },
-    { kicker: 'Side quest 02', name: 'Debrief', line: 'Case study and demo coming soon.', tags: [], art: 'debrief', bg: '#17181C', dark: true },
-    { kicker: 'Side quest 03', name: 'Next quest', line: 'In the works.', tags: [], art: 'slot', bg: '#E9E8E3', muted: true },
-    { kicker: 'Side quest 04', name: 'Next quest', line: 'In the works.', tags: [], art: 'slot', bg: '#E9E8E3', muted: true }
+    { kicker: 'Side quest 02', name: 'Debrief', line: 'Case study and demo coming soon.', tags: [], art: 'debrief', bg: '#1B1C21', dark: true },
+    { kicker: 'Side quest 03', name: 'Next quest', line: 'In the works.', tags: [], art: 'slot', bg: '#1A1A1E', dark: true, muted: true },
+    { kicker: 'Side quest 04', name: 'Next quest', line: 'In the works.', tags: [], art: 'slot', bg: '#1A1A1E', dark: true, muted: true }
   ];
   const n = CARDS.length;
 
@@ -1108,7 +1119,8 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
   const POST_FS = `#version 300 es
   precision highp float;
   in vec2 vUv; out vec4 o;
-  uniform sampler2D tScene; uniform vec3 uBg; uniform vec2 uRes; uniform float uCell, uDot; uniform float uZone, uK, uFlare, uFlarePow, uAber, uBlur, uSmear, uSat, uRim, uRimW, uRimHue, uCY;
+  uniform sampler2D tScene; uniform vec3 uBg, uGridCol; uniform vec2 uRes, uMouse; uniform float uCell, uDot, uHov, uGrid, uR, uLW;
+  uniform float uZone, uK, uFlare, uFlarePow, uAber, uBlur, uSmear, uSat, uRim, uRimW, uRimHue, uCY;
   vec2 remap(vec2 uv, float t, float kS, float mS) {
     float k = max(uK * kS, 1e-3);
     float g = (1.0 - exp(-k * t)) / k;
@@ -1123,17 +1135,10 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
   vec3 hue(vec3 c, float a) { const vec3 k = vec3(0.57735); float ca = cos(a); return c * ca + cross(k, c) * sin(a) + k * dot(k, c) * (1.0 - ca); }
   vec3 vivid(vec3 c) { float l = dot(c, vec3(0.299, 0.587, 0.114)); c = max(mix(vec3(l), c, 1.7), 0.0); return clamp(c / max(max(c.r, max(c.g, c.b)), 0.2) * 0.96, 0.0, 1.0); }
   float zt(float x) { return clamp((abs(x * 2.0 - 1.0) - uZone) / max(1.0 - uZone, 1e-3), 0.0, 1.0); }
-  void main() {
-    vec2 px = vUv * uRes;
-    /* nested pixel grid: tier is picked per coarse 22px cell so finer cells always align inside it */
-    float tc = zt((floor(px.x / uCell) + 0.5) * uCell / uRes.x);
-    if (tc <= 0.0 && zt(vUv.x) <= 0.0) { o = vec4(textureLod(tScene, vUv, 0.0).rgb, 1.0); return; }
-    float S = uCell * (tc < 0.3 ? 0.25 : tc < 0.62 ? 0.5 : 1.0);
-    vec2 uv = (floor(px / S) + 0.5) * S / uRes;
-    float sx = uv.x * 2.0 - 1.0;
+  vec3 stretchAt(vec2 uv) {
     float t = zt(uv.x);
-    if (t <= 0.0) { o = vec4(textureLod(tScene, uv, 0.0).rgb, 1.0); return; }
-    float s = sx < 0.0 ? -1.0 : 1.0, lod = uBlur * t * t, dx = uSmear * (1.0 - uZone) * t * t;
+    if (t <= 0.0) return textureLod(tScene, uv, 0.0).rgb;
+    float s = uv.x < 0.5 ? -1.0 : 1.0, lod = uBlur * t * t, dx = uSmear * (1.0 - uZone) * t * t;
     vec3 col;
     for (int c = 0; c < 3; c++) {
       float ch = float(c) - 1.0; vec2 z = remap(uv, t, 1.0 + ch * uAber, 1.0 + ch * uAber * 2.0); float sum = 0.0;
@@ -1149,9 +1154,32 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
       col = mix(col, vivid(hue(o1, -uRimHue)), clamp(r1 * w, 0.0, 1.0));
       col = mix(col, mix(vivid(hue(o2, -uRimHue * 1.35)), vec3(1.0), 0.4), clamp(r2 * w, 0.0, 1.0));
     }
-    /* the site's pixel language: faint cells drop out, half-covered cells become a 2px checker */
-    float cv = cover(col), chk = mod(floor(px.x / uDot) + floor(px.y / uDot), 2.0);
-    if (cv < 0.1) col = uBg; else if (cv < 0.42) col = chk > 0.5 ? col : uBg;
+    return col;
+  }
+  void main() {
+    vec2 px = vUv * uRes;
+    float tp = zt(vUv.x);
+    float tc = zt((floor(px.x / uCell) + 0.5) * uCell / uRes.x);
+    vec3 col;
+    if (tc <= 0.0 && tp <= 0.0) col = textureLod(tScene, vUv, 0.0).rgb;
+    else {
+      /* nested cells that grow with distance: 2.75 / 5.5 / 11 / 22px, all aligned to the 22px grid */
+      float S = uCell * (tc < 0.12 ? 0.125 : tc < 0.3 ? 0.25 : tc < 0.62 ? 0.5 : 1.0);
+      vec3 cp = stretchAt((floor(px / S) + 0.5) * S / uRes);
+      /* ease in: the smooth stretch hands over to the cells, and the dither only builds with distance */
+      float k = smoothstep(0.0, 0.2, tp);
+      col = k < 1.0 ? mix(stretchAt(vUv), cp, k) : cp;
+      float a = smoothstep(0.08, 0.45, tp);
+      float cv = cover(col), chk = mod(floor(px.x / uDot) + floor(px.y / uDot), 2.0);
+      if (cv < 0.1 * a) col = uBg; else if (cv < 0.42 * a) col = chk > 0.5 ? col : mix(col, uBg, a);
+    }
+    /* faint grid in the empty background, bulging under the cursor */
+    vec2 d = px - uMouse; float r = length(d), b = uHov * pow(1.0 - smoothstep(0.0, uR, r), 1.6);
+    vec2 q = uMouse + d * (1.0 - 0.42 * b);
+    vec2 g = abs(fract(q / uGrid + 0.5) - 0.5) * uGrid;
+    float line = 1.0 - smoothstep(0.0, uLW, min(g.x, g.y));
+    float bgm = 1.0 - cover(col);
+    col = mix(col, uGridCol, line * (0.07 + 0.16 * b) * bgm);
     o = vec4(col, 1.0);
   }`;
   const mk = (vs, fs) => { const p = gl.createProgram(); for (const [t, src] of [[gl.VERTEX_SHADER, vs], [gl.FRAGMENT_SHADER, fs]]) { const s = gl.createShader(t); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { console.warn(gl.getShaderInfoLog(s)); return null; } gl.attachShader(p, s); } gl.linkProgram(p); return gl.getProgramParameter(p, gl.LINK_STATUS) ? p : null; };
@@ -1160,7 +1188,7 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
   sec.classList.add('gl');
   const loc = (p, names) => Object.fromEntries(names.map(k => [k, gl.getUniformLocation(p, k)]));
   const CU = loc(cardP, ['uProj', 'uPos', 'uRy', 'uSize', 'uMedia', 'uInfo', 'uMRect', 'uMFit', 'uCardBg', 'uInfoA', 'uZoom', 'uRadius', 'uSheen', 'uAngle', 'uFade', 'uHasMedia']);
-  const PU = loc(postP, ['tScene', 'uBg', 'uRes', 'uCell', 'uDot', 'uZone', 'uK', 'uFlare', 'uFlarePow', 'uAber', 'uBlur', 'uSmear', 'uSat', 'uRim', 'uRimW', 'uRimHue', 'uCY']);
+  const PU = loc(postP, ['tScene', 'uBg', 'uRes', 'uCell', 'uDot', 'uGridCol', 'uMouse', 'uHov', 'uGrid', 'uR', 'uLW', 'uZone', 'uK', 'uFlare', 'uFlarePow', 'uAber', 'uBlur', 'uSmear', 'uSat', 'uRim', 'uRimW', 'uRimHue', 'uCY']);
   const quad = gl.createVertexArray(); gl.bindVertexArray(quad);
   const vb = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, vb); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-.5, -.5, .5, -.5, -.5, .5, .5, .5]), gl.STATIC_DRAW);
   const aP = gl.getAttribLocation(cardP, 'aP'); gl.enableVertexAttribArray(aP); gl.vertexAttribPointer(aP, 2, gl.FLOAT, false, 0, 0);
@@ -1177,13 +1205,13 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
   function artCanvas(c) {
     const W = 1280, H = 720, a = document.createElement('canvas'); a.width = W; a.height = H; const g = a.getContext('2d');
     if (c.art === 'debrief') {
-      g.fillStyle = '#17181C'; g.fillRect(0, 0, W, H);
+      g.fillStyle = '#1B1C21'; g.fillRect(0, 0, W, H);
       const S = 24, F = ['#3A2414', '#7A3B0C', '#FF7A00', '#FFB877'];
       for (let y = 0; y < H; y += S) for (let x = 0; x < W; x += S) { const k = 1 - y / H, v = hsh(x / S, y / S) * .5 + (1 - Math.abs(x / W - .62) * 1.6) * .55 * (.4 + k * .8) + .2 * Math.sin(x / 120 + y / 90); if (v < .62) continue; g.fillStyle = F[Math.min(3, Math.floor((v - .62) * 6))]; g.fillRect(x, y, S, S); }
     } else {
-      g.fillStyle = '#E9E8E3'; g.fillRect(0, 0, W, H);
-      for (let y = 0; y < H; y += 32) for (let x = (y / 32) % 2 ? 32 : 0; x < W; x += 64) { g.fillStyle = 'rgba(0,0,0,.028)'; g.fillRect(x, y, 32, 32); }
-      g.strokeStyle = 'rgba(0,0,0,.3)'; g.lineWidth = 4; g.beginPath(); g.moveTo(W / 2 - 34, H * .42); g.lineTo(W / 2 + 34, H * .42); g.moveTo(W / 2, H * .42 - 34); g.lineTo(W / 2, H * .42 + 34); g.stroke();
+      g.fillStyle = '#1A1A1E'; g.fillRect(0, 0, W, H);
+      for (let y = 0; y < H; y += 32) for (let x = (y / 32) % 2 ? 32 : 0; x < W; x += 64) { g.fillStyle = 'rgba(255,255,255,.025)'; g.fillRect(x, y, 32, 32); }
+      g.strokeStyle = 'rgba(255,255,255,.28)'; g.lineWidth = 4; g.beginPath(); g.moveTo(W / 2 - 34, H * .42); g.lineTo(W / 2 + 34, H * .42); g.moveTo(W / 2, H * .42 - 34); g.lineTo(W / 2, H * .42 + 34); g.stroke();
     }
     return a;
   }
@@ -1222,8 +1250,8 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
     const s = Math.min(2, dpr) * 1, Wp = Math.round(card.w * s), Hp = Math.round(card.h * s), u = Wp / 100;
     c.ic.width = Wp; c.ic.height = Hp; const g = c.ic.getContext('2d'); g.clearRect(0, 0, Wp, Hp);
     const L = layout(c, Wp, Hp, u);
-    if (L.panel) { g.save(); g.shadowColor = 'rgba(20,16,40,.12)'; g.shadowBlur = 3 * u; g.shadowOffsetY = .6 * u; g.fillStyle = c.dark ? 'rgba(28,29,34,.92)' : 'rgba(255,255,255,.94)'; rr(g, L.panel.x, L.panel.y, L.panel.w, L.panel.h, L.panel.r); g.fill(); g.restore(); }
-    const ink = c.dark ? '#FFFFFF' : c.muted ? '#8E8D87' : '#141414', ink2 = c.dark ? 'rgba(255,255,255,.66)' : c.muted ? '#9C9B95' : '#4A4A45', ink3 = c.dark ? 'rgba(255,255,255,.5)' : '#8A8A84';
+    if (L.panel) { g.save(); g.shadowColor = 'rgba(20,16,40,.12)'; g.shadowBlur = 3 * u; g.shadowOffsetY = .6 * u; g.fillStyle = c.dark ? 'rgba(38,39,45,.92)' : 'rgba(255,255,255,.94)'; rr(g, L.panel.x, L.panel.y, L.panel.w, L.panel.h, L.panel.r); g.fill(); g.restore(); }
+    const ink = c.muted ? (c.dark ? '#8C8C93' : '#8E8D87') : c.dark ? '#FFFFFF' : '#141414', ink2 = c.muted ? (c.dark ? '#6C6C73' : '#9C9B95') : c.dark ? 'rgba(255,255,255,.66)' : '#4A4A45', ink3 = c.dark ? 'rgba(255,255,255,.5)' : '#8A8A84';
     g.textBaseline = 'alphabetic';
     if ('letterSpacing' in g) g.letterSpacing = (-L.ft * .03) + 'px';
     g.font = `400 ${L.ft}px "Averia Serif Libre", Georgia, serif`; g.fillStyle = ink; g.fillText(c.name, L.tx, L.yt);
@@ -1286,6 +1314,9 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
   sec.querySelectorAll('[data-q]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); target = Math.round(target) + +b.dataset.q; need = true; }));
   sec.querySelectorAll('[data-q]').forEach(b => b.addEventListener('pointerdown', e => e.stopPropagation()));
   ov.addEventListener('pointerenter', () => hoverT = 1); ov.addEventListener('pointerleave', () => hoverT = 0);
+  let mouse = [-9999, -9999], mh = 0, mhT = 0;
+  stage.addEventListener('pointermove', e => { if (e.pointerType !== 'mouse') return; const r = stage.getBoundingClientRect(); mouse = [(e.clientX - r.left) * dpr, (r.height - (e.clientY - r.top)) * dpr]; mhT = 1; need = true; });
+  stage.addEventListener('pointerleave', () => { mhT = 0; need = true; });
 
   /* overlay content (crisp HTML for the settled card) */
   const ovT = ov.querySelector('.vn'), ovL = ov.querySelector('.vl'), ovA = ov.querySelector('.qgo2'), count = sec.querySelector('.qcount b');
@@ -1309,6 +1340,7 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
     const oaT = settled && visible ? 1 : 0; oa += (oaT - oa) * (1 - Math.exp(-dt * (oaT ? 14 : 40))); if (Math.abs(oa - oaT) < .01) oa = oaT;
     ov.style.opacity = oa.toFixed(3); ov.style.pointerEvents = oa > .5 ? 'auto' : 'none';
     hover += (hoverT * (oa > .5 ? 1 : 0) - hover) * (1 - Math.exp(-dt * 10));
+    mh += (mhT - mh) * (1 - Math.exp(-dt * (mhT ? 7 : 4))); if (reduce) mh = mhT; if (Math.abs(mh - mhT) < .002) mh = mhT;
     const ai = act(); if (ai !== lastAct) { lastAct = ai; setOverlay(ai); }
     let playing = false;
     CARDS.forEach((c, i) => {
@@ -1318,7 +1350,7 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
       if (want && c.vid.paused) { c.vid.preload = 'auto'; c.vid.play().catch(() => {}); } else if (!want && !c.vid.paused) c.vid.pause();
       if (!c.vid.paused && c.vid.readyState >= 2 && !c.vBad) { gl.bindTexture(gl.TEXTURE_2D, c.mTex); gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false); try { gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, c.vid); } catch (_) { c.vBad = true; return; } gl.generateMipmap(gl.TEXTURE_2D); c.mw = c.vid.videoWidth; c.mh = c.vid.videoHeight; c.vReady = true; c.ready = true; playing = true; }
     });
-    const moving = drag || Math.abs(target - pos) > 1e-4 || q > .002 || Math.abs(oa - oaT) > 0 || Math.abs(hover - hoverT) > .002;
+    const moving = drag || Math.abs(target - pos) > 1e-4 || q > .002 || Math.abs(oa - oaT) > 0 || Math.abs(hover - hoverT) > .002 || mh !== mhT;
     if (visible && (need || moving || playing)) { draw(ai); need = false; }
     requestAnimationFrame(frame);
   }
@@ -1354,6 +1386,7 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
     gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, sceneTex); gl.uniform1i(PU.tScene, 0);
     const zone = Math.min(.97, sideInner + P.zone * (1 - sideInner));
     gl.uniform3f(PU.uBg, BG[0], BG[1], BG[2]); gl.uniform1f(PU.uCY, .5); gl.uniform2f(PU.uRes, cv.width, cv.height); gl.uniform1f(PU.uCell, 22 * dpr); gl.uniform1f(PU.uDot, 2 * dpr);
+    gl.uniform3f(PU.uGridCol, 1, 1, 1); gl.uniform2f(PU.uMouse, mouse[0], mouse[1]); gl.uniform1f(PU.uHov, mh); gl.uniform1f(PU.uGrid, 44 * dpr); gl.uniform1f(PU.uR, 200 * dpr); gl.uniform1f(PU.uLW, 1.1 * dpr);
     gl.uniform1f(PU.uZone, Math.max(.05, zone - P.speedZone * q)); gl.uniform1f(PU.uK, P.stretch * (1 + q)); gl.uniform1f(PU.uFlare, P.flare * (1 + .35 * q)); gl.uniform1f(PU.uFlarePow, P.flarePow);
     gl.uniform1f(PU.uAber, P.aberration); gl.uniform1f(PU.uBlur, P.blur); gl.uniform1f(PU.uSmear, P.smear * (1 + q)); gl.uniform1f(PU.uSat, P.saturate);
     gl.uniform1f(PU.uRim, P.rim); gl.uniform1f(PU.uRimW, P.rimWidth); gl.uniform1f(PU.uRimHue, P.rimHue * Math.PI / 180);
@@ -1365,6 +1398,53 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
   if (document.fonts) document.fonts.ready.then(() => { CARDS.forEach(drawInfo); need = true; });
   setOverlay(0);
   requestAnimationFrame(frame);
+})();
+</script>
+<script>
+/* ---------- pixel transition into AI side quests ---------- */
+(() => {
+  const sec = document.getElementById('quests'), cv = document.getElementById('qpx'); if (!sec || !cv) return;
+  const g = cv.getContext('2d'), reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const S = 22, DARK = '#0D0D0F', MID = '#1E1E22', ORA = '#FF7A00';
+  let W = 0, H = 0, dpr = 1, z = 0, last = performance.now(), prevKey = '';
+  const h3 = (x, y, k) => { let h = Math.imul(x | 0, 374761393) ^ Math.imul(y | 0, 668265263) ^ Math.imul(k | 0, 2147483647); h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; };
+  const sm = t => t * t * (3 - 2 * t);
+  const vn = (x, y, k) => { const xi = Math.floor(x), yi = Math.floor(y), u = sm(x - xi), v = sm(y - yi); const a = h3(xi, yi, k), b = h3(xi + 1, yi, k), c = h3(xi, yi + 1, k), d = h3(xi + 1, yi + 1, k); return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v; };
+  let chk = null;
+  function size() {
+    dpr = Math.min(2, devicePixelRatio || 1); const r = cv.getBoundingClientRect(); W = r.width; H = r.height;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.imageSmoothingEnabled = false;
+    const pc = document.createElement('canvas'); pc.width = pc.height = 4; const pg = pc.getContext('2d'); pg.fillStyle = DARK; pg.fillRect(0, 0, 2, 2); pg.fillRect(2, 2, 2, 2);
+    chk = g.createPattern(pc, 'repeat'); prevKey = '';
+  }
+  function frame(now) {
+    const dt = Math.min(50, now - last); last = now; if (!reduce) z += dt * .00012;
+    const r = sec.getBoundingClientRect(), vh = innerHeight;
+    if (r.top > vh + 10 || r.top < -H) { requestAnimationFrame(frame); return; }
+    /* 0 when the section's top edge enters at the bottom of the screen, 1 once it reaches the top */
+    const p = Math.max(0, Math.min(1, (vh - r.top) / (vh * .95)));
+    const key = p.toFixed(3) + '|' + (reduce ? 0 : Math.floor(z * 60));
+    if (key !== prevKey) {
+      prevKey = key; g.clearRect(0, 0, W, H);
+      const cols = Math.ceil(W / S), rows = Math.ceil(H / S), solid = new Path2D(), mid = new Path2D(), dots = new Path2D(), ora = new Path2D();
+      for (let j = 0; j < rows; j++) {
+        const yb = (j + .5) / rows;                          /* 0 at the section edge, 1 at the top of the band */
+        const fill = p * 1.38 - yb * 1.1;
+        if (fill <= -.05) continue;
+        for (let i = 0; i < cols; i++) {
+          const n = .62 * vn(i / 5.5 + z * 3, j / 4.2, 7) + .38 * vn(i / 2.2 - z * 2, j / 1.9 + 3.1, 11);
+          const m = fill - n * .9;
+          if (m <= 0) continue;
+          const x = i * S, y = H - (j + 1) * S;
+          if (m > .22) solid.rect(x, y, S, S); else if (m > .12) mid.rect(x, y, S, S); else dots.rect(x, y, S, S);
+          if (m > .05 && m < .09 && h3(i, j, 3) > .93) ora.rect(x, y, S, S);
+        }
+      }
+      g.fillStyle = DARK; g.fill(solid); g.fillStyle = MID; g.fill(mid); g.fillStyle = chk; g.fill(dots); g.fillStyle = ORA; g.fill(ora);
+    }
+    requestAnimationFrame(frame);
+  }
+  addEventListener('resize', size); size(); requestAnimationFrame(frame);
 })();
 </script>
 </body>
