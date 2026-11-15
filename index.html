@@ -213,65 +213,67 @@ a.q:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
 .q.slot h3, .q.slot p.d { color: var(--ink-3); }
 .q.slot .qm { aspect-ratio: 16 / 6; }
 /* stretch carousel */
-.qstage, .qcap { display: none; }
+.qstage { display: none; }
 .quests.gl .qgrid { display: none; }
 .quests.gl .qstage { display: block; }
-.quests.gl .qcap { display: flex; }
-.qstage { position: relative; width: 100vw; margin-left: calc(50% - 50vw); height: clamp(460px, 74svh, 820px); background: #F3F3F0; cursor: grab; outline: none; touch-action: pan-y; user-select: none; -webkit-user-select: none; border-top: 1px solid var(--grid); border-bottom: 1px solid var(--grid); }
-.qstage.dragging { cursor: grabbing; }
+.qstage { position: relative; width: 100vw; margin-left: calc(50% - 50vw); height: clamp(520px, 82svh, 900px); background: #F2F2F0; cursor: grab; outline: none; touch-action: pan-y; user-select: none; -webkit-user-select: none; border-top: 1px solid var(--grid); border-bottom: 1px solid var(--grid); overflow: hidden; }
+.qstage.dragging, .qstage.dragging .qov { cursor: grabbing; }
 .qstage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .qstage:focus-visible { box-shadow: inset 0 0 0 2px var(--sky-d); }
-.qhint { position: absolute; left: 50%; bottom: 22px; translate: -50% 0; font-family: var(--f-mono); font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); padding: 7px 12px; border-radius: 999px; background: rgba(255,255,255,.7); box-shadow: inset 0 0 0 1px #E4E3DE; pointer-events: none; transition: opacity 250ms ease; }
-.qstage.dragging .qhint { opacity: 0; }
-.qcap { justify-content: space-between; align-items: flex-end; gap: 40px; padding: 36px 56px 72px; }
-.qcap .qcx { transition: opacity 150ms ease, filter 150ms ease; }
-.qcap.sw .qcx { opacity: 0; filter: blur(2px); }
-.qcap .qk { margin: 0; font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
-.qcap h3 { margin: 8px 0 0; font-family: var(--f-display); font-weight: 400; font-size: clamp(30px, 3vw, 44px); line-height: 1.04; letter-spacing: -.03em; }
-.qcap p.d { margin: 10px 0 0; max-width: 52ch; font-size: 15.5px; line-height: 1.5; color: var(--ink-2); }
-.qcap .qt { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; } .qcap .qt:empty { display: none; }
-.qcap .qt span { font-size: 12.5px; line-height: 1; padding: 6px 9px; border-radius: 999px; background: #F4F4F1; box-shadow: inset 0 0 0 1px #E7E6E1; color: var(--ink-2); }
-.qnav { display: flex; align-items: center; gap: 8px; flex: none; }
-.qcta { display: inline-flex; align-items: stretch; height: 46px; border: 1px solid var(--ink); color: var(--ink); text-decoration: none; margin-right: 8px; }
-.qcta[hidden] { display: none; }
-.qcta .t { display: flex; align-items: center; padding: 0 18px; font-size: 15px; font-weight: 500; }
-.qcta .a { width: 46px; display: grid; place-items: center; background: var(--ink); color: var(--paper); }
-.qcta .a svg { width: 15px; height: 15px; transition: transform 350ms cubic-bezier(.2,.8,.2,1); }
-.qcta:hover .a svg { transform: rotate(45deg); }
-.qb2 { width: 46px; height: 46px; display: grid; place-items: center; border: 1px solid #DAD9D4; background: var(--paper); color: var(--ink); cursor: pointer; padding: 0; transition: border-color 150ms ease, background-color 150ms ease; }
-.qb2 svg { width: 15px; height: 15px; }
-.qb2:hover, .qb2:focus-visible { border-color: var(--ink); outline: none; }
-@media (max-width: 760px) {
-  .qstage { height: clamp(420px, 66svh, 640px); }
-  .qcap { flex-direction: column; align-items: flex-start; gap: 22px; padding: 24px 20px 56px; }
-}
+.qov { --u: 8px; position: absolute; z-index: 2; display: block; border-radius: calc(var(--u) * 3.4); color: #141414; text-decoration: none; opacity: 0; pointer-events: none; -webkit-user-drag: none; }
+.qov:not([href]) { cursor: grab; }
+.qpanel { position: absolute; left: calc(var(--u) * 2); right: calc(var(--u) * 2); bottom: calc(var(--u) * 2); height: calc(var(--u) * 15.5); border-radius: calc(var(--u) * 1.4); background: rgba(255,255,255,.94); box-shadow: 0 calc(var(--u) * .6) calc(var(--u) * 3) rgba(20,16,40,.12);
+  transition: transform 250ms cubic-bezier(.22, 1, .36, 1), background-color 250ms cubic-bezier(.22, 1, .36, 1), box-shadow 250ms cubic-bezier(.22, 1, .36, 1); }
+.qpanel > .vk, .qpanel > .vn, .qpanel > .vl { position: absolute; left: calc(var(--u) * 2.6); white-space: nowrap; line-height: 1; }
+.qpanel > .vk { top: calc(var(--u) * (4.1 - 1.25 * .78)); font: 500 calc(var(--u) * 1.25) "Geist Mono", ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; color: #8A8A84; }
+.qpanel > .vn { top: calc(var(--u) * (9.3 - 4.4 * .8)); font: 400 calc(var(--u) * 4.4) "Averia Serif Libre", Georgia, serif; letter-spacing: -.03em; }
+.qpanel > .vl { top: calc(var(--u) * (12.6 - 1.6 * .76)); font: 400 calc(var(--u) * 1.6) Geist, system-ui, sans-serif; color: #4A4A45; }
+.qov.dark { color: #fff; } .qov.dark .qpanel { background: rgba(28,29,34,.92); } .qov.dark .vk { color: rgba(255,255,255,.5); } .qov.dark .vl { color: rgba(255,255,255,.66); }
+.qov.muted { color: #8E8D87; } .qov.muted .vl { color: #9C9B95; }
+.qgo2 { position: absolute; right: calc(var(--u) * 2.6); top: calc(var(--u) * 5.25); height: calc(var(--u) * 5); width: calc(var(--u) * 17); display: flex; border: 1px solid #141414; background: #fff; overflow: hidden; }
+.qgo2[hidden] { display: none; }
+.qgo2 .t { position: relative; flex: 1; display: flex; align-items: center; padding-left: calc(var(--u) * 2.1); font: 500 calc(var(--u) * 1.55) Geist, system-ui, sans-serif; color: #141414; transition: color 200ms ease; }
+.qgo2 .a { position: relative; width: calc(var(--u) * 5); background: #141414; color: #fff; display: grid; place-items: center; }
+.qgo2 .a svg { width: 34%; height: 34%; transition: transform 350ms cubic-bezier(.2, .8, .2, 1); }
+.qov[href]:hover .qpanel, .qov[href]:focus-visible .qpanel { transform: translateY(calc(var(--u) * -.5)); background: #fff; box-shadow: 0 calc(var(--u) * 1.4) calc(var(--u) * 4) rgba(40,20,90,.18); }
+.qov:focus-visible { outline: 2px solid var(--sky-d); outline-offset: 4px; }
+/* phones: media on top, words below, all inside the card */
+.qov.tall .qpanel { left: 0; right: 0; bottom: 0; top: 0; height: auto; background: none; box-shadow: none; border-radius: 0; }
+.qov.tall .qpanel > .vk, .qov.tall .qpanel > .vn, .qov.tall .qpanel > .vl { left: calc(var(--u) * 6); }
+.qov.tall .qpanel > .vk { top: calc(var(--u) * (var(--my) + 9 - 3 * .78)); font-size: calc(var(--u) * 3); }
+.qov.tall .qpanel > .vn { top: calc(var(--u) * (var(--my) + 20 - 10 * .8)); font-size: calc(var(--u) * 10); }
+.qov.tall .qpanel > .vl { top: calc(var(--u) * (var(--my) + 28 - 3.9 * .76)); font-size: calc(var(--u) * 3.9); }
+.qov.tall .qgo2 { left: calc(var(--u) * 6); right: calc(var(--u) * 6); top: auto; bottom: calc(var(--u) * 6); width: auto; height: calc(var(--u) * 13); }
+.qov.tall .qgo2 .t { font-size: calc(var(--u) * 4); padding-left: calc(var(--u) * 5.5); }
+.qov.tall .qgo2 .a { width: calc(var(--u) * 13); }
+.qov.tall:hover .qpanel { transform: none; background: none; box-shadow: none; }
+.qctl { position: absolute; left: 50%; bottom: clamp(14px, 3.2%, 28px); translate: -50% 0; z-index: 3; display: flex; align-items: center; gap: 6px; padding: 4px; border-radius: 999px; background: rgba(255,255,255,.82); box-shadow: inset 0 0 0 1px #E4E3DE, 0 6px 18px -10px rgba(20,20,24,.25); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); cursor: default; }
+.qcount { font-family: var(--f-mono); font-size: 12px; letter-spacing: .06em; color: var(--ink-3); padding: 0 6px; min-width: 64px; text-align: center; }
+.qcount b { font-weight: 500; color: var(--ink); }
+.qb2 { width: 34px; height: 34px; display: grid; place-items: center; border: 0; border-radius: 50%; background: transparent; color: var(--ink); cursor: pointer; padding: 0; transition: background-color 150ms ease; }
+.qb2 svg { width: 14px; height: 14px; }
+.qb2:hover, .qb2:focus-visible { background: #EDECE7; outline: none; }
+.qhint { font-family: var(--f-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); padding: 0 10px 0 8px; border-left: 1px solid #E4E3DE; transition: opacity 250ms ease; }
+.qstage.dragging .qhint { opacity: .3; }
+@media (max-width: 760px) { .qstage { height: clamp(520px, 80svh, 760px); } .qhint { display: none; } }
+
 @media (max-width: 760px) {
   .qgrid { grid-template-columns: minmax(0, 1fr); }
   .q { padding: 28px 20px 36px; gap: 18px; }
   .q:nth-child(odd) { border-right: 0; }
 }
 
-/* hero: try yapp, in yapp's own brand */
-.tryapp { --yp: #6B4CF0; --yk: #E85BC9; position: relative; isolation: isolate; margin-top: 28px; display: inline-flex; align-items: center; gap: 10px; height: 48px; padding: 0 6px 0 6px; border-radius: 999px; color: #fff; text-decoration: none; font-size: 15px; font-weight: 500; letter-spacing: -.005em;
-  background: linear-gradient(100deg, var(--yp) 0%, #9B55E6 45%, var(--yk) 100%); box-shadow: 0 1px 0 rgba(255,255,255,.35) inset, 0 10px 28px -12px rgba(232,91,201,.75), 0 4px 10px -6px rgba(107,76,240,.6); overflow: hidden;
-  transition: transform 250ms cubic-bezier(.22, 1, .36, 1), box-shadow 250ms cubic-bezier(.22, 1, .36, 1); }
-.tryapp::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.38) 48%, transparent 66%); transform: translateX(-120%); animation: ysheen 4.2s cubic-bezier(.4, 0, .2, 1) 1.6s infinite; }
-@keyframes ysheen { 0% { transform: translateX(-120%); } 38%, 100% { transform: translateX(120%); } }
-.tryapp .ymk { width: 36px; height: 36px; flex: none; border-radius: 11px; box-shadow: 0 2px 6px -2px rgba(40,10,80,.45); }
+/* hero: try yapp, in our rectangular button language */
+.tryapp { margin-top: 28px; }
+.tryapp .t { gap: 12px; padding-left: 8px; transition: color 200ms ease; }
+.tryapp .t b { font-weight: 600; }
+.tryapp .ymk { width: 30px; height: 30px; flex: none; border-radius: 8px; box-shadow: 0 0 0 1px rgba(20,20,24,.08), 0 2px 6px -2px rgba(60,20,120,.35); }
 .tryapp .ymk .m-tongue { transform-box: fill-box; transform-origin: 30% 30%; }
 .tryapp:hover .ymk .m-tongue, .tryapp:focus-visible .ymk .m-tongue { animation: ytongue 900ms cubic-bezier(.34, 1.36, .64, 1); }
 @keyframes ytongue { 0% { transform: none; } 30% { transform: rotate(-9deg) translateY(4%); } 60% { transform: rotate(5deg); } 100% { transform: none; } }
-.tryapp .tx { padding-left: 2px; white-space: nowrap; opacity: .96; }
-.tryapp .ywd { width: 54px; height: 21px; color: #fff; margin-right: 6px; margin-top: 2px; }
-.tryapp .ar { width: 36px; height: 36px; flex: none; border-radius: 50%; background: #fff; color: var(--yp); display: grid; place-items: center; }
-.tryapp .ar svg { width: 13px; height: 13px; transition: transform 350ms cubic-bezier(.2, .8, .2, 1); }
-.tryapp:hover, .tryapp:focus-visible { transform: translateY(-2px); box-shadow: 0 1px 0 rgba(255,255,255,.35) inset, 0 16px 34px -12px rgba(232,91,201,.85), 0 6px 14px -6px rgba(107,76,240,.7); outline: none; }
-.tryapp:hover .ar svg, .tryapp:focus-visible .ar svg { transform: rotate(45deg); }
-.tryapp:focus-visible { outline: 2px solid var(--yp); outline-offset: 3px; }
-.js .tryapp { opacity: 0; translate: 0 12px; filter: blur(3px); transition: opacity 500ms cubic-bezier(.22, 1, .36, 1) .45s, translate 500ms cubic-bezier(.22, 1, .36, 1) .45s, filter 500ms cubic-bezier(.22, 1, .36, 1) .45s, transform 250ms cubic-bezier(.22, 1, .36, 1), box-shadow 250ms; }
+.js .tryapp { opacity: 0; translate: 0 12px; filter: blur(3px); transition: opacity 500ms cubic-bezier(.22, 1, .36, 1) .45s, translate 500ms cubic-bezier(.22, 1, .36, 1) .45s, filter 500ms cubic-bezier(.22, 1, .36, 1) .45s; }
 .js .intro.in .tryapp { opacity: 1; translate: none; filter: none; }
-@media (prefers-reduced-motion: reduce) { .tryapp::before { animation: none; } }
-@media (max-width: 640px) { .tryapp { font-size: 14px; height: 46px; gap: 8px; } .tryapp .ymk, .tryapp .ar { width: 34px; height: 34px; } }
+@media (max-width: 640px) { .tryapp .t { font-size: 14px; gap: 10px; } .tryapp .ymk { width: 26px; height: 26px; } }
 
 /* ---------- work: calm vertical list, exact Figma screens ---------- */
 .work { position: relative; z-index: 4; margin-top: -16vh; margin-top: -16svh; background: var(--paper); --grid: #ECECE8; overflow-x: clip; }
@@ -389,6 +391,13 @@ a.q:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
 }
 @media (max-width: 360px) { .intro p { font-size: 15px; line-height: 22px; } .co { width: 30px; height: 30px; } .cos { gap: 5px; } }
 @media (prefers-reduced-motion: reduce) { .js .intro, .js .cos .co { opacity: 1; transform: none; transition: none; } }
+/* gradient CTA: our rectangular button, filled with the yapp gradient on hover */
+.cta.gcta::before, .qgo2.gcta::before { content: ""; position: absolute; inset: 0; z-index: 0; background: linear-gradient(100deg, #6B4CF0 0%, #A957E4 52%, #E85BC9 100%); clip-path: inset(100% 0 0 0); transition: clip-path .4s steps(6); pointer-events: none; }
+.gcta > * { position: relative; z-index: 1; }
+a:hover > .qpanel > .gcta::before, .cta.gcta:hover::before, .cta.gcta:focus-visible::before, a:focus-visible > .qpanel > .gcta::before { clip-path: inset(0 0 0 0); }
+a:hover > .qpanel > .gcta .t, .cta.gcta:hover .t, .cta.gcta:focus-visible .t, a:focus-visible > .qpanel > .gcta .t { color: #fff; }
+a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { transform: rotate(45deg); }
+.tryapp.cta .t { gap: 12px; padding-left: 8px; transition: color 200ms ease; }
 </style>
 </head>
 <body>
@@ -448,7 +457,7 @@ a.q:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
               <button type="button" class="co" data-name="Zero Designs" aria-label="Zero Designs"><svg viewBox="0 0 649.9 649.9" aria-hidden="true"><path d="M241.9,10.9c-39.1,10.3-76,27.9-108.6,51.8,10.9-5.1,22.3-9.3,34-12.4,108.4-28.6,219.4,36,248,144.4s-36,219.4-144.3,248S51.5,406.6,22.9,298.3c-7-26.2-8.6-53.6-4.8-80.5-21.5,61.2-24,127.5-7.3,190.2,45.8,173.5,223.6,276.9,397.1,231.1s276.9-223.6,231.1-397.1S415.4-35,241.9,10.9Z"/><path class="hole" d="M167,283.3c0-44.8,36.4-81.1,81.2-81.1,37.9,0,70.7,26.3,79.1,63.2,12.6-66.1-30.8-129.9-96.9-142.4-66.1-12.6-129.9,30.8-142.4,96.9s30.8,129.9,96.9,142.4c14.9,2.8,30.2,2.9,45.1,0-36.9-8.5-63-41.3-62.9-79.2Z"/></svg></button>
             </span></span>
           </div>
-          <a class="tryapp" href="https://useyapp.vercel.app" target="_blank" rel="noopener" aria-label="Try my new app, yapp"><svg class="ymk" aria-hidden="true" viewBox="260 220 780 830"><defs><linearGradient id="yp-mark" gradientUnits="userSpaceOnUse" x1="4000" y1="5540" x2="9000" y2="3740"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#d4a8fb"/><stop offset=".72" stop-color="#e46cf7"/><stop offset="1" stop-color="#ff69c8"/></linearGradient></defs><rect x="260" y="220" width="780" height="830" rx="200" fill="#fff"/><g fill="#0a0a0b"><g transform="translate(0,1254) scale(.1,-.1)"><g class="m-tongue"><path fill="url(#yp-mark)" d="M8250 6679 c-63 -15 -310 -75 -548 -132 -418 -100 -434 -105 -467 -137 l-35 -34 73 -76 c176 -179 320 -406 425 -669 119 -298 18 -494 -246 -479 -140 8 -181 37 -259 183 -209 391 -261 472 -376 592 -164 170 -348 273 -490 273 -28 0 -306 -60 -645 -140 -1461 -341 -1317 -305 -1428 -360 -186 -92 -358 -297 -393 -468 -64 -309 162 -631 500 -712 199 -48 486 -47 884 1 265 32 432 8 603 -89 124 -69 188 -133 324 -326 186 -261 257 -348 422 -512 345 -343 618 -468 1026 -468 400 -1 730 140 1049 449 206 200 314 386 384 665 30 118 31 135 31 315 0 355 -92 626 -344 1010 -233 355 -301 557 -304 907 -1 177 -1 177 -30 207 -17 17 -32 31 -35 30 -3 -1 -58 -14 -121 -30z"/></g><g class="m-mouth"><path  d="M8250 7405 c-256 -62 -708 -173 -1005 -245 -662 -160 -931 -226 -1560 -380 -269 -66 -746 -183 -1060 -259 -596 -146 -686 -173 -842 -252 -775 -395 -925 -1434 -296 -2051 238 -233 544 -368 938 -414 115 -13 213 -16 556 -12 444 5 476 3 544 -43 20 -13 104 -109 188 -214 580 -727 1202 -1075 1924 -1075 347 0 655 76 1008 250 1090 537 1493 1738 948 2825 -55 109 -91 171 -201 340 -186 284 -227 408 -227 680 0 191 0 191 32 251 149 280 15 609 -286 698 -107 32 -159 24 -661 -99z m127 -932 c2 -350 69 -553 303 -908 252 -384 344 -655 344 -1010 0 -180 -1 -197 -31 -315 -104 -413 -347 -711 -738 -904 -232 -115 -382 -151 -635 -150 -537 0 -908 241 -1365 889 -141 201 -191 260 -272 325 -213 172 -412 221 -738 181 -757 -92 -1116 -13 -1269 279 -152 288 -31 626 277 780 94 46 131 57 467 136 1741 407 1605 379 1711 348 121 -36 266 -129 359 -231 87 -95 153 -202 335 -543 110 -207 177 -255 350 -255 116 0 165 19 236 87 158 153 122 384 -123 786 -82 135 -154 230 -256 334 -52 52 -71 79 -61 82 11 3 1078 261 1099 265 3 1 6 -79 7 -176z"/></g><g class="m-eye m-eye-l"><path  d="M4889 9256 c-112 -31 -219 -116 -273 -215 -45 -84 -56 -141 -56 -301 -1 -275 -77 -435 -245 -515 -158 -75 -313 -39 -559 128 -147 100 -202 121 -310 115 -284 -16 -444 -343 -285 -588 154 -239 458 -437 778 -506 109 -24 348 -24 461 0 518 111 918 516 1032 1048 28 133 32 410 6 500 -70 250 -314 398 -549 334z"/></g><g class="m-eye m-eye-r"><path  d="M7983 9915 c-184 -40 -313 -177 -374 -396 -33 -119 -96 -272 -137 -330 -153 -218 -405 -178 -531 86 -77 163 -177 230 -341 230 -280 0 -425 -233 -335 -539 166 -570 811 -886 1385 -680 398 143 655 434 815 924 91 280 65 456 -88 597 -115 104 -246 140 -394 108z"/></g></g></g></svg><span class="tx">Try my new app</span><svg class="ywd" viewBox="70 140 1660 625" aria-hidden="true"><defs><linearGradient id="yp-word" gradientUnits="userSpaceOnUse" x1="1500" y1="3870" x2="5300" y2="2470"><stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="#cb9efb"/><stop offset=".68" stop-color="#f06ee6"/><stop offset="1" stop-color="#fd8d83"/></linearGradient></defs><g fill="currentColor"><g transform="translate(0,887) scale(.1,-.1)"><path fill="url(#yp-word)" d="M4605 4844 c-143 -35 -327 -80 -410 -100 -124 -30 -155 -41 -180 -65 l-30 -29 61 -62 c121 -124 234 -296 321 -488 110 -240 39 -415 -167 -414 -129 1 -165 30 -261 211 -164 310 -333 500 -517 577 -129 54 -104 58 -907 -144 -517 -130 -738 -190 -785 -213 -89 -42 -235 -188 -275 -272 -82 -173 -22 -382 147 -515 166 -132 330 -151 758 -89 376 55 626 -28 796 -262 273 -376 515 -605 741 -699 411 -171 864 -73 1203 260 227 223 335 442 347 701 12 265 -59 477 -268 799 -172 265 -222 412 -236 690 -5 116 -7 127 -31 153 -31 33 3 37 -307 -39z"/><path  d="M4513 7320 c-113 -45 -192 -151 -232 -309 -54 -217 -146 -321 -284 -321 -81 0 -101 11 -212 119 -117 114 -163 136 -280 135 -206 -1 -362 -202 -315 -405 30 -131 159 -290 315 -391 555 -360 1226 -84 1453 597 77 232 62 375 -50 488 -98 98 -271 136 -395 87z M2314 6730 c-64 -13 -141 -57 -189 -106 -60 -61 -85 -132 -96 -270 -14 -183 -75 -294 -191 -344 -101 -43 -173 -25 -293 74 -91 75 -144 96 -241 96 -253 0 -405 -262 -284 -489 90 -168 321 -326 544 -372 608 -125 1164 364 1166 1027 0 113 -16 178 -58 239 -73 104 -235 170 -358 145z M8980 5965 c-73 -21 -133 -57 -204 -124 -50 -49 -92 -104 -256 -341 -50 -73 -241 -343 -292 -414 -197 -274 -443 -523 -593 -600 -81 -42 -108 -45 -129 -14 -48 68 8 238 211 639 92 184 127 264 138 318 65 311 -259 542 -547 389 -114 -60 -191 -167 -338 -463 -350 -708 -376 -1126 -88 -1414 287 -287 827 -284 1243 7 260 182 575 524 790 859 22 35 43 63 47 63 12 0 19 -144 16 -329 l-3 -184 -60 -36 c-33 -20 -98 -59 -145 -85 -294 -169 -685 -443 -934 -655 -839 -715 -1060 -1447 -587 -1943 283 -297 716 -340 1186 -119 637 301 1049 923 1210 1826 14 76 36 307 53 534 7 105 7 105 52 132 25 15 48 28 51 28 4 1 10 -32 13 -71 40 -411 280 -644 661 -642 309 1 598 152 913 479 l123 127 62 -60 c162 -155 362 -234 627 -248 110 -6 130 -9 130 -23 0 -9 -13 -133 -30 -276 -16 -143 -36 -332 -44 -420 -9 -88 -21 -200 -26 -250 -6 -49 -12 -146 -13 -215 -2 -136 19 -207 86 -286 121 -143 403 -139 549 8 105 106 131 214 189 788 14 144 17 150 74 150 25 0 91 7 148 15 507 75 924 264 1236 559 l53 51 -5 -50 c-3 -27 -17 -153 -31 -280 -43 -377 -56 -599 -56 -920 0 -375 15 -441 116 -535 203 -187 540 -95 643 175 27 71 29 98 47 500 18 432 27 544 43 555 7 4 57 12 110 19 642 78 1314 407 1588 778 277 374 181 853 -257 1294 -431 434 -955 574 -1365 366 -252 -127 -447 -387 -580 -770 l-48 -138 -57 118 c-190 397 -556 730 -906 825 -121 32 -331 36 -449 8 -447 -105 -769 -547 -908 -1242 -12 -61 -13 -62 -52 -71 -119 -26 -236 15 -298 103 -60 86 -77 158 -87 365 -13 259 -44 340 -184 480 -253 252 -690 303 -1065 124 -165 -78 -287 -156 -641 -409 -322 -230 -367 -260 -374 -253 -3 3 -6 30 -6 60 0 340 -120 784 -259 960 -115 147 -328 223 -491 178z m6918 -1058 c91 -37 195 -112 280 -202 227 -240 172 -383 -228 -598 -161 -86 -565 -226 -587 -203 -27 27 84 542 157 729 107 275 204 345 378 274z m-2228 -44 c233 -113 397 -420 311 -582 -70 -134 -308 -297 -556 -384 -87 -30 -295 -80 -302 -73 -8 8 25 303 43 391 62 301 141 508 238 621 72 84 134 91 266 27z m-2485 -60 c85 -85 -203 -523 -454 -691 -133 -88 -175 -81 -169 30 10 188 281 528 512 644 78 39 88 40 111 17z m-2321 -1335 c-58 -424 -250 -857 -487 -1098 -365 -371 -704 -327 -538 71 82 195 343 507 640 764 120 104 372 305 384 305 4 0 5 -19 1 -42z M5160 5593 c-36 -4 -141 -29 -585 -138 -143 -35 -442 -109 -665 -164 -223 -55 -632 -157 -910 -226 -278 -70 -548 -138 -600 -150 -288 -70 -755 -198 -818 -224 -578 -240 -877 -796 -705 -1310 180 -537 703 -803 1408 -715 359 44 356 45 548 -206 302 -393 596 -618 969 -739 867 -281 1841 206 2147 1073 173 491 102 933 -239 1476 -166 264 -194 347 -193 585 1 143 2 153 29 210 40 85 46 214 13 299 -43 115 -157 204 -290 226 -35 5 -66 9 -69 8 -3 -1 -21 -3 -40 -5z m-267 -860 c14 -281 64 -427 236 -693 209 -322 280 -534 268 -799 -29 -634 -719 -1126 -1349 -962 -295 77 -539 275 -808 656 -226 320 -466 416 -882 356 -409 -60 -577 -43 -738 74 -140 102 -192 319 -115 480 38 81 140 181 225 222 112 55 1487 396 1567 389 214 -18 403 -196 593 -561 80 -153 116 -196 186 -231 136 -67 296 -14 367 121 41 77 32 188 -26 315 -87 192 -200 364 -320 487 -34 34 -59 64 -56 66 2 3 72 21 154 41 83 20 267 65 410 100 143 35 265 64 271 65 7 1 13 -44 17 -126z"/></g></g></svg><span class="ar"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a>
+          <a class="tryapp cta gcta" href="https://useyapp.vercel.app" target="_blank" rel="noopener" aria-label="Try my new app, yapp. Opens in a new tab."><span class="t"><svg class="ymk" aria-hidden="true" viewBox="260 220 780 830"><defs><linearGradient id="yp-mark" gradientUnits="userSpaceOnUse" x1="4000" y1="5540" x2="9000" y2="3740"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#d4a8fb"/><stop offset=".72" stop-color="#e46cf7"/><stop offset="1" stop-color="#ff69c8"/></linearGradient></defs><rect x="260" y="220" width="780" height="830" rx="200" fill="#fff"/><g fill="#0a0a0b"><g transform="translate(0,1254) scale(.1,-.1)"><g class="m-tongue"><path fill="url(#yp-mark)" d="M8250 6679 c-63 -15 -310 -75 -548 -132 -418 -100 -434 -105 -467 -137 l-35 -34 73 -76 c176 -179 320 -406 425 -669 119 -298 18 -494 -246 -479 -140 8 -181 37 -259 183 -209 391 -261 472 -376 592 -164 170 -348 273 -490 273 -28 0 -306 -60 -645 -140 -1461 -341 -1317 -305 -1428 -360 -186 -92 -358 -297 -393 -468 -64 -309 162 -631 500 -712 199 -48 486 -47 884 1 265 32 432 8 603 -89 124 -69 188 -133 324 -326 186 -261 257 -348 422 -512 345 -343 618 -468 1026 -468 400 -1 730 140 1049 449 206 200 314 386 384 665 30 118 31 135 31 315 0 355 -92 626 -344 1010 -233 355 -301 557 -304 907 -1 177 -1 177 -30 207 -17 17 -32 31 -35 30 -3 -1 -58 -14 -121 -30z"/></g><g class="m-mouth"><path  d="M8250 7405 c-256 -62 -708 -173 -1005 -245 -662 -160 -931 -226 -1560 -380 -269 -66 -746 -183 -1060 -259 -596 -146 -686 -173 -842 -252 -775 -395 -925 -1434 -296 -2051 238 -233 544 -368 938 -414 115 -13 213 -16 556 -12 444 5 476 3 544 -43 20 -13 104 -109 188 -214 580 -727 1202 -1075 1924 -1075 347 0 655 76 1008 250 1090 537 1493 1738 948 2825 -55 109 -91 171 -201 340 -186 284 -227 408 -227 680 0 191 0 191 32 251 149 280 15 609 -286 698 -107 32 -159 24 -661 -99z m127 -932 c2 -350 69 -553 303 -908 252 -384 344 -655 344 -1010 0 -180 -1 -197 -31 -315 -104 -413 -347 -711 -738 -904 -232 -115 -382 -151 -635 -150 -537 0 -908 241 -1365 889 -141 201 -191 260 -272 325 -213 172 -412 221 -738 181 -757 -92 -1116 -13 -1269 279 -152 288 -31 626 277 780 94 46 131 57 467 136 1741 407 1605 379 1711 348 121 -36 266 -129 359 -231 87 -95 153 -202 335 -543 110 -207 177 -255 350 -255 116 0 165 19 236 87 158 153 122 384 -123 786 -82 135 -154 230 -256 334 -52 52 -71 79 -61 82 11 3 1078 261 1099 265 3 1 6 -79 7 -176z"/></g><g class="m-eye m-eye-l"><path  d="M4889 9256 c-112 -31 -219 -116 -273 -215 -45 -84 -56 -141 -56 -301 -1 -275 -77 -435 -245 -515 -158 -75 -313 -39 -559 128 -147 100 -202 121 -310 115 -284 -16 -444 -343 -285 -588 154 -239 458 -437 778 -506 109 -24 348 -24 461 0 518 111 918 516 1032 1048 28 133 32 410 6 500 -70 250 -314 398 -549 334z"/></g><g class="m-eye m-eye-r"><path  d="M7983 9915 c-184 -40 -313 -177 -374 -396 -33 -119 -96 -272 -137 -330 -153 -218 -405 -178 -531 86 -77 163 -177 230 -341 230 -280 0 -425 -233 -335 -539 166 -570 811 -886 1385 -680 398 143 655 434 815 924 91 280 65 456 -88 597 -115 104 -246 140 -394 108z"/></g></g></g></svg><span>Try my new app, <b>yapp</b></span></span><span class="a"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a>
         </div>
       </div>
     </div>
@@ -493,16 +502,15 @@ a.q:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
   <section class="quests" id="quests" aria-labelledby="questTitle">
     <div class="wrap">
       <header class="whead row"><h2 id="questTitle" class="s" style="--i:0">AI side quests</h2><p class="s" style="--i:1">Small products I vibe-code with AI, outside the day job.</p><i class="nd bl"></i><i class="nd br"></i></header>
-      <div class="qstage" id="qstage" tabindex="0" role="group" aria-roledescription="carousel" aria-label="AI side quests. Drag, or use the arrow keys.">
+      <div class="qstage" id="qstage" tabindex="0" role="group" aria-roledescription="carousel" aria-label="AI side quests. Drag, swipe or use the arrow keys.">
         <canvas id="qcv" aria-hidden="true"></canvas>
-        <span class="qhint" aria-hidden="true">Drag</span>
-      </div>
-      <div class="qcap" id="qcap" aria-live="polite">
-        <div class="qcx"><p class="qk">Side quest 01 / 04</p><h3>yapp</h3><p class="d"></p><div class="qt"></div></div>
-        <div class="qnav">
-          <a class="qcta" href="#" target="_blank" rel="noopener"><span class="t">Try yapp</span><span class="a"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 10 10 4M5 4h5v5"/></svg></span></a>
-          <button type="button" class="qb2" data-q="-1" aria-label="Previous side quest"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M8.5 3 4.5 7l4 4"/></svg></button><button type="button" class="qb2" data-q="1" aria-label="Next side quest"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5.5 3l4 4-4 4"/></svg></button>
-        </div>
+        <a class="qov" id="qov" target="_blank" rel="noopener">
+          <span class="qpanel">
+            <span class="vk"></span><span class="vn"></span><span class="vl"></span>
+            <span class="qgo2 gcta"><span class="t">Try yapp</span><span class="a"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 10 10 4M5 4h5v5"/></svg></span></span>
+          </span>
+        </a>
+        <div class="qctl"><button type="button" class="qb2" data-q="-1" aria-label="Previous side quest"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M8.5 3 4.5 7l4 4"/></svg></button><span class="qcount"><b>01</b> / 04</span><button type="button" class="qb2" data-q="1" aria-label="Next side quest"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5.5 3l4 4-4 4"/></svg></button><span class="qhint" aria-hidden="true">Drag</span></div>
       </div>
       <div class="qgrid">
         <a class="q row" href="https://useyapp.vercel.app" target="_blank" rel="noopener">
@@ -1036,213 +1044,317 @@ a.q:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
 })();
 </script>
 <script>
-/* ---------- AI side quests: a stretch carousel in raw WebGL ---------- */
+/* ---------- AI side quests: flip-and-stretch carousel (WebGL2: scene pass + screen-space stretch pass) ---------- */
 (() => {
-  const sec = document.getElementById('quests'), cv = document.getElementById('qcv'), stage = document.getElementById('qstage');
+  const sec = document.getElementById('quests'), stage = document.getElementById('qstage'), cv = document.getElementById('qcv'), ov = document.getElementById('qov');
   if (!sec || !cv) return;
-  const gl = cv.getContext('webgl', { premultipliedAlpha: true, antialias: true, alpha: true });
+  const gl = cv.getContext('webgl2', { antialias: false, alpha: false, premultipliedAlpha: false, preserveDrawingBuffer: false });
   if (!gl) return;
-  sec.classList.add('gl');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const BG = [0xF2 / 255, 0xF2 / 255, 0xF0 / 255];
+
+  /* tuned values: card size, spacing, depth, and the stretch look */
+  const P = { hFrac: .627, wFrac: .56, wFracTall: .8, gap: .17, gapTall: .1, depthRatio: .515, fov: 32, radius: .034, sheen: .14,
+    zone: .4, stretch: 2, flare: .62, flarePow: 1.8, aberration: .03, blur: 4.6, smear: .14, saturate: .45, rim: .9, rimWidth: .2, rimHue: 52, speedZone: .14,
+    stiffness: 9, motion: .12, wheel: 1 };
 
   const CARDS = [
-    { kicker: 'Side quest 01', name: 'yapp', desc: 'Talk instead of typing. Free, open-source voice-to-text for Windows: press Ctrl+Space in any app, talk, and clean text lands at your cursor.', tags: ['Rust', 'Open source', 'Windows'], href: 'https://useyapp.vercel.app', cta: 'Try yapp', art: 'yapp', video: '' },
-    { kicker: 'Side quest 02', name: 'Debrief', desc: 'Write-up and demo coming soon.', tags: [], art: 'debrief', video: '' },
-    { kicker: 'Side quest 03', name: 'Next quest', desc: 'In the works.', tags: [], art: 'slot', video: '' },
-    { kicker: 'Side quest 04', name: 'Next quest', desc: 'In the works.', tags: [], art: 'slot', video: '' }
+    { kicker: 'Side quest 01 · Open source', name: 'yapp', line: 'Talk instead of typing. Voice-to-text for Windows.', tags: ['Rust', 'Open source', 'Windows'], href: 'https://useyapp.vercel.app', cta: 'Try yapp', video: 'img/q/yapp.mp4', poster: 'img/q/yapp.webp', bg: '#F4F1FB' },
+    { kicker: 'Side quest 02', name: 'Debrief', line: 'Case study and demo coming soon.', tags: [], art: 'debrief', bg: '#17181C', dark: true },
+    { kicker: 'Side quest 03', name: 'Next quest', line: 'In the works.', tags: [], art: 'slot', bg: '#E9E8E3', muted: true },
+    { kicker: 'Side quest 04', name: 'Next quest', line: 'In the works.', tags: [], art: 'slot', bg: '#E9E8E3', muted: true }
   ];
-  const n = CARDS.length, AW = 640, AH = 840, ASP = AW / AH;
+  const n = CARDS.length;
 
-  /* ---- card art, drawn once into canvases and uploaded as textures ---- */
-  const MARK = document.querySelector('.tryapp .ymk');
-  const markImg = new Image();
-  if (MARK) { const svg = MARK.cloneNode(true); svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg'); svg.setAttribute('width', 780); svg.setAttribute('height', 830); markImg.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg.outerHTML); }
-  const rr = (g, x, y, w, h, r) => { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); };
-  const hsh = (x, y) => { const v = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return v - Math.floor(v); };
-  function drawArt(c, g) {
-    g.clearRect(0, 0, AW, AH); g.save(); rr(g, 0, 0, AW, AH, 34); g.clip();
-    const T = (txt, x, y, font, col, align) => { g.font = font; g.fillStyle = col; g.textAlign = align || 'left'; g.fillText(txt, x, y); };
-    if (c.art === 'yapp') {
-      let gr = g.createLinearGradient(0, 0, AW, AH); gr.addColorStop(0, '#6B4CF0'); gr.addColorStop(.55, '#A957E4'); gr.addColorStop(1, '#E85BC9'); g.fillStyle = gr; g.fillRect(0, 0, AW, AH);
-      gr = g.createRadialGradient(AW * .85, AH * .9, 10, AW * .85, AH * .9, AW * .9); gr.addColorStop(0, 'rgba(255,105,200,.75)'); gr.addColorStop(1, 'rgba(255,105,200,0)'); g.fillStyle = gr; g.fillRect(0, 0, AW, AH);
-      gr = g.createRadialGradient(AW * .1, AH * .05, 10, AW * .1, AH * .05, AW * .8); gr.addColorStop(0, 'rgba(212,168,251,.55)'); gr.addColorStop(1, 'rgba(212,168,251,0)'); g.fillStyle = gr; g.fillRect(0, 0, AW, AH);
-      T('yapp', 52, 112, '400 68px "Averia Serif Libre", Georgia, serif', '#fff');
-      T('Talk instead of typing.', 54, 160, '400 27px Geist, system-ui, sans-serif', 'rgba(255,255,255,.86)');
-      if (markImg.complete && markImg.naturalWidth) { g.save(); g.shadowColor = 'rgba(40,10,90,.45)'; g.shadowBlur = 50; g.shadowOffsetY = 18; const s = 300; g.drawImage(markImg, (AW - s) / 2, 300, s, s * 830 / 780); g.restore(); }
-      g.fillStyle = 'rgba(255,255,255,.28)'; g.fillRect(52, AH - 102, AW - 104, 1.5);
-      T('Voice to text · Windows', 52, AH - 58, '500 22px Geist, system-ui, sans-serif', 'rgba(255,255,255,.92)');
-      T('Open source', AW - 52, AH - 58, '500 22px Geist, system-ui, sans-serif', 'rgba(255,255,255,.92)', 'right');
-    } else if (c.art === 'debrief') {
-      g.fillStyle = '#17181C'; g.fillRect(0, 0, AW, AH);
-      const S = 20, F = ['#3A2414', '#7A3B0C', '#FF7A00', '#FFB877'];
-      for (let y = AH * .52; y < AH; y += S) for (let x = 0; x < AW; x += S) {
-        const k = (y - AH * .52) / (AH * .48), v = hsh(x / S, y / S) * .55 + k * .75 + .25 * Math.sin(x / 90 + y / 70);
-        if (v < .55) continue; g.fillStyle = F[Math.min(3, Math.floor((v - .55) * 5))]; g.fillRect(x, y, S, S);
-      }
-      T('Debrief', 52, 112, '400 68px "Averia Serif Libre", Georgia, serif', '#fff');
-      T('Write-up and demo soon.', 54, 160, '400 27px Geist, system-ui, sans-serif', 'rgba(255,255,255,.62)');
-      T(c.kicker, 52, AH - 58, '500 22px "Geist Mono", ui-monospace, monospace', 'rgba(255,255,255,.92)');
-    } else {
-      g.fillStyle = '#E9E8E3'; g.fillRect(0, 0, AW, AH);
-      for (let y = 0; y < AH; y += 28) for (let x = (y / 28) % 2 ? 28 : 0; x < AW; x += 56) { g.fillStyle = 'rgba(0,0,0,.025)'; g.fillRect(x, y, 28, 28); }
-      g.setLineDash([10, 9]); g.strokeStyle = 'rgba(0,0,0,.22)'; g.lineWidth = 2; rr(g, 26, 26, AW - 52, AH - 52, 22); g.stroke(); g.setLineDash([]);
-      g.strokeStyle = 'rgba(0,0,0,.35)'; g.lineWidth = 3; g.beginPath(); g.moveTo(AW / 2 - 26, AH / 2); g.lineTo(AW / 2 + 26, AH / 2); g.moveTo(AW / 2, AH / 2 - 26); g.lineTo(AW / 2, AH / 2 + 26); g.stroke();
-      T('Next quest', 52, 112, '400 60px "Averia Serif Libre", Georgia, serif', '#8E8D87');
-      T('In the works.', 54, 158, '400 27px Geist, system-ui, sans-serif', '#9C9B95');
-      T(c.kicker, 52, AH - 58, '500 22px "Geist Mono", ui-monospace, monospace', '#8E8D87');
+  /* ---------- shaders ---------- */
+  const CARD_VS = `#version 300 es
+  in vec2 aP; uniform mat4 uProj; uniform vec3 uPos; uniform float uRy; uniform vec2 uSize;
+  out vec2 vUv; out float vFacing;
+  void main() {
+    vec3 p = vec3(aP * uSize, 0.0); float c = cos(uRy), s = sin(uRy);
+    vec3 q = vec3(c * p.x + s * p.z, p.y, -s * p.x + c * p.z) + uPos;
+    vec3 nrm = vec3(s, 0.0, c);
+    vFacing = abs(dot(nrm, normalize(-q)));
+    vUv = aP + 0.5;
+    gl_Position = uProj * vec4(q, 1.0);
+  }`;
+  const CARD_FS = `#version 300 es
+  precision highp float;
+  in vec2 vUv; in float vFacing; out vec4 o;
+  uniform sampler2D uMedia, uInfo; uniform vec4 uMRect; uniform vec2 uMFit; uniform vec3 uCardBg;
+  uniform float uInfoA, uZoom, uRadius, uSheen, uAngle, uFade, uHasMedia; uniform vec2 uSize;
+  void main() {
+    vec2 uv = vec2(vUv.x, 1.0 - vUv.y);
+    vec3 c = uCardBg;
+    if (uHasMedia > 0.5 && uv.x >= uMRect.x && uv.x <= uMRect.z && uv.y >= uMRect.y && uv.y <= uMRect.w) {
+      vec2 m = (uv - uMRect.xy) / (uMRect.zw - uMRect.xy);
+      m = (m - 0.5) / uZoom * uMFit + 0.5;
+      c = texture(uMedia, m).rgb;
     }
-    g.restore();
+    vec4 inf = texture(uInfo, uv);
+    c = c * (1.0 - inf.a * uInfoA) + inf.rgb * uInfoA;
+    vec2 p = (vUv - 0.5) * uSize; vec2 q = abs(p) - (0.5 * uSize - uRadius);
+    float d = length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - uRadius;
+    float aa = max(fwidth(d), 1e-5);
+    float a = 1.0 - smoothstep(-aa, aa, d);
+    c += (1.0 - smoothstep(0.0, 0.005, -d)) * 0.07;
+    float s = sin(uAngle);
+    float band = exp(-pow((vUv.x - 0.5 + (vUv.y - 0.5) * 0.4 + s * 0.8) * 2.6, 2.0));
+    c += uSheen * abs(s) * band;
+    o = vec4(c, a * uFade);
+  }`;
+  const POST_VS = `#version 300 es
+  out vec2 vUv; void main() { vec2 p = vec2((gl_VertexID << 1) & 2, gl_VertexID & 2); vUv = p; gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0); }`;
+  const POST_FS = `#version 300 es
+  precision highp float;
+  in vec2 vUv; out vec4 o;
+  uniform sampler2D tScene; uniform vec3 uBg; uniform float uZone, uK, uFlare, uFlarePow, uAber, uBlur, uSmear, uSat, uRim, uRimW, uRimHue, uCY;
+  vec2 remap(vec2 uv, float t, float kS, float mS) {
+    float k = max(uK * kS, 1e-3);
+    float g = (1.0 - exp(-k * t)) / k;
+    float m = 1.0 + uFlare * mS * pow(t, uFlarePow);
+    return vec2(uZone + (1.0 - uZone) * g, uCY + (uv.y - uCY) / m);
   }
+  vec3 tap(vec2 uv, float s, float t, float mS, float lod) {
+    vec2 z = remap(uv, t, 1.0, mS); float dx = uSmear * (1.0 - uZone) * t * t;
+    return 0.5 * (textureLod(tScene, vec2(0.5 + 0.5 * s * z.x, z.y), lod).rgb + textureLod(tScene, vec2(0.5 + 0.5 * s * (z.x - dx), z.y), lod).rgb);
+  }
+  float cover(vec3 c) { return clamp(distance(c, uBg) * 2.4, 0.0, 1.0); }
+  vec3 hue(vec3 c, float a) { const vec3 k = vec3(0.57735); float ca = cos(a); return c * ca + cross(k, c) * sin(a) + k * dot(k, c) * (1.0 - ca); }
+  vec3 vivid(vec3 c) { float l = dot(c, vec3(0.299, 0.587, 0.114)); c = max(mix(vec3(l), c, 1.7), 0.0); return clamp(c / max(max(c.r, max(c.g, c.b)), 0.2) * 0.96, 0.0, 1.0); }
+  void main() {
+    float sx = vUv.x * 2.0 - 1.0;
+    float t = clamp((abs(sx) - uZone) / max(1.0 - uZone, 1e-3), 0.0, 1.0);
+    if (t <= 0.0) { o = vec4(textureLod(tScene, vUv, 0.0).rgb, 1.0); return; }
+    float s = sx < 0.0 ? -1.0 : 1.0, lod = uBlur * t * t, dx = uSmear * (1.0 - uZone) * t * t;
+    vec3 col;
+    for (int c = 0; c < 3; c++) {
+      float ch = float(c) - 1.0; vec2 z = remap(vUv, t, 1.0 + ch * uAber, 1.0 + ch * uAber * 2.0); float sum = 0.0;
+      for (int i = 0; i < 4; i++) sum += textureLod(tScene, vec2(0.5 + 0.5 * s * (z.x - float(i) / 3.0 * dx), z.y), lod)[c];
+      col[c] = sum * 0.25;
+    }
+    float l = dot(col, vec3(0.299, 0.587, 0.114));
+    col = clamp(mix(vec3(l), col, 1.0 + uSat * t), 0.0, 1.0);
+    if (uRim > 0.0) {
+      vec3 o1 = tap(vUv, s, t, 1.0 + uRimW, lod + 0.7), o2 = tap(vUv, s, t, 1.0 + 2.2 * uRimW, lod + 1.3);
+      float c0 = cover(col), c1 = cover(o1), c2 = cover(o2);
+      float r1 = clamp(c1 - c0, 0.0, 1.0), r2 = clamp(c2 - max(c0, c1), 0.0, 1.0), w = uRim * sqrt(t);
+      col = mix(col, vivid(hue(o1, -uRimHue)), clamp(r1 * w, 0.0, 1.0));
+      col = mix(col, mix(vivid(hue(o2, -uRimHue * 1.35)), vec3(1.0), 0.4), clamp(r2 * w, 0.0, 1.0));
+    }
+    o = vec4(col, 1.0);
+  }`;
+  const mk = (vs, fs) => { const p = gl.createProgram(); for (const [t, src] of [[gl.VERTEX_SHADER, vs], [gl.FRAGMENT_SHADER, fs]]) { const s = gl.createShader(t); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { console.warn(gl.getShaderInfoLog(s)); return null; } gl.attachShader(p, s); } gl.linkProgram(p); return gl.getProgramParameter(p, gl.LINK_STATUS) ? p : null; };
+  const cardP = mk(CARD_VS, CARD_FS), postP = mk(POST_VS, POST_FS);
+  if (!cardP || !postP) return;
+  sec.classList.add('gl');
+  const loc = (p, names) => Object.fromEntries(names.map(k => [k, gl.getUniformLocation(p, k)]));
+  const CU = loc(cardP, ['uProj', 'uPos', 'uRy', 'uSize', 'uMedia', 'uInfo', 'uMRect', 'uMFit', 'uCardBg', 'uInfoA', 'uZoom', 'uRadius', 'uSheen', 'uAngle', 'uFade', 'uHasMedia']);
+  const PU = loc(postP, ['tScene', 'uBg', 'uZone', 'uK', 'uFlare', 'uFlarePow', 'uAber', 'uBlur', 'uSmear', 'uSat', 'uRim', 'uRimW', 'uRimHue', 'uCY']);
+  const quad = gl.createVertexArray(); gl.bindVertexArray(quad);
+  const vb = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, vb); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-.5, -.5, .5, -.5, -.5, .5, .5, .5]), gl.STATIC_DRAW);
+  const aP = gl.getAttribLocation(cardP, 'aP'); gl.enableVertexAttribArray(aP); gl.vertexAttribPointer(aP, 2, gl.FLOAT, false, 0, 0);
+  const empty = gl.createVertexArray();
+  const newTex = (mip) => { const t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, mip ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE); return t; };
+  const aniso = gl.getExtension('EXT_texture_filter_anisotropic');
+  const upload = (t, src, mip) => { gl.bindTexture(gl.TEXTURE_2D, t); gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true); try { gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src); } catch (_) { return; } if (mip) { gl.generateMipmap(gl.TEXTURE_2D); if (aniso) gl.texParameterf(gl.TEXTURE_2D, aniso.TEXTURE_MAX_ANISOTROPY_EXT, 8); } };
+  /* scene render target with mipmaps (the stretch pass blurs by sampling lower mips) */
+  const sceneTex = newTex(true), fbo = gl.createFramebuffer();
 
-  /* ---- GL setup ---- */
-  const VS = `attribute vec2 aP; uniform mat4 uProj; uniform vec3 uPos; uniform float uRot, uE, uK, uFlare; uniform vec2 uSize;
-    varying vec2 vUv; varying float vS;
-    void main() {
-      vec3 p = vec3(aP.x * uSize.x, aP.y * uSize.y, 0.0);
-      float c = cos(uRot), s = sin(uRot);
-      p = vec3(c * p.x + s * p.z, p.y, -s * p.x + c * p.z) + uPos;
-      vec4 cp = uProj * vec4(p, 1.0);
-      vec2 nd = cp.xy / cp.w; float ax = abs(nd.x), st = 0.0;
-      if (ax > uE) { float room = 1.06 - uE, t = ax - uE; float nx = uE + room * (1.0 - exp(-t * uK / room)); st = clamp((nx - uE) / room, 0.0, 1.0); nd.x = sign(nd.x) * nx; }
-      nd.y *= 1.0 + uFlare * st * st;
-      gl_Position = vec4(nd * cp.w, cp.z, cp.w);
-      vUv = vec2(aP.x + 0.5, 0.5 - aP.y); vS = st;
-    }`;
-  const FS = `precision mediump float; uniform sampler2D uT; uniform float uA; varying vec2 vUv; varying float vS;
-    vec3 spec(float h) { return 0.5 + 0.5 * cos(6.2831 * (h + vec3(0.0, 0.33, 0.67))); }
-    void main() {
-      float o = vS * 0.018;
-      vec4 c = texture2D(uT, vUv);
-      float r = texture2D(uT, vUv + vec2(o, 0.0)).r, b = texture2D(uT, vUv - vec2(o, 0.0)).b;
-      c.rgb = vec3(r, c.g, b);
-      float edge = smoothstep(0.32, 0.5, abs(vUv.y - 0.5));
-      vec3 ir = spec(vUv.y * 0.9 + vS * 0.5 + 0.15) * c.a;
-      c.rgb = mix(c.rgb, c.rgb * 0.7 + ir * 0.55, vS * (0.25 + 0.6 * edge));
-      gl_FragColor = c * uA;
-    }`;
-  const sh = (t, src) => { const s = gl.createShader(t); gl.shaderSource(s, src); gl.compileShader(s); return s; };
-  const pr = gl.createProgram(); gl.attachShader(pr, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(pr);
-  if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) { sec.classList.remove('gl'); return; }
-  gl.useProgram(pr);
-  const U = {}; ['uProj', 'uPos', 'uRot', 'uE', 'uK', 'uFlare', 'uSize', 'uT', 'uA'].forEach(k => U[k] = gl.getUniformLocation(pr, k));
-  const SX = 72, SY = 6, verts = [], idx = [];
-  for (let j = 0; j <= SY; j++) for (let i = 0; i <= SX; i++) verts.push(i / SX - .5, .5 - j / SY);
-  for (let j = 0; j < SY; j++) for (let i = 0; i < SX; i++) { const a = j * (SX + 1) + i, b = a + SX + 1; idx.push(a, b, a + 1, a + 1, b, b + 1); }
-  const vb = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, vb); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts), gl.STATIC_DRAW);
-  const ib = gl.createBuffer(); gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ib); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(idx), gl.STATIC_DRAW);
-  const aP = gl.getAttribLocation(pr, 'aP'); gl.enableVertexAttribArray(aP); gl.vertexAttribPointer(aP, 2, gl.FLOAT, false, 0, 0);
-  gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); gl.disable(gl.DEPTH_TEST);
-  gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
-
-  const tex = CARDS.map(c => {
-    const t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t);
-    [[gl.TEXTURE_MIN_FILTER, gl.LINEAR], [gl.TEXTURE_MAG_FILTER, gl.LINEAR], [gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE], [gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE]].forEach(([k, v]) => gl.texParameteri(gl.TEXTURE_2D, k, v));
-    const can = document.createElement('canvas'); can.width = AW; can.height = AH;
-    c.can = can; c.g = can.getContext('2d'); c.tex = t;
-    if (c.video) { const v = document.createElement('video'); v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'none'; v.src = c.video; c.vid = v; }
-    return t;
+  /* ---------- per-card media + info layers ---------- */
+  const hsh = (x, y) => { const v = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return v - Math.floor(v); };
+  const rr = (g, x, y, w, h, r) => { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); };
+  function artCanvas(c) {
+    const W = 1280, H = 720, a = document.createElement('canvas'); a.width = W; a.height = H; const g = a.getContext('2d');
+    if (c.art === 'debrief') {
+      g.fillStyle = '#17181C'; g.fillRect(0, 0, W, H);
+      const S = 24, F = ['#3A2414', '#7A3B0C', '#FF7A00', '#FFB877'];
+      for (let y = 0; y < H; y += S) for (let x = 0; x < W; x += S) { const k = 1 - y / H, v = hsh(x / S, y / S) * .5 + (1 - Math.abs(x / W - .62) * 1.6) * .55 * (.4 + k * .8) + .2 * Math.sin(x / 120 + y / 90); if (v < .62) continue; g.fillStyle = F[Math.min(3, Math.floor((v - .62) * 6))]; g.fillRect(x, y, S, S); }
+    } else {
+      g.fillStyle = '#E9E8E3'; g.fillRect(0, 0, W, H);
+      for (let y = 0; y < H; y += 32) for (let x = (y / 32) % 2 ? 32 : 0; x < W; x += 64) { g.fillStyle = 'rgba(0,0,0,.028)'; g.fillRect(x, y, 32, 32); }
+      g.strokeStyle = 'rgba(0,0,0,.3)'; g.lineWidth = 4; g.beginPath(); g.moveTo(W / 2 - 34, H * .42); g.lineTo(W / 2 + 34, H * .42); g.moveTo(W / 2, H * .42 - 34); g.lineTo(W / 2, H * .42 + 34); g.stroke();
+    }
+    return a;
+  }
+  CARDS.forEach(c => {
+    c.mTex = newTex(true); c.iTex = newTex(true); c.ic = document.createElement('canvas'); c.mw = 16; c.mh = 9; c.ready = false; c.zoom = 1;
+    if (c.video) {
+      const im = new Image(); im.decoding = 'async'; im.src = c.poster; im.onload = () => { if (!c.vReady) { upload(c.mTex, im, true); c.mw = im.naturalWidth; c.mh = im.naturalHeight; c.ready = true; need = true; } };
+      const v = document.createElement('video'); v.muted = true; v.loop = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.preload = 'none'; v.crossOrigin = 'anonymous'; v.src = c.video; c.vid = v;
+    } else { const a = artCanvas(c); upload(c.mTex, a, true); c.mw = a.width; c.mh = a.height; c.ready = true; }
   });
-  const upload = c => { if (c.vid && c.vid.readyState >= 2) { c.g.save(); rr(c.g, 0, 0, AW, AH, 34); c.g.clip(); const vw = c.vid.videoWidth, vh = c.vid.videoHeight, s = Math.max(AW / vw, AH / vh); c.g.drawImage(c.vid, (AW - vw * s) / 2, (AH - vh * s) / 2, vw * s, vh * s); c.g.restore(); } else drawArt(c, c.g);
-    gl.bindTexture(gl.TEXTURE_2D, c.tex); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, c.can); };
-  const paintAll = () => { CARDS.forEach(upload); need = true; };
 
-  /* ---- layout ---- */
-  let W = 0, H = 0, D = 3, proj = null, gapW = 1, pxPerCard = 300, cardH = 1, E = .64, narrow = false;
+  /* ---------- layout ---------- */
+  let W = 0, H = 0, dpr = 1, tall = false, A = 1, cw = 1.6, ch = 1, D = 3, depth = 1, tanH = .29, spacing = 1, sideInner = .5, sideX = .8, proj = null, card = { x: 0, y: 0, w: 0, h: 0 }, need = true;
   function persp(fov, a, nr, fr) { const f = 1 / Math.tan(fov / 2), nf = 1 / (nr - fr); return new Float32Array([f / a, 0, 0, 0, 0, f, 0, 0, 0, 0, (fr + nr) * nf, -1, 0, 0, 2 * fr * nr * nf, 0]); }
   function size() {
-    const r = stage.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
-    W = r.width; H = r.height; cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); gl.viewport(0, 0, cv.width, cv.height);
-    narrow = W < 700; const fov = 30 * Math.PI / 180, a = W / H, frac = narrow ? .54 : .66;
-    D = 1 / (frac * 2 * Math.tan(fov / 2)); proj = persp(fov, a, .1, 50);
-    const visW = 2 * D * Math.tan(fov / 2) * a; gapW = narrow ? ASP * 1.02 : Math.max(ASP * 1.22, visW * .29); E = narrow ? .66 : .6;
-    pxPerCard = gapW / visW * W; need = true;
+    const r = stage.getBoundingClientRect(); dpr = Math.min(2, devicePixelRatio || 1);
+    W = Math.max(1, r.width); H = Math.max(1, r.height); cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    A = W / H; tall = A < .85;
+    cw = tall ? .8 : 1.6; ch = 1;
+    const wf = tall ? P.wFracTall : P.wFrac, gp = tall ? P.gapTall : P.gap; tanH = Math.tan(P.fov * Math.PI / 360);
+    D = Math.max(ch / (2 * tanH * P.hFrac), cw / (2 * tanH * A * wf)); depth = D * P.depthRatio;
+    const Mt = cw / 2 / (D * tanH * A), Cn = cw / 2 / ((D + depth) * tanH * A);
+    sideX = Mt + gp + Cn; sideInner = Mt + gp; spacing = sideX * (D + depth) * tanH * A;
+    proj = persp(P.fov * Math.PI / 180, A, .05, 100);
+    card.w = cw / (2 * D * tanH) * H; card.h = ch / (2 * D * tanH) * H; card.x = (W - card.w) / 2; card.y = (H - card.h) / 2;
+    gl.bindTexture(gl.TEXTURE_2D, sceneTex); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, cv.width, cv.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo); gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, sceneTex, 0); gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    Object.assign(ov.style, { left: card.x + 'px', top: card.y + 'px', width: card.w + 'px', height: card.h + 'px' });
+    ov.style.setProperty('--u', (card.w / 100).toFixed(3) + 'px'); ov.style.setProperty('--my', (mediaRect()[3] * card.h / (card.w / 100)).toFixed(3));
+    ov.classList.toggle('tall', tall);
+    CARDS.forEach(drawInfo); need = true;
+  }
+  /* info layer: the same layout as the HTML overlay, drawn into the card so it travels with it while moving */
+  const mediaRect = () => tall ? [0, 0, 1, Math.min(.62, (card.w * 9 / 16) / card.h)] : [0, 0, 1, 1];
+  function drawInfo(c) {
+    const s = Math.min(2, dpr) * 1, Wp = Math.round(card.w * s), Hp = Math.round(card.h * s), u = Wp / 100;
+    c.ic.width = Wp; c.ic.height = Hp; const g = c.ic.getContext('2d'); g.clearRect(0, 0, Wp, Hp);
+    const L = layout(c, Wp, Hp, u);
+    if (L.panel) { g.save(); g.shadowColor = 'rgba(20,16,40,.12)'; g.shadowBlur = 3 * u; g.shadowOffsetY = .6 * u; g.fillStyle = c.dark ? 'rgba(28,29,34,.92)' : 'rgba(255,255,255,.94)'; rr(g, L.panel.x, L.panel.y, L.panel.w, L.panel.h, L.panel.r); g.fill(); g.restore(); }
+    const ink = c.dark ? '#FFFFFF' : c.muted ? '#8E8D87' : '#141414', ink2 = c.dark ? 'rgba(255,255,255,.66)' : c.muted ? '#9C9B95' : '#4A4A45', ink3 = c.dark ? 'rgba(255,255,255,.5)' : '#8A8A84';
+    g.textBaseline = 'alphabetic';
+    g.font = `500 ${L.fk}px "Geist Mono", ui-monospace, monospace`; g.fillStyle = ink3; if ('letterSpacing' in g) g.letterSpacing = (L.fk * .08) + 'px'; g.fillText(c.kicker.toUpperCase(), L.tx, L.yk);
+    if ('letterSpacing' in g) g.letterSpacing = (-L.ft * .03) + 'px';
+    g.font = `400 ${L.ft}px "Averia Serif Libre", Georgia, serif`; g.fillStyle = ink; g.fillText(c.name, L.tx, L.yt);
+    if ('letterSpacing' in g) g.letterSpacing = '0px';
+    g.font = `400 ${L.fl}px Geist, system-ui, sans-serif`; g.fillStyle = ink2; g.fillText(c.line, L.tx, L.yl);
+    if (c.cta) {
+      const b = L.cta; g.lineWidth = Math.max(1, s); g.strokeStyle = '#141414'; g.fillStyle = '#FFFFFF'; g.fillRect(b.x, b.y, b.w, b.h); g.strokeRect(b.x + .5, b.y + .5, b.w - 1, b.h - 1);
+      g.fillStyle = '#141414'; g.fillRect(b.x + b.w - b.h, b.y, b.h, b.h);
+      g.font = `500 ${b.f}px Geist, system-ui, sans-serif`; g.fillText(c.cta, b.x + b.h * .42, b.y + b.h * .62);
+      g.strokeStyle = '#FFFFFF'; g.lineWidth = b.h * .045; const ax = b.x + b.w - b.h / 2, ay = b.y + b.h / 2, k = b.h * .13; g.beginPath(); g.moveTo(ax - k, ay + k); g.lineTo(ax + k, ay - k); g.moveTo(ax - k * .6, ay - k); g.lineTo(ax + k, ay - k); g.lineTo(ax + k, ay + k * .6); g.stroke();
+    }
+    upload(c.iTex, c.ic, true);
+  }
+  function layout(c, Wp, Hp, u) {
+    if (!tall) {
+      const ph = 15.5 * u, panel = { x: 2 * u, y: Hp - 2 * u - ph, w: Wp - 4 * u, h: ph, r: 1.4 * u }, tx = panel.x + 2.6 * u;
+      const ctaH = 5 * u, ctaW = c.cta ? 17 * u : 0;
+      return { panel, tx, yk: panel.y + 4.1 * u, yt: panel.y + 9.3 * u, yl: panel.y + 12.6 * u, fk: 1.25 * u, ft: 4.4 * u, fl: 1.6 * u,
+        cta: { x: panel.x + panel.w - 2.6 * u - ctaW, y: panel.y + (ph - ctaH) / 2, w: ctaW, h: ctaH, f: 1.55 * u } };
+    }
+    const my = mediaRect()[3] * Hp, tx = 6 * u;
+    return { panel: null, tx, yk: my + 9 * u, yt: my + 20 * u, yl: my + 28 * u, fk: 3 * u, ft: 10 * u, fl: 3.9 * u,
+      cta: { x: tx, y: Hp - 6 * u - 13 * u, w: Wp - 12 * u, h: 13 * u, f: 4 * u } };
   }
 
-  /* ---- motion: drag, inertia, spring snap ---- */
-  let pos = 0, vel = 0, target = 0, drag = null, need = true, visible = false, lastAct = -1, wheelT = 0;
-  const wrapD = d => { d = ((d % n) + n) % n; return d > n / 2 ? d - n : d; };
+  /* ---------- motion: drag, throw, exponential snap ---------- */
+  let pos = 0, target = 0, q = 0, drag = null, visible = false, hover = 0, hoverT = 0, oa = 0, lastAct = -1, wheelT = 0;
+  const pxPerCard = () => sideX * W / 2;
   const act = () => ((Math.round(pos) % n) + n) % n;
-  cv.addEventListener('pointerdown', e => { drag = { x: e.clientX, y: e.clientY, p: pos, t: performance.now(), lx: e.clientX, lt: performance.now(), moved: false, id: e.pointerId }; vel = 0; });
+  stage.addEventListener('pointerdown', e => {
+    if (e.button !== 0) return;
+    drag = { x: e.clientX, y: e.clientY, t0: target, moved: false, id: e.pointerId, vx: 0, lx: e.clientX, lt: performance.now() };
+  });
   addEventListener('pointermove', e => {
     if (!drag || e.pointerId !== drag.id) return;
     const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
-    if (!drag.moved) { if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx)) { drag = null; return; } if (Math.abs(dx) > 6) { drag.moved = true; try { cv.setPointerCapture(e.pointerId); } catch (_) {} stage.classList.add('dragging'); } }
-    if (!drag.moved) return;
-    const now = performance.now(), dt = Math.max(1, now - drag.lt) / 1000;
-    const np = drag.p - dx / pxPerCard; vel = vel * .7 + ((np - pos) / dt) * .3; pos = np; target = pos;
-    drag.lx = e.clientX; drag.lt = now; need = true;
+    if (!drag.moved) { if (Math.abs(dy) > 8 && Math.abs(dy) > Math.abs(dx)) { drag = null; return; } if (Math.abs(dx) < 6) return; drag.moved = true; stage.classList.add('dragging'); try { stage.setPointerCapture(e.pointerId); } catch (_) {} }
+    const now = performance.now(), dt = Math.max(1, now - drag.lt); drag.vx = drag.vx * .6 + ((e.clientX - drag.lx) / dt) * .4; drag.lx = e.clientX; drag.lt = now;
+    target = drag.t0 - dx / pxPerCard(); need = true;
   });
   const end = e => {
     if (!drag || (e && e.pointerId !== drag.id)) return;
     const d = drag; drag = null; stage.classList.remove('dragging');
-    if (!d.moved) {
-      const r = cv.getBoundingClientRect(), x = (e ? e.clientX : r.left + W / 2) - r.left - W / 2;
-      if (Math.abs(x) < pxPerCard * .42) { const c = CARDS[act()]; if (c.href) open(c.href, '_blank', 'noopener'); }
-      else target = Math.round(pos) + Math.sign(x);
-    } else { const throwTo = pos + Math.max(-1.6, Math.min(1.6, vel * .22)); target = Math.round(throwTo); }
+    if (d.moved) { const v = performance.now() - d.lt > 80 ? 0 : d.vx, jump = Math.abs(v) < .25 ? 0 : Math.max(-2, Math.min(2, -v * 1000 / pxPerCard() * .16)); target = Math.round(target + jump); suppress = true; setTimeout(() => suppress = false, 0); }
+    else if (e) {
+      const r = stage.getBoundingClientRect(), fx = (e.clientX - r.left) / r.width;
+      if (fx < (card.x / W)) { target = Math.round(target) - 1; } else if (fx > (card.x + card.w) / W) { target = Math.round(target) + 1; }
+    }
     need = true;
   };
+  let suppress = false;
   addEventListener('pointerup', end); addEventListener('pointercancel', end);
-  cv.addEventListener('wheel', e => {
+  ov.addEventListener('click', e => { if (suppress || oa < .5) e.preventDefault(); }, true);
+  stage.addEventListener('wheel', e => {
     if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
-    e.preventDefault(); pos += e.deltaX / pxPerCard * .8; target = pos; vel = e.deltaX / pxPerCard * 30; need = true;
-    clearTimeout(wheelT); wheelT = setTimeout(() => { target = Math.round(pos + Math.max(-.4, Math.min(.4, vel * .02))); }, 120);
+    e.preventDefault(); target += e.deltaX * P.wheel / pxPerCard(); need = true;
+    clearTimeout(wheelT); wheelT = setTimeout(() => { target = Math.round(target); need = true; }, 130);
   }, { passive: false });
-  stage.addEventListener('keydown', e => { if (e.key === 'ArrowRight') { target = Math.round(target) + 1; e.preventDefault(); } if (e.key === 'ArrowLeft') { target = Math.round(target) - 1; e.preventDefault(); } if (e.key === 'Enter') { const c = CARDS[act()]; if (c.href) open(c.href, '_blank', 'noopener'); } need = true; });
-  sec.querySelectorAll('[data-q]').forEach(b => b.addEventListener('click', () => { target = Math.round(target) + +b.dataset.q; need = true; }));
+  stage.addEventListener('keydown', e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { target = Math.round(target) + (e.key === 'ArrowRight' ? 1 : -1); need = true; e.preventDefault(); } });
+  sec.querySelectorAll('[data-q]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); target = Math.round(target) + +b.dataset.q; need = true; }));
+  sec.querySelectorAll('[data-q]').forEach(b => b.addEventListener('pointerdown', e => e.stopPropagation()));
+  ov.addEventListener('pointerenter', () => hoverT = 1); ov.addEventListener('pointerleave', () => hoverT = 0);
 
-  /* ---- caption below the stage ---- */
-  const cap = document.getElementById('qcap');
-  function caption(i) {
+  /* overlay content (crisp HTML for the settled card) */
+  const ovK = ov.querySelector('.vk'), ovT = ov.querySelector('.vn'), ovL = ov.querySelector('.vl'), ovA = ov.querySelector('.qgo2'), count = sec.querySelector('.qcount b');
+  function setOverlay(i) {
     const c = CARDS[i];
-    cap.classList.add('sw');
-    setTimeout(() => {
-      cap.querySelector('.qk').textContent = `${c.kicker} / ${String(n).padStart(2, '0')}`;
-      cap.querySelector('h3').textContent = c.name; cap.querySelector('.d').textContent = c.desc;
-      cap.querySelector('.qt').innerHTML = c.tags.map(t => `<span>${t}</span>`).join('');
-      const a = cap.querySelector('.qcta'); if (c.href) { a.hidden = false; a.href = c.href; a.querySelector('.t').textContent = c.cta || 'Open'; } else a.hidden = true;
-      cap.classList.remove('sw');
-    }, 150);
+    ovK.textContent = c.kicker; ovT.textContent = c.name; ovL.textContent = c.line;
+    ov.classList.toggle('dark', !!c.dark); ov.classList.toggle('muted', !!c.muted);
+    if (c.href) { ov.setAttribute('href', c.href); ov.setAttribute('aria-label', `${c.name}: ${c.line} Opens in a new tab.`); ovA.hidden = false; ovA.querySelector('.t').textContent = c.cta; } else { ov.removeAttribute('href'); ov.setAttribute('aria-label', `${c.name}: ${c.line}`); ovA.hidden = true; }
+    if (count) count.textContent = String(i + 1).padStart(2, '0');
   }
 
-  /* ---- render ---- */
+  /* ---------- frame ---------- */
   let last = performance.now();
   function frame(now) {
     const dt = Math.min(.05, (now - last) / 1000); last = now;
-    if (!drag) {
-      const k = 120, c = 2 * Math.sqrt(k) * .92, a = k * (target - pos) - c * vel;
-      vel += a * dt; pos += vel * dt;
-      if (Math.abs(target - pos) < .0005 && Math.abs(vel) < .002) { pos = target; vel = 0; }
-    }
-    const moving = drag || Math.abs(vel) > .002 || Math.abs(target - pos) > .0005;
-    const playing = CARDS.some(c => c.vid && !c.vid.paused);
-    if (playing) CARDS.forEach(c => { if (c.vid && !c.vid.paused) upload(c); });
-    if (visible && (need || moving || playing)) { draw(); need = false; }
-    const ai = act(); if (ai !== lastAct) { lastAct = ai; caption(ai); CARDS.forEach((c, j) => { if (c.vid) { if (j === ai && visible) c.vid.play().catch(() => {}); else c.vid.pause(); } }); }
+    const prev = pos, stiff = drag && drag.moved ? 34 : P.stiffness;
+    pos += (target - pos) * (1 - Math.exp(-dt * stiff)); if (!drag && Math.abs(target - pos) < 1e-4) pos = target;
+    const sp = Math.abs(pos - prev) / Math.max(dt, 1e-4);
+    q += (Math.min(sp * P.motion, 1.5) - q) * (1 - Math.exp(-dt * 12)); if (reduce) q = 0;
+    const settled = !drag && Math.abs(target - pos) < .003 && q < .03;
+    const oaT = settled && visible ? 1 : 0; oa += (oaT - oa) * (1 - Math.exp(-dt * (oaT ? 14 : 40))); if (Math.abs(oa - oaT) < .01) oa = oaT;
+    ov.style.opacity = oa.toFixed(3); ov.style.pointerEvents = oa > .5 ? 'auto' : 'none';
+    hover += (hoverT * (oa > .5 ? 1 : 0) - hover) * (1 - Math.exp(-dt * 10));
+    const ai = act(); if (ai !== lastAct) { lastAct = ai; setOverlay(ai); }
+    let playing = false;
+    CARDS.forEach((c, i) => {
+      if (!c.vid) return;
+      let d = ((i - pos) % n + n) % n; if (d > n / 2) d -= n;
+      const want = visible && Math.abs(d) < 1.2;
+      if (want && c.vid.paused) { c.vid.preload = 'auto'; c.vid.play().catch(() => {}); } else if (!want && !c.vid.paused) c.vid.pause();
+      if (!c.vid.paused && c.vid.readyState >= 2 && !c.vBad) { gl.bindTexture(gl.TEXTURE_2D, c.mTex); gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false); try { gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, c.vid); } catch (_) { c.vBad = true; return; } gl.generateMipmap(gl.TEXTURE_2D); c.mw = c.vid.videoWidth; c.mh = c.vid.videoHeight; c.vReady = true; c.ready = true; playing = true; }
+    });
+    const moving = drag || Math.abs(target - pos) > 1e-4 || q > .002 || Math.abs(oa - oaT) > 0 || Math.abs(hover - hoverT) > .002;
+    if (visible && (need || moving || playing)) { draw(ai); need = false; }
     requestAnimationFrame(frame);
   }
-  function draw() {
-    gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.uniformMatrix4fv(U.uProj, false, proj); gl.uniform2f(U.uSize, ASP * cardH, cardH);
-    const v = reduce ? 0 : Math.max(-6, Math.min(6, vel));
-    const order = CARDS.map((c, i) => ({ i, d: wrapD(i - pos) })).sort((a, b) => Math.abs(b.d) - Math.abs(a.d));
-    for (const { i, d } of order) {
-      if (Math.abs(d) > 2.2) continue;
-      const cd = Math.max(-1.3, Math.min(1.3, d));
-      const rot = -cd * (narrow ? .62 : .72) - v * .11;
-      const z = -D + Math.min(1, Math.abs(d)) * .18;
-      gl.uniform3f(U.uPos, d * gapW, 0, z); gl.uniform1f(U.uRot, rot);
-      gl.uniform1f(U.uE, E - Math.min(.12, Math.abs(v) * .02)); gl.uniform1f(U.uK, 5 + Math.abs(v) * 1.4); gl.uniform1f(U.uFlare, narrow ? .5 : .7);
-      gl.uniform1f(U.uA, 1);
-      gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tex[i]); gl.uniform1i(U.uT, 0);
-      gl.drawElements(gl.TRIANGLES, idx.length, gl.UNSIGNED_SHORT, 0);
-    }
+  function place(d) {
+    const t = Math.abs(d), sg = Math.sign(d);
+    return { x: sg * (t <= 1 ? t * spacing : spacing * (1 + (t - 1) * 1.6)), z: -depth * (t <= 1 ? t * t : 1 + 2 * (t - 1)), fade: 1 - smooth(1.15, 1.75, t), ry: Math.PI * sg * Math.min(1, t) };
   }
-  new IntersectionObserver(es => es.forEach(e => { visible = e.isIntersecting; need = true; })).observe(stage);
-  addEventListener('resize', () => { size(); });
-  size(); paintAll();
-  markImg.onload = paintAll;
-  if (document.fonts) document.fonts.ready.then(paintAll);
+  const smooth = (a, b, x) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+  function draw(ai) {
+    /* 1. cards into the mipmapped scene texture */
+    gl.bindFramebuffer(gl.FRAMEBUFFER, fbo); gl.viewport(0, 0, cv.width, cv.height);
+    gl.clearColor(BG[0], BG[1], BG[2], 1); gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.useProgram(cardP); gl.bindVertexArray(quad); gl.enable(gl.BLEND); gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    gl.uniformMatrix4fv(CU.uProj, false, proj); gl.uniform2f(CU.uSize, cw, ch); gl.uniform1f(CU.uRadius, P.radius * cw); gl.uniform1f(CU.uSheen, P.sheen);
+    gl.uniform1i(CU.uMedia, 0); gl.uniform1i(CU.uInfo, 1);
+    const mr = mediaRect(); gl.uniform4f(CU.uMRect, mr[0], mr[1], mr[2], mr[3]);
+    const list = CARDS.map((c, i) => { let d = ((i - pos) % n + n) % n; if (d > n / 2) d -= n; return { c, i, d }; }).sort((a, b) => Math.abs(b.d) - Math.abs(a.d));
+    for (const { c, i, d } of list) {
+      const pl = place(d); if (pl.fade <= .001) continue;
+      gl.uniform3f(CU.uPos, pl.x, 0, pl.z - D); gl.uniform1f(CU.uRy, pl.ry); gl.uniform1f(CU.uAngle, pl.ry); gl.uniform1f(CU.uFade, pl.fade);
+      const rgb = parseInt(c.bg.slice(1), 16); gl.uniform3f(CU.uCardBg, (rgb >> 16 & 255) / 255, (rgb >> 8 & 255) / 255, (rgb & 255) / 255);
+      const rectA = (mr[2] - mr[0]) * cw / ((mr[3] - mr[1]) * ch), mediaA = c.mw / c.mh;
+      gl.uniform2f(CU.uMFit, rectA > mediaA ? 1 : rectA / mediaA, rectA > mediaA ? mediaA / rectA : 1);
+      const isAct = i === ai && Math.abs(d) < .02;
+      gl.uniform1f(CU.uInfoA, isAct ? 1 - oa : 1); gl.uniform1f(CU.uZoom, isAct ? 1 + .035 * hover : 1); gl.uniform1f(CU.uHasMedia, c.ready ? 1 : 0);
+      gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, c.mTex); gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, c.iTex);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    }
+    gl.bindTexture(gl.TEXTURE_2D, sceneTex); gl.generateMipmap(gl.TEXTURE_2D);
+    /* 2. screen-space stretch */
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.viewport(0, 0, cv.width, cv.height); gl.disable(gl.BLEND);
+    gl.useProgram(postP); gl.bindVertexArray(empty);
+    gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, sceneTex); gl.uniform1i(PU.tScene, 0);
+    const zone = Math.min(.97, sideInner + P.zone * (1 - sideInner));
+    gl.uniform3f(PU.uBg, BG[0], BG[1], BG[2]); gl.uniform1f(PU.uCY, .5);
+    gl.uniform1f(PU.uZone, Math.max(.05, zone - P.speedZone * q)); gl.uniform1f(PU.uK, P.stretch * (1 + q)); gl.uniform1f(PU.uFlare, P.flare * (1 + .35 * q)); gl.uniform1f(PU.uFlarePow, P.flarePow);
+    gl.uniform1f(PU.uAber, P.aberration); gl.uniform1f(PU.uBlur, P.blur); gl.uniform1f(PU.uSmear, P.smear * (1 + q)); gl.uniform1f(PU.uSat, P.saturate);
+    gl.uniform1f(PU.uRim, P.rim); gl.uniform1f(PU.uRimW, P.rimWidth); gl.uniform1f(PU.uRimHue, P.rimHue * Math.PI / 180);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+  new IntersectionObserver(es => es.forEach(e => { visible = e.isIntersecting; need = true; }), { threshold: .05 }).observe(stage);
+  new ResizeObserver(() => { size(); }).observe(stage);
+  size();
+  if (document.fonts) document.fonts.ready.then(() => { CARDS.forEach(drawInfo); need = true; });
+  setOverlay(0);
   requestAnimationFrame(frame);
 })();
 </script>
