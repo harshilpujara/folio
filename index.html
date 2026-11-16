@@ -219,8 +219,9 @@ a.q:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
 .q.slot .qm { aspect-ratio: 16 / 6; }
 /* pixel transition: a white bridge that fills with dark pixels from the bottom of the screen up,
    so the screen is already dark when the dark section arrives */
-.qbridge { position: relative; z-index: 5; height: 110vh; height: 110svh; background: var(--paper); margin-bottom: -1px; }
-.qpx { position: sticky; top: 0; width: 100%; height: 100vh; height: 100svh; display: block; pointer-events: none; }
+.qbridge { position: relative; z-index: 5; height: 75vh; height: 75svh; background: var(--paper); margin-bottom: -1px; }
+.qpx { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+.quests .whead { padding-top: 36px; }
 .quests > .wrap { position: relative; z-index: 1; }
 
 /* stretch carousel */
@@ -1134,9 +1135,9 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
   vec3 hue(vec3 c, float a) { const vec3 k = vec3(0.57735); float ca = cos(a); return c * ca + cross(k, c) * sin(a) + k * dot(k, c) * (1.0 - ca); }
   vec3 vivid(vec3 c) { float l = dot(c, vec3(0.299, 0.587, 0.114)); c = max(mix(vec3(l), c, 1.7), 0.0); return clamp(c / max(max(c.r, max(c.g, c.b)), 0.2) * 0.96, 0.0, 1.0); }
   float zt(float x) { return clamp((abs(x * 2.0 - 1.0) - uZone) / max(1.0 - uZone, 1e-3), 0.0, 1.0); }
-  vec3 stretchAt(vec2 uv) {
+  vec4 stretchAt(vec2 uv) {
     float t = zt(uv.x);
-    if (t <= 0.0) return textureLod(tScene, uv, 0.0).rgb;
+    if (t <= 0.0) return textureLod(tScene, uv, 0.0);
     float s = uv.x < 0.5 ? -1.0 : 1.0, lod = uBlur * t * t, dx = uSmear * (1.0 - uZone) * t * t;
     vec3 col;
     for (int c = 0; c < 3; c++) {
@@ -1144,6 +1145,8 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
       for (int i = 0; i < 4; i++) sum += textureLod(tScene, vec2(0.5 + 0.5 * s * (z.x - float(i) / 3.0 * dx), z.y), lod)[c];
       col[c] = sum * 0.25;
     }
+    vec2 z0 = remap(uv, t, 1.0, 1.0);
+    float a = 0.5 * (textureLod(tScene, vec2(0.5 + 0.5 * s * z0.x, z0.y), lod).a + textureLod(tScene, vec2(0.5 + 0.5 * s * (z0.x - dx), z0.y), lod).a);
     float l = dot(col, vec3(0.299, 0.587, 0.114));
     col = clamp(mix(vec3(l), col, 1.0 + uSat * t), 0.0, 1.0);
     if (uRim > 0.0) {
@@ -1152,33 +1155,32 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
       float r1 = clamp(c1 - c0, 0.0, 1.0), r2 = clamp(c2 - max(c0, c1), 0.0, 1.0), w = uRim * sqrt(t);
       col = mix(col, vivid(hue(o1, -uRimHue)), clamp(r1 * w, 0.0, 1.0));
       col = mix(col, mix(vivid(hue(o2, -uRimHue * 1.35)), vec3(1.0), 0.4), clamp(r2 * w, 0.0, 1.0));
+      a = max(a, clamp((r1 + r2) * w, 0.0, 1.0));
     }
-    return col;
+    return vec4(col, a);
   }
   void main() {
     vec2 px = vUv * uRes;
     float tp = zt(vUv.x);
     float tc = zt((floor(px.x / uCell) + 0.5) * uCell / uRes.x);
-    vec3 col;
-    if (tc <= 0.0 && tp <= 0.0) col = textureLod(tScene, vUv, 0.0).rgb;
+    vec4 sc;
+    if (tc <= 0.0 && tp <= 0.0) sc = textureLod(tScene, vUv, 0.0);
     else {
-      /* nested cells that grow with distance: 2.75 / 5.5 / 11 / 22px, all aligned to the 22px grid */
       float S = uCell * (tc < 0.12 ? 0.125 : tc < 0.3 ? 0.25 : tc < 0.62 ? 0.5 : 1.0);
-      vec3 cp = stretchAt((floor(px / S) + 0.5) * S / uRes);
-      /* ease in: the smooth stretch hands over to the cells, and the dither only builds with distance */
+      vec4 cp = stretchAt((floor(px / S) + 0.5) * S / uRes);
       float k = smoothstep(0.0, 0.2, tp);
-      col = k < 1.0 ? mix(stretchAt(vUv), cp, k) : cp;
-      float a = smoothstep(0.08, 0.45, tp);
-      float cv = cover(col), chk = mod(floor(px.x / uDot) + floor(px.y / uDot), 2.0);
-      if (cv < 0.1 * a) col = uBg; else if (cv < 0.42 * a) col = chk > 0.5 ? col : mix(col, uBg, a);
+      sc = k < 1.0 ? mix(stretchAt(vUv), cp, k) : cp;
+      float am = smoothstep(0.08, 0.45, tp), chk = mod(floor(px.x / uDot) + floor(px.y / uDot), 2.0);
+      if (sc.a < 0.1 * am) sc = vec4(uBg, 0.0); else if (sc.a < 0.42 * am && chk < 0.5) sc = vec4(uBg, 0.0);
     }
-    /* faint grid in the empty background, bulging under the cursor */
+    /* dotted grid on the 22px pixel grid, only where no card covers it; dots swell and brighten under the cursor */
     vec2 d = px - uMouse; float r = length(d), b = uHov * pow(1.0 - smoothstep(0.0, uR, r), 1.6);
     vec2 q = uMouse + d * (1.0 - 0.42 * b);
-    vec2 g = abs(fract(q / uGrid + 0.5) - 0.5) * uGrid;
-    float line = 1.0 - smoothstep(0.0, uLW, min(g.x, g.y));
-    float bgm = 1.0 - cover(col);
-    col = mix(col, uGridCol, line * (0.07 + 0.16 * b) * bgm);
+    vec2 cc = (fract(q / uGrid) - 0.5) * uGrid;
+    float rad = uLW * (1.0 + 1.3 * b);
+    float dotm = 1.0 - smoothstep(rad - 0.75, rad + 0.75, length(cc));
+    vec3 bgc = mix(uBg, uGridCol, dotm * (0.16 + 0.34 * b));
+    vec3 col = sc.rgb + (bgc - uBg) * (1.0 - clamp(sc.a, 0.0, 1.0));
     o = vec4(col, 1.0);
   }`;
   const mk = (vs, fs) => { const p = gl.createProgram(); for (const [t, src] of [[gl.VERTEX_SHADER, vs], [gl.FRAGMENT_SHADER, fs]]) { const s = gl.createShader(t); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { console.warn(gl.getShaderInfoLog(s)); return null; } gl.attachShader(p, s); } gl.linkProgram(p); return gl.getProgramParameter(p, gl.LINK_STATUS) ? p : null; };
@@ -1361,7 +1363,7 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
   function draw(ai) {
     /* 1. cards into the mipmapped scene texture */
     gl.bindFramebuffer(gl.FRAMEBUFFER, fbo); gl.viewport(0, 0, cv.width, cv.height);
-    gl.clearColor(BG[0], BG[1], BG[2], 1); gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.clearColor(BG[0], BG[1], BG[2], 0); gl.clear(gl.COLOR_BUFFER_BIT);
     gl.useProgram(cardP); gl.bindVertexArray(quad); gl.enable(gl.BLEND); gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
     gl.uniformMatrix4fv(CU.uProj, false, proj); gl.uniform2f(CU.uSize, cw, ch); gl.uniform1f(CU.uRadius, P.radius * cw); gl.uniform1f(CU.uSheen, P.sheen);
     gl.uniform1i(CU.uMedia, 0); gl.uniform1i(CU.uInfo, 1);
@@ -1385,7 +1387,7 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
     gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, sceneTex); gl.uniform1i(PU.tScene, 0);
     const zone = Math.min(.97, sideInner + P.zone * (1 - sideInner));
     gl.uniform3f(PU.uBg, BG[0], BG[1], BG[2]); gl.uniform1f(PU.uCY, .5); gl.uniform2f(PU.uRes, cv.width, cv.height); gl.uniform1f(PU.uCell, 22 * dpr); gl.uniform1f(PU.uDot, 2 * dpr);
-    gl.uniform3f(PU.uGridCol, 1, 1, 1); gl.uniform2f(PU.uMouse, mouse[0], mouse[1]); gl.uniform1f(PU.uHov, mh); gl.uniform1f(PU.uGrid, 44 * dpr); gl.uniform1f(PU.uR, 200 * dpr); gl.uniform1f(PU.uLW, 1.1 * dpr);
+    gl.uniform3f(PU.uGridCol, 1, 1, 1); gl.uniform2f(PU.uMouse, mouse[0], mouse[1]); gl.uniform1f(PU.uHov, mh); gl.uniform1f(PU.uGrid, 22 * dpr); gl.uniform1f(PU.uR, 200 * dpr); gl.uniform1f(PU.uLW, 1.05 * dpr);
     gl.uniform1f(PU.uZone, Math.max(.05, zone - P.speedZone * q)); gl.uniform1f(PU.uK, P.stretch * (1 + q)); gl.uniform1f(PU.uFlare, P.flare * (1 + .35 * q)); gl.uniform1f(PU.uFlarePow, P.flarePow);
     gl.uniform1f(PU.uAber, P.aberration); gl.uniform1f(PU.uBlur, P.blur); gl.uniform1f(PU.uSmear, P.smear * (1 + q)); gl.uniform1f(PU.uSat, P.saturate);
     gl.uniform1f(PU.uRim, P.rim); gl.uniform1f(PU.uRimW, P.rimWidth); gl.uniform1f(PU.uRimHue, P.rimHue * Math.PI / 180);
@@ -1421,7 +1423,7 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
     if (r.top < vh && r.bottom > 0) {
       if (!reduce) z += dt * .00012;
       /* progress: 0 as the bridge enters at the bottom, 1 once it has filled the whole screen */
-      const p = Math.max(0, Math.min(1.25, (vh - r.top) / (r.height - vh * .08)));
+      const p = Math.max(0, Math.min(1.25, (vh - r.top) / vh));
       const cvTop = cv.getBoundingClientRect().top;
       const key = p.toFixed(3) + '|' + Math.round(cvTop) + '|' + (reduce ? 0 : Math.floor(z * 60));
       if (key !== prevKey) {
