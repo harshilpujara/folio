@@ -285,6 +285,27 @@ a.q:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
 .js .intro.in .tryapp { opacity: 1; translate: none; filter: none; }
 @media (max-width: 640px) { .tryapp .t { font-size: 14px; gap: 10px; } .tryapp .ymk { width: 26px; height: 26px; } }
 
+/* ---------- That's me: the desk ---------- */
+.desk { position: relative; z-index: 5; background: #17171A; height: 270vh; height: 270svh; }
+.dstage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; perspective: 1100px; perspective-origin: 50% 42%; }
+.dstage::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(120% 90% at 50% 50%, transparent 55%, rgba(8,8,10,.55) 100%); }
+.dcam { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; }
+.dsurf { position: absolute; inset: -70%; background-color: #1E1E21;
+  background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px), radial-gradient(60% 50% at 50% 45%, rgba(255,255,255,.035), transparent 70%);
+  background-size: 44px 44px, 44px 44px, 100% 100%; background-position: center; }
+.dobj { position: absolute; left: 0; top: 0; transform-style: preserve-3d; cursor: grab; touch-action: none; -webkit-user-select: none; user-select: none; }
+.dobj.drag { cursor: grabbing; }
+.dobj img { display: block; width: 100%; height: auto; pointer-events: none; -webkit-user-drag: none; filter: drop-shadow(0 var(--sy, 6px) var(--sb, 10px) rgba(0,0,0,.55)); }
+.dobj.print img { padding: 3.5%; background: #F3F1EC; box-sizing: border-box; }
+.dtext { position: absolute; left: 50%; top: 50%; translate: -50% -50%; text-align: center; color: #F2F2F0; pointer-events: none; width: min(560px, 80vw); opacity: 0; }
+.dtext .dk { margin: 0; font-size: 12.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--sky-d); }
+.dtext h2 { margin: 12px 0 0; font-family: var(--f-display); font-weight: 400; font-size: clamp(56px, 8vw, 120px); line-height: .95; letter-spacing: -.035em; }
+.dtext .dl { margin: 18px auto 0; max-width: 34ch; font-size: 16px; line-height: 1.5; color: rgba(242,242,240,.6); }
+.dhint { position: absolute; left: 50%; bottom: 4.5vh; translate: -50% 0; z-index: 2; display: inline-flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: .07em; text-transform: uppercase; color: rgba(242,242,240,.45); opacity: 0; transition: opacity 400ms ease; pointer-events: none; }
+.dhint svg { width: 14px; height: 14px; }
+.dhint.on { opacity: 1; }
+@media (max-width: 760px) { .dtext .dl { font-size: 14.5px; } }
+
 /* ---------- work: calm vertical list, exact Figma screens ---------- */
 .work { position: relative; z-index: 4; margin-top: -16vh; margin-top: -16svh; background: var(--paper); --grid: #ECECE8; overflow-x: clip; }
 .work > .wrap { position: relative; border-left: 1px solid var(--grid); border-right: 1px solid var(--grid); padding-left: 0; padding-right: 0; }
@@ -418,7 +439,7 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
   <nav class="pill" aria-label="Main">
     <a class="logo" href="#top" aria-label="Harshil Pujara, home"><canvas id="logoCv" width="13" height="11"></canvas></a>
     <a class="l" href="#work">Work</a>
-    <a class="l" href="#work">About</a>
+    <a class="l" href="#about">About</a>
     <a class="l hide-sm" href="#quests">Builds</a>
     <a class="l hide-sm" href="#work">Instagram</a>
     <span class="ask-w">
@@ -553,6 +574,16 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="desk" id="about" aria-labelledby="deskTitle">
+    <div class="dstage" id="dstage">
+      <div class="dcam" id="dcam">
+        <div class="dsurf" aria-hidden="true"></div>
+        <div class="dtext"><p class="dk">Beyond work</p><h2 id="deskTitle">That’s me.</h2><p class="dl">The things that live on my desk. Pick them up, move them around.</p></div>
+      </div>
+      <span class="dhint" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 1.5v13M1.5 8h13M8 1.5 6 3.5M8 1.5l2 2M8 14.5l-2-2M8 14.5l2-2M1.5 8l2-2M1.5 8l2 2M14.5 8l-2-2M14.5 8l-2 2"/></svg>Drag things around</span>
     </div>
   </section>
 </main>
@@ -1449,6 +1480,88 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
         }
         g.fillStyle = DARK; g.fill(solid); g.fillStyle = MID; g.fill(mid); g.fillStyle = chk; g.fill(dots); g.fillStyle = ORA; g.fill(ora);
       }
+    }
+    requestAnimationFrame(frame);
+  }
+  addEventListener('resize', size); size(); requestAnimationFrame(frame);
+})();
+</script>
+<script>
+/* ---------- That's me: a camera that rises from the desk to a top shot; every object can be picked up ---------- */
+(() => {
+  const sec = document.querySelector('.desk'), stage = document.getElementById('dstage'), cam = document.getElementById('dcam'), text = sec && sec.querySelector('.dtext'), hint = sec && sec.querySelector('.dhint');
+  if (!sec) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const DIM = {"notebook": [580, 843], "patch": [821, 847], "sticky": [691, 691], "pass": [1243, 593], "coffee": [759, 658], "sketch1": [1116, 859], "sketch2": [908, 698], "pen": [139, 915], "pins": [411, 282], "portrait": [1376, 768]};
+  /* x, y: centre as a fraction of the view; w: width as a fraction of the view width; r: rotation; z: height above the desk.  m*: phones */
+  const O = [
+    { k: 'sketch2', x: .86, y: .74, w: .26, r: 7, z: 2, mx: .84, my: .8, mw: .62, mr: 8 },
+    { k: 'sketch1', x: .9, y: .5, w: .3, r: -6, z: 4, mx: .9, my: .63, mw: .66, mr: -10 },
+    { k: 'portrait', x: .69, y: .25, w: .17, r: -5, z: 6, mx: .26, my: .27, mw: .44, mr: -6, print: true },
+    { k: 'notebook', x: .12, y: .58, w: .2, r: -12, z: 8, mx: .17, my: .8, mw: .42, mr: -12 },
+    { k: 'patch', x: .1, y: .46, w: .11, r: -9, z: 14, mx: .12, my: .7, mw: .24, mr: -9 },
+    { k: 'sticky', x: .22, y: .2, w: .12, r: 5, z: 10, mx: .76, my: .17, mw: .3, mr: 5 },
+    { k: 'pass', x: .17, y: .9, w: .23, r: -7, z: 9, mx: .42, my: .95, mw: .58, mr: -8 },
+    { k: 'coffee', x: .87, y: .15, w: .11, r: 0, z: 16, mx: .86, my: .36, mw: .26, mr: 0 },
+    { k: 'pen', x: .75, y: .78, w: .022, r: 32, z: 12, mx: .6, my: .7, mw: .05, mr: 28 },
+    { k: 'pins', x: .58, y: .9, w: .08, r: 0, z: 7, mx: .5, my: .1, mw: .2, mr: 0 }
+  ];
+  const els = O.map(o => {
+    const d = document.createElement('div'); d.className = 'dobj' + (o.print ? ' print' : ''); d.dataset.k = o.k;
+    const im = new Image(); im.src = `img/desk/${o.k}.webp`; im.alt = ''; im.decoding = 'async'; im.draggable = false; d.appendChild(im);
+    cam.appendChild(d); return { o, d, dx: 0, dy: 0, lift: 0, liftT: 0, sw: 0, swT: 0, z: o.z };
+  });
+  let W = 0, H = 0, narrow = false, e = 0, eT = 0, mx = 0, my = 0, tmx = 0, tmy = 0, top = 30, drag = null;
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  function size() { W = stage.clientWidth; H = stage.clientHeight; narrow = W / H < .9; els.forEach(place); }
+  function place(it) {
+    const o = it.o, w = (narrow ? o.mw : o.w) * W, [nw, nh] = DIM[o.k], h = w * nh / nw;
+    it.w = w; it.h = h; it.x = (narrow ? o.mx : o.x) * W; it.y = (narrow ? o.my : o.y) * H; it.r = narrow ? o.mr : o.r;
+    it.d.style.width = w + 'px';
+  }
+  function paint(it) {
+    const z = it.z + it.lift * 60 + it.lift * 0;
+    it.d.style.transform = `translate3d(${(it.x + it.dx - it.w / 2).toFixed(1)}px,${(it.y + it.dy - it.h / 2).toFixed(1)}px,${z.toFixed(1)}px) rotate(${(it.r + it.sw).toFixed(2)}deg) scale(${(1 + it.lift * .045).toFixed(4)})`;
+    it.d.style.setProperty('--sy', (4 + z * .35).toFixed(1) + 'px'); it.d.style.setProperty('--sb', (6 + z * .6).toFixed(1) + 'px');
+  }
+  /* drag: only once the camera has settled into the top shot */
+  stage.addEventListener('pointerdown', ev => {
+    const t = ev.target.closest('.dobj'); if (!t || e < .97) return;
+    const it = els.find(x => x.d === t); ev.preventDefault();
+    drag = { it, x: ev.clientX, y: ev.clientY, dx: it.dx, dy: it.dy, lx: ev.clientX, id: ev.pointerId };
+    it.liftT = 1; it.z = ++top; t.classList.add('drag'); try { t.setPointerCapture(ev.pointerId); } catch (_) {}
+  });
+  addEventListener('pointermove', ev => {
+    if (ev.pointerType === 'mouse') { const r = stage.getBoundingClientRect(); tmx = (ev.clientX - r.left) / r.width * 2 - 1; tmy = (ev.clientY - r.top) / r.height * 2 - 1; }
+    if (!drag || ev.pointerId !== drag.id) return;
+    const it = drag.it; it.dx = drag.dx + ev.clientX - drag.x; it.dy = drag.dy + ev.clientY - drag.y;
+    it.swT = Math.max(-9, Math.min(9, (ev.clientX - drag.lx) * .5)); drag.lx = ev.clientX;
+  });
+  const end = ev => { if (!drag || (ev && ev.pointerId !== drag.id)) return; drag.it.liftT = 0; drag.it.swT = 0; drag.it.d.classList.remove('drag'); drag = null; };
+  addEventListener('pointerup', end); addEventListener('pointercancel', end);
+  stage.addEventListener('pointerover', ev => { const t = ev.target.closest('.dobj'); if (t && !drag && e > .97) { const it = els.find(x => x.d === t); it.liftT = .25; } });
+  stage.addEventListener('pointerout', ev => { const t = ev.target.closest('.dobj'); if (t && (!drag || drag.it.d !== t)) { const it = els.find(x => x.d === t); it.liftT = 0; } });
+
+  let last = performance.now();
+  function frame(now) {
+    const dt = Math.min(.05, (now - last) / 1000); last = now;
+    const r = sec.getBoundingClientRect(), vh = innerHeight;
+    if (r.bottom > 0 && r.top < vh) {
+      const p = Math.max(0, Math.min(1, -r.top / Math.max(1, r.height - vh)));
+      eT = reduce ? 1 : ease(Math.min(1, p / .62));
+      e += (eT - e) * (1 - Math.exp(-dt * 10)); if (Math.abs(eT - e) < 1e-4) e = eT;
+      const settled = e > .97;
+      mx += ((settled && !drag ? tmx : 0) - mx) * (1 - Math.exp(-dt * 3)); my += ((settled && !drag ? tmy : 0) - my) * (1 - Math.exp(-dt * 3));
+      /* camera: low and close on the notebook, rising to a straight top-down shot */
+      const F = narrow ? [.3 * W, .25 * H] : [.17 * W, .36 * H];
+      const a = 58 * (1 - e) + my * -3, b = -14 * (1 - e), s = 1 + 1.15 * (1 - e) * (1 - e * .2);
+      const tx = (W / 2 - F[0]) * (1 - e), ty = (H / 2 - F[1]) * (1 - e) + 60 * (1 - e);
+      cam.style.transformOrigin = `${F[0].toFixed(1)}px ${F[1].toFixed(1)}px`;
+      cam.style.transform = `translate3d(${tx.toFixed(1)}px,${ty.toFixed(1)}px,0) rotateX(${a.toFixed(3)}deg) rotateY(${(mx * 3).toFixed(3)}deg) rotateZ(${b.toFixed(3)}deg) scale(${s.toFixed(4)})`;
+      const to = Math.max(0, Math.min(1, (e - .55) / .35));
+      text.style.opacity = to.toFixed(3); text.style.translate = `-50% calc(-50% + ${((1 - to) * 18).toFixed(1)}px)`; text.style.filter = to < 1 ? `blur(${((1 - to) * 4).toFixed(2)}px)` : '';
+      hint.classList.toggle('on', settled && !drag);
+      els.forEach(it => { it.lift += (it.liftT - it.lift) * (1 - Math.exp(-dt * 14)); it.sw += (it.swT - it.sw) * (1 - Math.exp(-dt * 8)); paint(it); });
     }
     requestAnimationFrame(frame);
   }
