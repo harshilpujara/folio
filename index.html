@@ -219,7 +219,7 @@ a.q:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
 .q.slot .qm { aspect-ratio: 16 / 6; }
 /* pixel transition: a white bridge that fills with dark pixels from the bottom of the screen up,
    so the screen is already dark when the dark section arrives */
-.qbridge { position: relative; z-index: 5; height: 75vh; height: 75svh; background: var(--paper); margin-bottom: -1px; }
+.qbridge { position: relative; z-index: 5; height: 34vh; height: 34svh; min-height: 240px; background: var(--paper); margin-bottom: -1px; }
 .qpx { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
 .quests .whead { padding-top: 36px; }
 .quests > .wrap { position: relative; z-index: 1; }
@@ -284,24 +284,6 @@ a.q:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
 .js .tryapp { opacity: 0; translate: 0 12px; filter: blur(3px); transition: opacity 500ms cubic-bezier(.22, 1, .36, 1) .45s, translate 500ms cubic-bezier(.22, 1, .36, 1) .45s, filter 500ms cubic-bezier(.22, 1, .36, 1) .45s; }
 .js .intro.in .tryapp { opacity: 1; translate: none; filter: none; }
 @media (max-width: 640px) { .tryapp .t { font-size: 14px; gap: 10px; } .tryapp .ymk { width: 26px; height: 26px; } }
-
-/* ---------- Playground: the Rabbit Hole ---------- */
-.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.play { position: relative; z-index: 5; background: #0D0D0F; color: #F2F2F0; height: calc((var(--n) - 1) * 115vh + 100vh); height: calc((var(--n) - 1) * 115svh + 100svh); }
-.pstage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
-.pstage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.play.nogl { height: auto; } .play.nogl .pstage { position: relative; height: 60vh; }
-.pmeter { position: absolute; left: max(28px, calc((100vw - 1352px) / 2 + 32px)); top: 50%; translate: 0 -50%; margin: 0; padding: 0; list-style: none; display: grid; gap: 12px; font-size: 12px; letter-spacing: .07em; text-transform: uppercase; color: rgba(242,242,240,.3); pointer-events: none; }
-.pmeter li { display: flex; align-items: center; gap: 10px; transition: color 300ms ease; }
-.pmeter li::before { content: ""; width: 12px; height: 1px; background: currentColor; transition: width 400ms cubic-bezier(.22, 1, .36, 1), background-color 300ms ease; }
-.pmeter li.on { color: #F2F2F0; } .pmeter li.on::before { width: 28px; background: var(--sky-d); height: 2px; }
-.pnum { position: absolute; right: max(28px, calc((100vw - 1352px) / 2 + 32px)); top: 50%; translate: 0 -50%; font-size: 12px; letter-spacing: .06em; color: rgba(242,242,240,.4); font-variant-numeric: tabular-nums; pointer-events: none; }
-.pnum b { color: #F2F2F0; font-weight: 500; }
-.pcap { position: absolute; left: 50%; bottom: 5.5vh; translate: -50% 0; text-align: center; pointer-events: none; transition: opacity 350ms ease, filter 350ms ease, translate 500ms cubic-bezier(.22, 1, .36, 1); }
-.pcap.away, .pcap.first { opacity: 0; filter: blur(3px); translate: -50% 8px; }
-.pcap .pk { display: block; font-size: 12px; letter-spacing: .07em; text-transform: uppercase; color: rgba(242,242,240,.45); }
-.pcap b { display: block; margin-top: 8px; font-family: var(--f-display); font-weight: 400; font-size: clamp(22px, 2vw, 30px); letter-spacing: -.02em; white-space: nowrap; }
-@media (max-width: 760px) { .pmeter { display: none; } .pnum { top: calc(76px + env(safe-area-inset-top, 0px)); translate: none; right: 18px; } .pcap { bottom: 7vh; } }
 
 /* ---------- work: calm vertical list, exact Figma screens ---------- */
 .work { position: relative; z-index: 4; margin-top: -16vh; margin-top: -16svh; background: var(--paper); --grid: #ECECE8; overflow-x: clip; }
@@ -571,16 +553,6 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
           </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="play" id="play" aria-labelledby="playTitle" style="--n:7">
-    <h2 id="playTitle" class="vh">Playground: UI experiments, motion, 3D, photography and side projects</h2>
-    <div class="pstage" id="pstage">
-      <canvas id="pcv" aria-hidden="true"></canvas>
-      <ol class="pmeter" aria-hidden="true"><li>Playground</li><li>UI experiments</li><li>Motion</li><li>3D</li><li>Photography</li><li>Off-script</li><li>The bottom</li></ol>
-      <div class="pcap" aria-live="polite"><span class="pk"></span><b></b></div>
-      <div class="pnum" aria-hidden="true"><b>01</b> / 07</div>
     </div>
   </section>
 </main>
@@ -1451,7 +1423,7 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
     if (r.top < vh && r.bottom > 0) {
       if (!reduce) z += dt * .00012;
       /* progress: 0 as the bridge enters at the bottom, 1 once it has filled the whole screen */
-      const p = Math.max(0, Math.min(1.25, (vh - r.top) / vh));
+      const p = Math.max(0, Math.min(1.2, (vh - r.top) / (vh * .8)));      /* 0 as the bridge enters, 1 when its top is near the top of the screen */
       const cvTop = cv.getBoundingClientRect().top;
       const key = p.toFixed(3) + '|' + Math.round(cvTop) + '|' + (reduce ? 0 : Math.floor(z * 60));
       if (key !== prevKey) {
@@ -1461,7 +1433,7 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
         const ox = 0, rows = Math.ceil(H / S) + 1, cols = Math.ceil(W / S);
         for (let j = 0; j < rows; j++) {
           const ys = cvTop + H - (j + 1) * S;                 /* this row's top edge on screen */
-          const yb = (vh - (ys + S / 2)) / vh;                 /* 0 at the screen's bottom, 1 at its top */
+          const yb = (r.bottom - (ys + S / 2)) / r.height;       /* 0 at the section's edge, 1 at the bridge's top */
           const gy = Math.round((ys - r.top) / S);             /* row index within the bridge, so the noise scrolls with the page */
           const fromTop = (ys - r.top) / S;                    /* rows below the bridge's top edge */
           if (fromTop < -0.5) continue;
@@ -1481,201 +1453,6 @@ a:hover > .qpanel > .gcta .a svg, a:focus-visible > .qpanel > .gcta .a svg { tra
     requestAnimationFrame(frame);
   }
   addEventListener('resize', size); size(); requestAnimationFrame(frame);
-})();
-</script>
-<script>
-/* ---------- Playground: the Rabbit Hole (an endless dive; every piece holds the next in one of its windows) ---------- */
-(() => {
-  const sec = document.getElementById('play'), stage = document.getElementById('pstage'), cv = document.getElementById('pcv');
-  if (!sec || !cv) return;
-  const gl = cv.getContext('webgl2', { antialias: false, alpha: false });
-  if (!gl) { sec.classList.add('nogl'); return; }
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const DARK = '#0D0D0F', ORA = '#FF7A00', AW = 1600;
-
-  /* portal: where the next layer sits inside this one (centre x/y and width, as fractions of this layer) */
-  const L = [
-    { cat: 'Playground', name: 'Playground', kicker: 'Scroll to go deeper', aspect: 1.6, portal: { x: .5, y: .62, w: .3 }, art: 'title' },
-    { cat: 'UI experiments', name: 'UI experiment', kicker: 'Placeholder · your shot goes here', aspect: 1.6, portal: { x: .5, y: .57, w: .3 }, art: 'ui' },
-    { cat: 'Motion', name: 'yapp launch film', kicker: 'Motion', aspect: 16 / 9, portal: { x: .5, y: .5, w: .24 }, video: 'img/q/yapp.mp4', poster: 'img/q/yapp.webp' },
-    { cat: '3D', name: '3D experiment', kicker: 'Placeholder · your render goes here', aspect: 1.6, portal: { x: .5, y: .56, w: .27 }, art: '3d' },
-    { cat: 'Photography', name: 'Photograph', kicker: 'Placeholder · your photo goes here', aspect: 1.6, portal: { x: .5, y: .47, w: .25 }, art: 'photo' },
-    { cat: 'Off-script', name: 'Something random', kicker: 'Placeholder · your project goes here', aspect: 1.6, portal: { x: .5, y: .52, w: .24 }, art: 'random' },
-    { cat: 'The bottom', name: 'That’s the bottom. For now.', kicker: 'Back to the top', aspect: 1.6, art: 'end' }
-  ];
-  const n = L.length;
-  let need = true;
-
-  /* ---------- world: each layer's rect, nested inside its parent's portal (doubles; y grows down) ---------- */
-  const R = [{ x: -L[0].aspect / 2, y: -.5, w: L[0].aspect, h: 1 }];
-  for (let j = 1; j < n; j++) { const P = R[j - 1], q = L[j - 1].portal, w = P.w * q.w, h = w / L[j].aspect; R.push({ x: P.x + q.x * P.w - w / 2, y: P.y + q.y * P.h - h / 2, w, h }); }
-  const portalPx = (j, W, H) => { const q = L[j].portal; const w = q.w * W, h = w / L[j + 1].aspect; return { x: q.x * W - w / 2, y: q.y * H - h / 2, w, h }; };
-
-  /* ---------- art for each layer (placeholders are labelled as such) ---------- */
-  const hsh = (x, y) => { const v = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return v - Math.floor(v); };
-  const rr = (g, x, y, w, h, r) => { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); };
-  const T = (g, txt, x, y, font, col, align) => { g.font = font; g.fillStyle = col; g.textAlign = align || 'left'; g.textBaseline = 'alphabetic'; g.fillText(txt, x, y); };
-  const dots = (g, W, H, col, step) => { g.fillStyle = col; for (let y = step / 2; y < H; y += step) for (let x = step / 2; x < W; x += step) g.fillRect(x - 1.5, y - 1.5, 3, 3); };
-  const label = (g, a, b, dark) => { T(g, a, 64, 112, '400 64px "Averia Serif Libre", Georgia, serif', dark ? '#F2F2F0' : '#141414'); T(g, b, 66, 156, '400 26px Geist, system-ui, sans-serif', dark ? 'rgba(242,242,240,.5)' : 'rgba(20,20,20,.5)'); };
-  const nodes = (g, p) => { g.fillStyle = ORA; for (const [x, y] of [[p.x, p.y], [p.x + p.w, p.y], [p.x, p.y + p.h], [p.x + p.w, p.y + p.h]]) g.fillRect(x - 6, y - 6, 12, 12); };
-  const LOGO_M = ['1............', '1............', '1.......11...', '111.....1.1..', '1.1.....11...', '1.1.....1....', '1.1.....1....'];
-  const LOGO_S = ['.......2222..', '.....233332..', '....23443321.', '...234443321.', '..1234443321.', '..1233333321.', '...122222211.', '....111111...'];
-  function art(j) {
-    const c = L[j], W = AW, H = Math.round(AW / c.aspect), cv2 = document.createElement('canvas'); cv2.width = W; cv2.height = H; const g = cv2.getContext('2d');
-    const P = c.portal ? portalPx(j, W, H) : null;
-    if (c.art === 'title') {
-      g.fillStyle = DARK; g.fillRect(0, 0, W, H); dots(g, W, H, 'rgba(255,255,255,.07)', 32);
-      T(g, 'Playground', W / 2, H * .22, '400 150px "Averia Serif Libre", Georgia, serif', '#F2F2F0', 'center');
-      T(g, 'UI experiments, motion, 3D, photographs and things I make for fun.', W / 2, H * .3, '400 30px Geist, system-ui, sans-serif', 'rgba(242,242,240,.55)', 'center');
-      g.strokeStyle = 'rgba(255,255,255,.22)'; g.lineWidth = 2; g.strokeRect(P.x, P.y, P.w, P.h); nodes(g, P);
-      T(g, 'Scroll to go deeper', W / 2, P.y + P.h + 70, '500 24px Geist, system-ui, sans-serif', 'rgba(242,242,240,.45)', 'center');
-    } else if (c.art === 'ui') {
-      g.fillStyle = '#ECEBE7'; g.fillRect(0, 0, W, H); dots(g, W, H, 'rgba(0,0,0,.08)', 32); label(g, 'UI experiments', 'Placeholder board · swap in your shots');
-      const fr = [[120, 260, 300, 420], [460, 230, 240, 170], [1160, 250, 320, 220], [1180, 520, 300, 380], [140, 720, 360, 220], [760, 760, 0, 0]];
-      for (const [x, y, w, h] of fr) { if (!w) continue; g.save(); g.shadowColor = 'rgba(0,0,0,.08)'; g.shadowBlur = 24; g.shadowOffsetY = 8; g.fillStyle = '#fff'; rr(g, x, y, w, h, 14); g.fill(); g.restore();
-        g.fillStyle = '#E6E5E1'; rr(g, x + 20, y + 22, w * .5, 16, 8); g.fill(); rr(g, x + 20, y + 52, w * .7, 12, 6); g.fill(); g.fillStyle = 'rgba(255,122,0,.18)'; rr(g, x + 20, y + h - 58, w * .38, 36, 8); g.fill(); }
-      T(g, 'Frame · Motion', P.x, P.y - 16, '500 20px Geist, system-ui, sans-serif', 'rgba(20,20,20,.5)');
-      g.save(); g.shadowColor = 'rgba(0,0,0,.12)'; g.shadowBlur = 30; g.shadowOffsetY = 10; g.fillStyle = '#111'; g.fillRect(P.x, P.y, P.w, P.h); g.restore();
-    } else if (c.art === '3d') {
-      let gr = g.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, '#0B0C10'); gr.addColorStop(1, '#1A1C24'); g.fillStyle = gr; g.fillRect(0, 0, W, H); label(g, '3D experiments', 'Placeholder · your render goes here', true);
-      const hz = H * .82, vx = W / 2; g.strokeStyle = 'rgba(255,122,0,.22)'; g.lineWidth = 1.5;
-      for (let i = -12; i <= 12; i++) { g.beginPath(); g.moveTo(vx + i * 30, hz - 120); g.lineTo(vx + i * 160, H); g.stroke(); }
-      for (let k = 0; k < 7; k++) { const y = hz - 120 + Math.pow(k / 6, 2) * (H - hz + 120); g.beginPath(); g.moveTo(0, y); g.lineTo(W, y); g.stroke(); }
-      const d = P.w * .22; g.strokeStyle = ORA; g.lineWidth = 3;
-      const f = [[P.x, P.y], [P.x + P.w, P.y], [P.x + P.w, P.y + P.h], [P.x, P.y + P.h]], b = f.map(([x, y]) => [x + d, y - d * .7]);
-      g.fillStyle = 'rgba(255,122,0,.08)'; g.beginPath(); g.moveTo(...f[0]); g.lineTo(...b[0]); g.lineTo(...b[1]); g.lineTo(...f[1]); g.closePath(); g.fill(); g.beginPath(); g.moveTo(...f[1]); g.lineTo(...b[1]); g.lineTo(...b[2]); g.lineTo(...f[2]); g.closePath(); g.fill();
-      g.beginPath(); for (let i = 0; i < 4; i++) { g.moveTo(...f[i]); g.lineTo(...b[i]); } g.moveTo(...b[0]); b.forEach(p => g.lineTo(...p)); g.lineTo(...b[0]); g.stroke(); g.strokeRect(P.x, P.y, P.w, P.h);
-    } else if (c.art === 'photo') {
-      let gr = g.createLinearGradient(0, 0, W, H); gr.addColorStop(0, '#24170F'); gr.addColorStop(1, '#5A3420'); g.fillStyle = gr; g.fillRect(0, 0, W, H);
-      const im = g.getImageData(0, 0, W, H), dd = im.data; for (let i = 0; i < dd.length; i += 4) { const v = (Math.random() - .5) * 22; dd[i] += v; dd[i + 1] += v; dd[i + 2] += v; } g.putImageData(im, 0, 0);
-      label(g, 'Photographs', 'Placeholder · your photo goes here', true);
-      g.save(); g.translate(P.x + P.w / 2, P.y + P.h / 2); g.rotate(-.025); g.shadowColor = 'rgba(0,0,0,.45)'; g.shadowBlur = 40; g.shadowOffsetY = 18; g.fillStyle = '#F4F1EA';
-      g.fillRect(-P.w / 2 - 26, -P.h / 2 - 26, P.w + 52, P.h + 120); g.restore();
-      T(g, 'Somewhere, 2026', P.x + P.w / 2, P.y + P.h + 72, '400 26px "Averia Serif Libre", Georgia, serif', 'rgba(20,20,20,.6)', 'center');
-    } else if (c.art === 'random') {
-      g.fillStyle = DARK; g.fillRect(0, 0, W, H); const S = 32, F = ['#3A1F08', '#8A3E05', ORA, '#FFB877'];
-      for (let y = 0; y < H; y += S) for (let x = 0; x < W; x += S) { const v = hsh(x / S, y / S) * .55 + .45 * (Math.sin(x / 170 + y / 130) * .5 + .5); if (v < .5) continue; if (x + S > P.x - 40 && x < P.x + P.w + 40 && y + S > P.y - 40 && y < P.y + P.h + 40) continue; g.fillStyle = F[Math.min(3, Math.floor((v - .5) * 8))]; g.fillRect(x, y, S, S); }
-      g.fillStyle = 'rgba(13,13,15,.85)'; g.fillRect(40, 40, 760, 150); label(g, 'Off-script', 'Placeholder · your random project goes here', true);
-    } else if (c.art === 'end') {
-      g.fillStyle = DARK; g.fillRect(0, 0, W, H); dots(g, W, H, 'rgba(255,255,255,.06)', 32);
-      const s = 34, ox = W / 2 - 13 * s / 2, oy = H * .3;
-      LOGO_S.forEach((row, y) => [...row].forEach((ch, x) => { if (ch === '.') return; if (ch === '1' && (x + y) % 2) return; g.fillStyle = +ch >= 3 ? ORA : '#FFB877'; g.fillRect(ox + x * s, oy + y * s, s, s); }));
-      LOGO_M.forEach((row, y) => [...row].forEach((ch, x) => { if (ch === '1') { g.fillStyle = '#F2F2F0'; g.fillRect(ox + x * s, oy + y * s, s, s); } }));
-      T(g, 'That’s the bottom. For now.', W / 2, H * .78, '400 64px "Averia Serif Libre", Georgia, serif', '#F2F2F0', 'center');
-    }
-    return cv2;
-  }
-
-  /* ---------- GL ---------- */
-  const VS = `#version 300 es
-  in vec2 aP; uniform vec4 uRect; uniform vec2 uView; out vec2 vUv;
-  void main() { vec2 p = mix(uRect.xy, uRect.zw, aP); vUv = aP; gl_Position = vec4(p.x / uView.x * 2.0 - 1.0, 1.0 - p.y / uView.y * 2.0, 0.0, 1.0); }`;
-  const FS = `#version 300 es
-  precision highp float;
-  in vec2 vUv; out vec4 o;
-  uniform sampler2D uT; uniform vec4 uRectPx; uniform float uDis, uEdge, uCell, uDot, uSeed, uBand;
-  float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
-  void main() {
-    vec2 cell = floor(gl_FragCoord.xy / uCell);
-    float h = hash(cell + uSeed * 13.1), chk = mod(floor(gl_FragCoord.x / uDot) + floor(gl_FragCoord.y / uDot), 2.0);
-    if (h < uDis) discard;
-    if (uDis > 0.0 && h < uDis + 0.14 && chk < 0.5) discard;
-    vec4 c = texture(uT, vUv);
-    if (uEdge > 0.5) {
-      vec2 cc = (cell + 0.5) * uCell;
-      float de = min(min(cc.x - uRectPx.x, uRectPx.z - cc.x), min(cc.y - uRectPx.y, uRectPx.w - cc.y));
-      float band = 1.0 - clamp(de / uBand, 0.0, 1.0), h2 = hash(cell + uSeed * 7.7 + 3.1);
-      if (h2 < band * band * 0.85) discard;
-      if (band > 0.34 && band < 0.99 && h2 > 0.965) c = vec4(1.0, 0.478, 0.0, 1.0);
-      else if (band > 0.67 && chk < 0.5 && h2 < band * 0.95) discard;
-    }
-    o = vec4(c.rgb, 1.0);
-  }`;
-  const mk = (vs, fs) => { const p = gl.createProgram(); for (const [t, src] of [[gl.VERTEX_SHADER, vs], [gl.FRAGMENT_SHADER, fs]]) { const s = gl.createShader(t); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { console.warn(gl.getShaderInfoLog(s)); return null; } gl.attachShader(p, s); } gl.linkProgram(p); return gl.getProgramParameter(p, gl.LINK_STATUS) ? p : null; };
-  const prog = mk(VS, FS); if (!prog) { sec.classList.add('nogl'); return; }
-  gl.useProgram(prog);
-  const U = Object.fromEntries(['uRect', 'uView', 'uT', 'uRectPx', 'uDis', 'uEdge', 'uCell', 'uDot', 'uSeed', 'uBand'].map(k => [k, gl.getUniformLocation(prog, k)]));
-  const vao = gl.createVertexArray(); gl.bindVertexArray(vao);
-  const vb = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, vb); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0, 0, 1, 0, 0, 1, 1, 1]), gl.STATIC_DRAW);
-  const aP = gl.getAttribLocation(prog, 'aP'); gl.enableVertexAttribArray(aP); gl.vertexAttribPointer(aP, 2, gl.FLOAT, false, 0, 0);
-  const aniso = gl.getExtension('EXT_texture_filter_anisotropic');
-  const tex = () => { const t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE); if (aniso) gl.texParameterf(gl.TEXTURE_2D, aniso.TEXTURE_MAX_ANISOTROPY_EXT, 8); return t; };
-  const up = (t, src) => { gl.bindTexture(gl.TEXTURE_2D, t); try { gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src); gl.generateMipmap(gl.TEXTURE_2D); return true; } catch (_) { return false; } };
-  L.forEach((c, j) => {
-    c.t = tex();
-    if (c.video) {
-      const im = new Image(); im.src = c.poster; im.onload = () => { if (!c.live) { up(c.t, im); need = true; } };
-      const v = document.createElement('video'); v.muted = true; v.loop = true; v.playsInline = true; v.setAttribute('playsinline', ''); v.preload = 'none'; v.src = c.video; c.vid = v;
-    } else { c.paint = () => { up(c.t, art(j)); need = true; }; c.paint(); }
-  });
-
-  /* ---------- camera ---------- */
-  let W = 0, H = 0, dpr = 1, narrow = false, visible = false, t = 0, tv = 0, mx = 0, my = 0, tmx = 0, tmy = 0, lastK = -1;
-  function size() { dpr = Math.min(2, devicePixelRatio || 1); W = stage.clientWidth; H = stage.clientHeight; cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); narrow = W / H < .9; need = true; }
-  const viewW = j => { const r = R[j], F = j === 0 ? 1 : (narrow ? .92 : .7); return Math.max(r.w / F, r.h / F * W / H); };
-  const ease = f => f < .5 ? 4 * f * f * f : 1 - Math.pow(-2 * f + 2, 3) / 2;
-  function camera(tt) {
-    const k = Math.min(n - 1, Math.floor(tt)), f = tt - k;
-    const e = k >= n - 1 ? 0 : (f < .3 ? 0 : ease((f - .3) / .7));
-    const a = R[k], b = R[Math.min(n - 1, k + 1)], va = viewW(k), vb2 = viewW(Math.min(n - 1, k + 1));
-    const s = Math.exp(Math.log(va) + (Math.log(vb2) - Math.log(va)) * e);
-    const w = va === vb2 ? 0 : (va - s) / (va - vb2);
-    const cx = (a.x + a.w / 2) + ((b.x + b.w / 2) - (a.x + a.w / 2)) * w, cy = (a.y + a.h / 2) + ((b.y + b.h / 2) - (a.y + a.h / 2)) * w;
-    return { k, e, s, cx, cy };
-  }
-
-  /* ---------- HUD ---------- */
-  const meter = [...sec.querySelectorAll('.pmeter li')], capK = sec.querySelector('.pcap .pk'), capN = sec.querySelector('.pcap b'), num = sec.querySelector('.pnum b'), cap = sec.querySelector('.pcap'), hint = sec.querySelector('.phint');
-  function hud(k) {
-    meter.forEach((li, i) => li.classList.toggle('on', i === k));
-    capN.textContent = L[k].name; capK.textContent = L[k].kicker; num.textContent = String(k + 1).padStart(2, '0'); cap.classList.toggle('first', k === 0);
-  }
-  stage.addEventListener('pointermove', e => { if (e.pointerType !== 'mouse') return; const r = stage.getBoundingClientRect(); tmx = (e.clientX - r.left) / r.width * 2 - 1; tmy = (e.clientY - r.top) / r.height * 2 - 1; });
-  stage.addEventListener('pointerleave', () => { tmx = 0; tmy = 0; });
-  sec.querySelector('.pend') && sec.querySelector('.pend').addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
-
-  /* ---------- frame ---------- */
-  let last = performance.now();
-  function frame(now) {
-    const dt = Math.min(.05, (now - last) / 1000); last = now;
-    const r = sec.getBoundingClientRect(), vh = innerHeight, span = r.height - vh;
-    const target = Math.max(0, Math.min(1, -r.top / Math.max(1, span))) * (n - 1);
-    t += (target - t) * (1 - Math.exp(-dt * (reduce ? 60 : 9))); if (Math.abs(target - t) < 1e-4) t = target;
-    mx += (tmx - mx) * (1 - Math.exp(-dt * 4)); my += (tmy - my) * (1 - Math.exp(-dt * 4));
-    const C = camera(t);
-    if (C.k !== lastK) { lastK = C.k; hud(C.k); }
-    cap.classList.toggle('away', C.e > .04); if (hint) hint.classList.toggle('away', t > .15);
-    L.forEach((c, j) => { if (!c.vid) return; const want = visible && j >= C.k - 1 && j <= C.k + 2; if (want && c.vid.paused) { c.vid.preload = 'auto'; c.vid.play().catch(() => {}); } else if (!want && !c.vid.paused) c.vid.pause(); if (!c.vid.paused && c.vid.readyState >= 2 && up(c.t, c.vid)) { c.live = true; need = true; } });
-    if (visible && (need || Math.abs(target - t) > 1e-4 || Math.abs(tmx - mx) > .002 || Math.abs(tmy - my) > .002)) { draw(C); need = false; }
-    requestAnimationFrame(frame);
-  }
-  function draw(C) {
-    gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.viewport(0, 0, cv.width, cv.height);
-    gl.clearColor(13 / 255, 13 / 255, 15 / 255, 1); gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.useProgram(prog); gl.bindVertexArray(vao);
-    gl.uniform2f(U.uView, W, H); const cell = (narrow ? 11 : 22) * dpr; gl.uniform1f(U.uCell, cell); gl.uniform1f(U.uDot, 2 * dpr); gl.uniform1i(U.uT, 0);
-    const sx = W / C.s, vhh = C.s * H / W;
-    for (let j = Math.max(0, C.k - 1); j <= Math.min(n - 1, C.k + 3); j++) {
-      const rw = R[j], depth = j - t, par = reduce ? 0 : Math.max(-3, Math.min(3, depth)) * 9;
-      const x0 = (rw.x - C.cx) * sx + W / 2 - mx * par, y0 = (rw.y - C.cy) * sx + H / 2 - my * par;
-      const x1 = x0 + rw.w * sx, y1 = y0 + rw.h * sx;
-      if (x1 < -W * 4 || y1 < -H * 4 || x0 > W * 5 || y0 > H * 5) { /* far off screen */ }
-      if (rw.w * sx < 2) continue;
-      const dis = j === C.k - 1 ? C.e : 0;
-      if (dis >= .999) continue;
-      gl.uniform4f(U.uRect, x0, y0, x1, y1);
-      gl.uniform4f(U.uRectPx, x0 * dpr, (H - y1) * dpr, x1 * dpr, (H - y0) * dpr);
-      gl.uniform1f(U.uDis, dis); gl.uniform1f(U.uEdge, j > 0 ? 1 : 0); gl.uniform1f(U.uSeed, j + 1);
-      gl.uniform1f(U.uBand, Math.max(cell * .5, Math.min(cell * 2.5, Math.min(x1 - x0, y1 - y0) * dpr * .06)));
-      gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, L[j].t);
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-    }
-  }
-  new IntersectionObserver(es => es.forEach(e => { visible = e.isIntersecting; need = true; }), { threshold: 0 }).observe(stage);
-  new ResizeObserver(size).observe(stage);
-  size(); hud(0);
-  if (document.fonts) document.fonts.ready.then(() => L.forEach(c => c.paint && c.paint()));
-  requestAnimationFrame(frame);
 })();
 </script>
 </body>
