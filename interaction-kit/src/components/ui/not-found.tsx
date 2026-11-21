@@ -15,6 +15,10 @@ import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } fro
 /* -------------------------------------------------------------------------- */
 /*  NotFound — a premium 404 page. A frosted-glass folder over a big "404".    */
 /*                                                                             */
+/*  Adapted from EasyUI by Suraj Maurya (MIT, see ./EASYUI-LICENSE): orange to */
+/*  raspberry panel, plum glass, a staggered pop-in for every element, and a   */
+/*  stronger pointer response (deeper parallax, 3D tilt, cursor-led glow).     */
+/*                                                                             */
 /*  One file · deps: react 19, framer-motion, tailwindcss · no images.         */
 /*  Drop it in as app/not-found.tsx (Next) or your router's catch-all route.   */
 /*                                                                             */
@@ -76,7 +80,38 @@ const CX = 230;
 const CY = 185;
 const TILT = 8;
 
-const ORANGE = "#fe5510";
+const ORANGE = "#ff7a00";
+const RASPBERRY = "#ff3d81";
+// Every element pops in one beat after the one before it.
+const STEP = 0.09;
+const COPY_START = 4; // the illustration's four layers come first
+
+/* Shared pointer springs: -1..1 across the viewport, settling back to 0. */
+function usePointer(enabled: boolean) {
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const sx = useSpring(mx, { stiffness: 120, damping: 16, mass: 0.6 });
+  const sy = useSpring(my, { stiffness: 120, damping: 16, mass: 0.6 });
+  useEffect(() => {
+    if (!enabled) return;
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    const move = (e: PointerEvent) => {
+      mx.set((e.clientX / window.innerWidth - 0.5) * 2);
+      my.set((e.clientY / window.innerHeight - 0.5) * 2);
+    };
+    const reset = () => {
+      mx.set(0);
+      my.set(0);
+    };
+    window.addEventListener("pointermove", move, { passive: true });
+    document.documentElement.addEventListener("pointerleave", reset);
+    return () => {
+      window.removeEventListener("pointermove", move);
+      document.documentElement.removeEventListener("pointerleave", reset);
+    };
+  }, [enabled, mx, my]);
+  return { sx, sy };
+}
 const WHITE = "#fafbff";
 
 const GLASS = { x: -151, y: -31, w: 288, h: 142 };
@@ -98,12 +133,12 @@ const ZERO =
 // so it survives any renderer untouched.
 const CSS = `
 .np404-glass{
-  background:linear-gradient(180deg,rgba(236,238,252,0.92) 0%,rgba(150,150,225,0.85) 52%,rgba(62,72,214,0.9) 100%);
+  background:linear-gradient(180deg,rgba(255,240,246,0.92) 0%,rgba(236,140,190,0.85) 52%,rgba(122,31,162,0.9) 100%);
   transition:-webkit-backdrop-filter .4s ease,backdrop-filter .4s ease;
 }
 @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))){
   .np404-glass{
-    background:linear-gradient(180deg,rgba(255,255,255,0.55) 0%,rgba(236,238,255,0.35) 30%,rgba(130,118,232,0.38) 58%,rgba(62,72,214,0.6) 88%,rgba(59,70,207,0.7) 100%);
+    background:linear-gradient(180deg,rgba(255,255,255,0.55) 0%,rgba(255,236,246,0.35) 30%,rgba(230,120,190,0.38) 58%,rgba(140,40,170,0.6) 88%,rgba(122,31,162,0.72) 100%);
     -webkit-backdrop-filter:blur(5px) saturate(1.2);
     backdrop-filter:blur(5px) saturate(1.2);
   }
@@ -136,41 +171,25 @@ export function Illustration({ parallax = true }: { parallax?: boolean }) {
     return () => ro.disconnect();
   }, []);
 
-  // Pointer parallax: each layer moves a different amount for depth
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const sx = useSpring(mx, { stiffness: 90, damping: 18, mass: 0.6 });
-  const sy = useSpring(my, { stiffness: 90, damping: 18, mass: 0.6 });
-  useEffect(() => {
-    if (!parallax || reduce) return;
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-    const move = (e: PointerEvent) => {
-      mx.set((e.clientX / window.innerWidth - 0.5) * 2);
-      my.set((e.clientY / window.innerHeight - 0.5) * 2);
-    };
-    const reset = () => {
-      mx.set(0);
-      my.set(0);
-    };
-    window.addEventListener("pointermove", move, { passive: true });
-    document.documentElement.addEventListener("pointerleave", reset);
-    return () => {
-      window.removeEventListener("pointermove", move);
-      document.documentElement.removeEventListener("pointerleave", reset);
-    };
-  }, [parallax, reduce, mx, my]);
+  // Pointer parallax: each layer moves a different amount for depth, the whole
+  // scene tilts toward the cursor, and the X turns with it.
+  const { sx, sy } = usePointer(parallax && !reduce);
 
-  const panelX = useTransform(sx, (v) => v * -5);
-  const panelY = useTransform(sy, (v) => v * -3);
-  const textX = useTransform(sx, (v) => v * 4);
-  const textY = useTransform(sy, (v) => v * 2.5);
-  const glassX = useTransform(sx, (v) => v * 11);
-  const glassY = useTransform(sy, (v) => v * 7);
-  const markX = useTransform(sx, (v) => v * 16);
-  const markY = useTransform(sy, (v) => v * 10);
+  const panelX = useTransform(sx, (v) => v * -12);
+  const panelY = useTransform(sy, (v) => v * -8);
+  const textX = useTransform(sx, (v) => v * 10);
+  const textY = useTransform(sy, (v) => v * 6);
+  const glassX = useTransform(sx, (v) => v * 24);
+  const glassY = useTransform(sy, (v) => v * 16);
+  const markX = useTransform(sx, (v) => v * 34);
+  const markY = useTransform(sy, (v) => v * 22);
+  const tiltX = useTransform(sy, (v) => v * -7);
+  const tiltY = useTransform(sx, (v) => v * 9);
+  const markTurn = useTransform(sx, (v) => v * 30);
 
-  const spring = (delay: number) =>
-    reduce ? { duration: 0 } : ({ type: "spring", duration: 0.9, bounce: 0.18, delay } as const);
+  // Pop: a springy arrival with a little overshoot, one STEP after the last layer.
+  const spring = (step: number) =>
+    reduce ? { duration: 0 } : ({ type: "spring", duration: 0.75, bounce: 0.36, delay: step * STEP } as const);
 
   const layer = "absolute inset-0";
   const svgProps = { viewBox: `0 0 ${W} ${H}`, className: "absolute inset-0 h-full w-full overflow-visible", "aria-hidden": true } as const;
@@ -196,9 +215,10 @@ export function Illustration({ parallax = true }: { parallax?: boolean }) {
         </defs>
       </svg>
 
-      <div className="absolute left-0 top-0 origin-top-left" style={{ width: W, height: H, transform: `scale(${scale ?? 1})` }}>
+      <div className="absolute left-0 top-0 origin-top-left" style={{ width: W, height: H, transform: `scale(${scale ?? 1})`, perspective: 900 }}>
         <motion.div
           className="absolute inset-0"
+          style={{ rotateX: tiltX, rotateY: tiltY }}
           animate={reduce ? undefined : { y: [0, -5, 0] }}
           transition={reduce ? undefined : { repeat: Infinity, duration: 6, ease: "easeInOut" }}
         >
@@ -206,16 +226,16 @@ export function Illustration({ parallax = true }: { parallax?: boolean }) {
           <motion.div className={layer} style={{ x: panelX, y: panelY }}>
             <motion.div
               className="absolute inset-0"
-              initial={reduce ? false : { opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={reduce ? false : { opacity: 0, y: 18, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={spring(0)}
             >
               <svg {...svgProps}>
                 <defs>
-                  <linearGradient id={`${uid}-panel`} x1="0" y1="0" x2="1" y2="0">
+                  <linearGradient id={`${uid}-panel`} x1="0" y1="0" x2="1" y2="1">
                     <stop offset="0" stopColor={ORANGE} />
-                    <stop offset="0.72" stopColor={ORANGE} />
-                    <stop offset="1" stopColor="#cf4a12" />
+                    <stop offset="0.55" stopColor="#ff5a3c" />
+                    <stop offset="1" stopColor={RASPBERRY} />
                   </linearGradient>
                 </defs>
                 <g transform={group}>
@@ -229,12 +249,12 @@ export function Illustration({ parallax = true }: { parallax?: boolean }) {
           <motion.div className={layer} style={{ x: textX, y: textY }}>
             <motion.div
               className="absolute inset-0"
-              initial={reduce ? false : { opacity: 0, y: 22, scale: 0.96 }}
+              initial={reduce ? false : { opacity: 0, y: 26, scale: 0.86 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={spring(0.08)}
+              transition={spring(1)}
               style={{ transformOrigin: "50% 50%" }}
             >
-              <svg {...svgProps} style={{ filter: "drop-shadow(0 6px 10px rgba(110,20,0,0.35))" }}>
+              <svg {...svgProps} style={{ filter: "drop-shadow(0 6px 10px rgba(120,10,50,0.38))" }}>
                 <defs>
                   <linearGradient id={`${uid}-ink`} x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0" stopColor="#ffffff" />
@@ -255,10 +275,10 @@ export function Illustration({ parallax = true }: { parallax?: boolean }) {
             <div style={anchor}>
               <motion.div
                 style={{ position: "absolute", left: GLASS.x, top: GLASS.y, width: GLASS.w, height: GLASS.h }}
-                initial={reduce ? false : { y: 30 }}
-                animate={{ y: 0 }}
-                whileHover={reduce ? undefined : { y: -6 }}
-                transition={spring(0.2)}
+                initial={reduce ? false : { y: 40, opacity: 0, scale: 0.92 }}
+                animate={{ y: 0, opacity: 1, scale: 1 }}
+                whileHover={reduce ? undefined : { y: -8 }}
+                transition={spring(2)}
               >
                 {/* soft blue glow under the glass */}
                 <div
@@ -270,7 +290,7 @@ export function Illustration({ parallax = true }: { parallax?: boolean }) {
                     bottom: -10,
                     height: 40,
                     borderRadius: 24,
-                    background: "rgba(53,68,187,0.55)",
+                    background: "rgba(150,40,170,0.55)",
                     filter: "blur(22px)",
                   }}
                 />
@@ -279,7 +299,7 @@ export function Illustration({ parallax = true }: { parallax?: boolean }) {
                   style={{ position: "absolute", inset: 0, clipPath: `url(#${uid}-folder)`, WebkitClipPath: `url(#${uid}-folder)` }}
                   initial={reduce ? false : { opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ duration: reduce ? 0 : 0.5, delay: reduce ? 0 : 0.25, ease: EASE_OUT }}
+                  transition={{ duration: reduce ? 0 : 0.5, delay: reduce ? 0 : 2 * STEP, ease: EASE_OUT }}
                 />
                 {/* glass rim */}
                 <svg width={GLASS.w} height={GLASS.h} viewBox={`0 0 ${GLASS.w} ${GLASS.h}`} className="pointer-events-none absolute inset-0" aria-hidden>
@@ -304,14 +324,14 @@ export function Illustration({ parallax = true }: { parallax?: boolean }) {
                 initial={reduce ? false : { scale: 0, rotate: -70 }}
                 animate={{ scale: 1, rotate: 0 }}
                 whileHover={reduce ? undefined : { rotate: 90 }}
-                transition={reduce ? { duration: 0 } : { type: "spring", duration: 0.7, bounce: 0.35, delay: 0.5 }}
+                transition={reduce ? { duration: 0 } : { type: "spring", duration: 0.7, bounce: 0.45, delay: 3 * STEP }}
               >
-                <svg viewBox="0 0 56 56" width="56" height="56" aria-hidden style={{ filter: "drop-shadow(0 4px 6px rgba(20,24,90,0.4))" }}>
+                <motion.svg viewBox="0 0 56 56" width="56" height="56" aria-hidden style={{ rotate: markTurn, filter: "drop-shadow(0 4px 6px rgba(70,10,60,0.4))" }}>
                   <g transform="translate(28 28)" fill={WHITE}>
                     <rect x={-23} y={-5.5} width={46} height={11} rx={5.5} transform="rotate(45)" />
                     <rect x={-23} y={-5.5} width={46} height={11} rx={5.5} transform="rotate(-45)" />
                   </g>
-                </svg>
+                </motion.svg>
               </motion.div>
             </div>
           </motion.div>
@@ -374,10 +394,29 @@ export function NotFound({
     window.history.back();
   };
   const isBackVisible = showBack && (canGoBack || Boolean(onBack) || Boolean(onSecondaryAction) || Boolean(secondaryActionLabel));
-  const rise = (delay: number) =>
+  // Each copy element pops in one STEP after the previous, continuing on from
+  // the illustration's layers.
+  const rise = (step: number) =>
     reduce
       ? { initial: false as const }
-      : { initial: { opacity: 0, y: 12 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.6, delay, ease: EASE_OUT } };
+      : {
+          initial: { opacity: 0, y: 14, scale: 0.94, filter: "blur(6px)" },
+          animate: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" },
+          transition: {
+            type: "spring" as const,
+            duration: 0.7,
+            bounce: 0.32,
+            delay: (COPY_START + step) * STEP,
+            filter: { duration: 0.4, delay: (COPY_START + step) * STEP, ease: EASE_OUT },
+          },
+        };
+
+  // The copy drifts a little against the illustration; a glow trails the cursor.
+  const { sx, sy } = usePointer(parallax && !reduce);
+  const copyX = useTransform(sx, (v) => v * -6);
+  const copyY = useTransform(sy, (v) => v * -4);
+  const glowX = useTransform(sx, (v) => `calc(-50% + ${v * 22}vw)`);
+  const glowY = useTransform(sy, (v) => `${v * 16}vh`);
 
   return (
     <main
@@ -393,34 +432,35 @@ export function NotFound({
 
       {/* ambient light */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-[18%] h-[420px] w-[560px] max-w-[120vw] -translate-x-1/2 rounded-full" style={{ background: "radial-gradient(closest-side, rgba(254,85,16,0.16), transparent)", filter: "blur(30px)" }} />
-        <div className="absolute left-1/2 top-[42%] h-[360px] w-[520px] max-w-[110vw] -translate-x-1/2 rounded-full" style={{ background: "radial-gradient(closest-side, rgba(59,70,207,0.16), transparent)", filter: "blur(36px)" }} />
+        <motion.div className="absolute left-1/2 top-[18%] h-[420px] w-[560px] max-w-[120vw] rounded-full" style={{ x: glowX, y: glowY, background: "radial-gradient(closest-side, rgba(255,122,0,0.2), transparent)", filter: "blur(30px)" }} />
+        <div className="absolute left-1/2 top-[42%] h-[360px] w-[520px] max-w-[110vw] -translate-x-1/2 rounded-full" style={{ background: "radial-gradient(closest-side, rgba(255,61,129,0.15), transparent)", filter: "blur(36px)" }} />
       </div>
 
       <div className="flex w-full max-w-xl flex-col items-center">
         <Illustration parallax={parallax} />
 
+        <motion.div style={{ x: copyX, y: copyY }} className="flex w-full flex-col items-center">
         <p className="sr-only">{`Error ${errorCode}: ${title}`}</p>
-        <motion.p {...rise(0.15)} className="mt-2 text-[11.5px] font-medium uppercase tracking-[0.22em] text-neutral-500">
+        <motion.p {...rise(0)} className="mt-2 text-[11.5px] font-medium uppercase tracking-[0.22em] text-[#ff9a4a]">
           {badgeLabel ?? `Error ${errorCode}`}
         </motion.p>
 
         <Heading
           ref={headingRef}
           tabIndex={-1}
-          {...rise(0.22)}
-          className="mt-3 bg-gradient-to-b from-white to-neutral-400 bg-clip-text text-[32px] font-semibold leading-[1.1] tracking-[-0.03em] text-transparent outline-none sm:text-[44px]"
+          {...rise(1)}
+          className="mt-3 bg-gradient-to-b from-white to-[#ffc79a] bg-clip-text text-[32px] font-semibold leading-[1.1] tracking-[-0.03em] text-transparent outline-none sm:text-[44px]"
         >
           {title}
         </Heading>
 
-        <motion.p {...rise(0.3)} className="mt-4 max-w-md text-[15px] leading-relaxed text-neutral-400 sm:text-[16px]">
+        <motion.p {...rise(2)} className="mt-4 max-w-md text-[15px] leading-relaxed text-neutral-400 sm:text-[16px]">
           {description}
         </motion.p>
 
         {shownPath && (
           <motion.div
-            {...rise(0.36)}
+            {...rise(3)}
             className="mt-5 inline-flex max-w-full items-center gap-2 rounded-full bg-white/[0.04] px-3.5 py-1.5 ring-1 ring-white/10"
           >
             <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#fe5510]" aria-hidden />
@@ -431,11 +471,12 @@ export function NotFound({
         )}
 
         {children ? (
-          <motion.div {...rise(0.42)} className="mt-8 flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row">
+          <motion.div {...rise(4)} className="mt-8 flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row">
             {children}
           </motion.div>
         ) : (
-          <motion.div {...rise(0.42)} className="mt-8 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center">
+          <div className="mt-8 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center">
+            <motion.div {...rise(4)} className="flex [&>*]:flex-1">
             {onAction ? (
               <button
                 type="button"
@@ -458,8 +499,10 @@ export function NotFound({
                 {effectiveHomeLabel}
               </Anchor>
             )}
+            </motion.div>
 
             {isBackVisible && (
+              <motion.div {...rise(5)} className="flex [&>*]:flex-1">
               <button
                 type="button"
                 onClick={effectiveGoBack}
@@ -467,12 +510,13 @@ export function NotFound({
               >
                 {effectiveBackLabel}
               </button>
+              </motion.div>
             )}
-          </motion.div>
+          </div>
         )}
 
         {suggestions && suggestions.length > 0 && (
-          <motion.nav {...rise(0.5)} aria-label="Helpful links" className="mt-12 w-full">
+          <motion.nav {...rise(6)} aria-label="Helpful links" className="mt-12 w-full">
             <p className="mb-3 text-[11.5px] font-medium uppercase tracking-[0.18em] text-neutral-600">Maybe you were looking for</p>
             <ul className="grid grid-cols-1 gap-2.5 text-left sm:grid-cols-3">
               {suggestions.slice(0, 3).map((s) => (
@@ -495,7 +539,8 @@ export function NotFound({
           </motion.nav>
         )}
 
-        {footer && <motion.div {...rise(0.58)} className="mt-12 text-[12.5px] text-neutral-600">{footer}</motion.div>}
+        {footer && <motion.div {...rise(7)} className="mt-12 text-[12.5px] text-neutral-600">{footer}</motion.div>}
+        </motion.div>
       </div>
     </main>
   );

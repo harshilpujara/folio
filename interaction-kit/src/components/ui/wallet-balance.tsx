@@ -14,6 +14,9 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 /*  Wallet Balance — cards tucked in a pouch, tap the eye to reveal / hide      */
 /*  Deps: react 19, framer-motion, tailwindcss. No other imports.              */
 /*                                                                             */
+/*  Adapted from EasyUI by Suraj Maurya (MIT, see ./EASYUI-LICENSE): espresso  */
+/*  leather, pixel account marks, and a hover bump with a "View details" tip.  */
+/*                                                                             */
 /*  <WalletBalance />                                                          */
 /*  <WalletBalance accounts={myAccounts} visible={v} onVisibleChange={setV} /> */
 /* -------------------------------------------------------------------------- */
@@ -44,6 +47,8 @@ export type WalletBalanceProps = {
   totalLabel?: string;
   className?: string;
   style?: React.CSSProperties;
+  /** Called when a fanned-out card is clicked (the "View details" tip) */
+  onViewDetails?: (account: WalletAccount) => void;
 };
 
 /* ------------------------------ Design space ------------------------------- */
@@ -65,42 +70,32 @@ const EASE_OUT = [0.23, 1, 0.32, 1] as const;
 const MONO = 'var(--font-mono, "JetBrains Mono", ui-monospace, "SF Mono", "Space Mono", Menlo, Consolas, monospace)';
 const MASK = "******";
 
-/* ------------------------------ Brand stand-ins ----------------------------- */
+/* ------------------------------- Account marks ------------------------------ */
+// 5x5 pixel glyphs, drawn on the same grid as the portfolio's pixel favicon.
 
-function StripeMark() {
+function PixelMark({ rows, color, label, labelColor }: { rows: string[]; color: string; label: string; labelColor: string }) {
   return (
-    <span className="text-[22px] font-bold lowercase leading-none tracking-[-0.045em] text-white">
-      stripe
-    </span>
-  );
-}
-
-function WiseMark() {
-  return (
-    <span className="flex items-center gap-[3px] text-[#163300]">
-      <svg viewBox="0 0 17 16" className="h-[14px] w-[15px]" aria-hidden>
-        <path fill="currentColor" d="M12.2 0 5 8.4h4.6L6.7 15.6 17 4.2h-5.1L14.4 0z" />
+    <span className="flex items-center gap-[7px]">
+      <svg viewBox="0 0 5 5" className="h-[15px] w-[15px]" shapeRendering="crispEdges" aria-hidden>
+        {rows.flatMap((row, y) =>
+          [...row].map((c, x) => (c === "#" ? <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" fill={color} /> : null)),
+        )}
       </svg>
-      <span className="text-[21px] font-extrabold italic uppercase leading-none tracking-[-0.04em]">
-        wise
+      <span className="text-[16px] font-semibold leading-none tracking-[-0.02em]" style={{ color: labelColor }}>
+        {label}
       </span>
     </span>
   );
 }
 
-function PayPalMark() {
-  return (
-    <span className="text-[21px] font-extrabold italic leading-none tracking-[-0.04em]">
-      <span className="text-[#253b80]">Pay</span>
-      <span className="text-[#179bd7]">Pal</span>
-    </span>
-  );
-}
+const SUN = [".#.#.", "#####", ".###.", "#####", ".#.#."];
+const BOLT = ["..##.", ".##..", "#####", "..##.", ".##.."];
+const DROP = ["..#..", ".###.", "#####", "#####", ".###."];
 
 export const DEFAULT_ACCOUNTS: WalletAccount[] = [
-  { id: "stripe", name: "Stripe", balance: 32495, logo: <StripeMark />, background: "#a9a6f0", amountColor: "#5f5c98" },
-  { id: "wise", name: "Wise", balance: 45654, logo: <WiseMark />, background: "#a0d67b", amountColor: "#4f7a3b" },
-  { id: "paypal", name: "PayPal", balance: 345865, logo: <PayPalMark />, background: "#dedede", amountColor: "#6d6d6d" },
+  { id: "everyday", name: "Everyday", balance: 18240, logo: <PixelMark rows={SUN} color="#2a1404" label="Everyday" labelColor="#2a1404" />, background: "#ff7a00", amountColor: "#6a2a00" },
+  { id: "side-quests", name: "Side quests", balance: 6480, logo: <PixelMark rows={BOLT} color="#e86a00" label="Side quests" labelColor="#2a1d14" />, background: "#f3e6d3", amountColor: "#8a6a4d" },
+  { id: "rainy-day", name: "Rainy day", balance: 92315, logo: <PixelMark rows={DROP} color="#ffb877" label="Rainy day" labelColor="#f4f1ec" />, background: "#2a2a30", amountColor: "#a9a9b4" },
 ];
 
 /* ------------------------------- Small parts -------------------------------- */
@@ -147,17 +142,17 @@ function EyeIcon({ open }: { open: boolean }) {
       viewBox="0 0 34 24"
       className="h-[22px] w-[31px] overflow-visible"
       initial={false}
-      animate={{ color: open ? "#a4d37e" : "#44593a" }}
+      animate={{ color: open ? "#ffb877" : "#6b4c3a" }}
       transition={t}
       aria-hidden
     >
       <path d="M1.5 12C5.5 5 10.5 1.5 17 1.5S28.5 5 32.5 12c-4 7-9 10.5-15.5 10.5S5.5 19 1.5 12Z" fill="currentColor" />
-      <circle cx="17" cy="12" r="6.6" fill="#243420" />
+      <circle cx="17" cy="12" r="6.6" fill="#24160e" />
       <circle cx="17" cy="12" r="3.6" fill="currentColor" />
       {/* slash draws in when hidden: dark underlay cuts the eye, light stroke on top */}
       <motion.path
         d="M5 22.5 29 1.5"
-        stroke="#243420"
+        stroke="#24160e"
         strokeWidth={5}
         strokeLinecap="round"
         fill="none"
@@ -167,7 +162,7 @@ function EyeIcon({ open }: { open: boolean }) {
       />
       <motion.path
         d="M5 22.5 29 1.5"
-        stroke="#9aa890"
+        stroke="#b89b85"
         strokeWidth={2}
         strokeLinecap="round"
         fill="none"
@@ -191,13 +186,20 @@ export function WalletBalance({
   totalLabel = "Total Balance",
   className = "",
   style,
+  onViewDetails,
 }: WalletBalanceProps) {
   const uid = useId().replace(/:/g, "");
   const reduce = useReducedMotion();
 
   const [inner, setInner] = useState(defaultVisible);
   const isVisible = visible ?? inner;
+  const [hovered, setHovered] = useState<string | null>(null);
+  // The tuck/fan stagger only applies while toggling; a hover bump reacts at once.
+  const toggling = useRef(false);
   const toggle = () => {
+    toggling.current = true;
+    setHovered(null);
+    setTimeout(() => (toggling.current = false), 600);
     const next = !isVisible;
     if (visible === undefined) setInner(next);
     onVisibleChange?.(next);
@@ -226,6 +228,8 @@ export function WalletBalance({
 
   const spring = (delay: number) =>
     reduce ? { duration: 0 } : ({ type: "spring", duration: 0.5, bounce: 0.16, delay } as const);
+  const bump = reduce ? { duration: 0 } : ({ type: "spring", duration: 0.42, bounce: 0.38 } as const);
+  const BUMP = 12;
 
   return (
     <div
@@ -254,13 +258,13 @@ export function WalletBalance({
           width={STAGE_W}
           height={STAGE_H}
           className="absolute inset-0"
-          style={{ filter: "drop-shadow(0 22px 26px rgba(31,48,22,0.26))" }}
+          style={{ filter: "drop-shadow(0 22px 26px rgba(48,24,10,0.3))" }}
           aria-hidden
         >
           <defs>
             <linearGradient id={`${uid}-back`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#35472b" />
-              <stop offset="100%" stopColor="#2b3a22" />
+              <stop offset="0%" stopColor="#3d271b" />
+              <stop offset="100%" stopColor="#2e1c13" />
             </linearGradient>
           </defs>
           <path
@@ -269,36 +273,56 @@ export function WalletBalance({
           />
         </svg>
 
-        {/* Cards */}
+        {/* Cards. Fanned out, each one is a target: hover (or focus, or a first
+            tap on touch) bumps it up and shows the tip; a click views details. */}
         {list.map((a, i) => {
           const n = list.length;
-          const delay = (isVisible ? i : n - 1 - i) * 0.03;
+          const delay = toggling.current ? (isVisible ? i : n - 1 - i) * 0.03 : 0;
+          const lifted = isVisible && hovered === a.id;
           return (
             <motion.div
               key={a.id}
-              className="absolute overflow-hidden rounded-[18px] will-change-transform"
+              role={isVisible ? "button" : undefined}
+              tabIndex={isVisible ? 0 : -1}
+              aria-label={isVisible ? `${a.name}: view details` : undefined}
+              onPointerEnter={(e) => e.pointerType !== "touch" && isVisible && setHovered(a.id)}
+              onPointerLeave={(e) => e.pointerType !== "touch" && setHovered((h) => (h === a.id ? null : h))}
+              onFocus={() => isVisible && setHovered(a.id)}
+              onBlur={() => setHovered((h) => (h === a.id ? null : h))}
+              onClick={() => {
+                if (!isVisible) return;
+                if (hovered === a.id) onViewDetails?.(a);
+                else setHovered(a.id);
+              }}
+              onKeyDown={(e) => {
+                if (isVisible && (e.key === "Enter" || e.key === " ")) {
+                  e.preventDefault();
+                  onViewDetails?.(a);
+                }
+              }}
+              className="absolute overflow-hidden rounded-[18px] outline-none will-change-transform focus-visible:ring-2 focus-visible:ring-[#ffb877]/80"
               style={{
                 left: CARD_LEFT,
                 top: 0,
                 width: CARD_W,
                 height: CARD_H,
                 zIndex: i + 1,
+                cursor: isVisible ? "pointer" : "default",
                 transformOrigin: "50% 0%",
                 background: `linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0) 45%), ${a.background}`,
-                boxShadow:
-                  "inset 0 1px 0 rgba(255,255,255,0.65), 0 -1px 0 rgba(0,0,0,0.04), 0 6px 14px rgba(0,0,0,0.10)",
               }}
               initial={false}
               animate={{
-                y: isVisible ? visibleTop(i) : hiddenTop(i),
+                y: isVisible ? visibleTop(i) - (lifted ? BUMP : 0) : hiddenTop(i),
                 scale: isVisible ? 1 : HIDE_SCALE,
+                boxShadow: lifted
+                  ? "inset 0 1px 0 rgba(255,255,255,0.65), 0 -1px 0 rgba(0,0,0,0.04), 0 -10px 22px rgba(40,18,4,0.28)"
+                  : "inset 0 1px 0 rgba(255,255,255,0.65), 0 -1px 0 rgba(0,0,0,0.04), 0 6px 14px rgba(0,0,0,0.10)",
               }}
-              transition={spring(delay)}
+              transition={toggling.current ? spring(delay) : bump}
             >
               <div className="flex h-[40px] items-center justify-between px-[16px]">
-                <span aria-label={a.name} className="flex items-center">
-                  {a.logo}
-                </span>
+                <span className="flex items-center">{a.logo}</span>
                 <span
                   className="text-[15px] font-medium tabular-nums tracking-[0.05em]"
                   style={{ fontFamily: MONO, color: a.amountColor ?? "rgba(0,0,0,0.45)" }}
@@ -309,6 +333,34 @@ export function WalletBalance({
             </motion.div>
           );
         })}
+
+        {/* "View details" tip, above the bumped card's right edge */}
+        <AnimatePresence>
+          {isVisible && hovered && list.some((a) => a.id === hovered) && (
+            <motion.div
+              key={hovered}
+              aria-hidden
+              className="pointer-events-none absolute flex items-center gap-[6px] rounded-full bg-[#1a1008] py-[6px] pl-[9px] pr-[11px] text-[12px] font-medium text-[#ffe7d0] shadow-[0_6px_16px_rgba(26,16,8,0.35)]"
+              style={{
+                right: CARD_LEFT + 10,
+                top: visibleTop(list.findIndex((a) => a.id === hovered)) - BUMP - 34,
+                zIndex: 13,
+                transformOrigin: "85% 100%",
+              }}
+              initial={{ opacity: 0, y: 6, scale: 0.86 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 4, scale: 0.92, transition: { duration: 0.12 } }}
+              transition={bump}
+            >
+              <svg viewBox="0 0 24 24" className="h-[14px] w-[14px]" fill="none" stroke="#ffb877" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              View details
+              <span className="absolute -bottom-[4px] right-[22px] h-[8px] w-[8px] rotate-45 rounded-[1px] bg-[#1a1008]" />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Front pocket */}
         <svg
@@ -321,8 +373,8 @@ export function WalletBalance({
         >
           <defs>
             <linearGradient id={`${uid}-front`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#273921" />
-              <stop offset="100%" stopColor="#202e1a" />
+              <stop offset="0%" stopColor="#332015" />
+              <stop offset="100%" stopColor="#24160e" />
             </linearGradient>
           </defs>
           <path
@@ -333,7 +385,7 @@ export function WalletBalance({
           <path
             d="M38 199C38 192 46 187 56 187L284 187C294 187 302 192 302 199V322A48 48 0 0 1 254 370H86A48 48 0 0 1 38 322Z"
             fill="none"
-            stroke="rgba(170,196,146,0.55)"
+            stroke="rgba(255,184,119,0.55)"
             strokeWidth={1}
             strokeDasharray="4 3.2"
             strokeLinecap="round"
@@ -346,11 +398,11 @@ export function WalletBalance({
             <Swap
               show={isVisible}
               value={plain.format(total)}
-              className="text-[28px] font-medium tabular-nums tracking-[0.1em] text-[#e0e6d8]"
-              maskClassName="text-[26px] font-medium tracking-[0.34em] text-[#a2aa98]"
+              className="text-[28px] font-medium tabular-nums tracking-[0.1em] text-[#f6e6d6]"
+              maskClassName="text-[26px] font-medium tracking-[0.34em] text-[#b89b85]"
             />
           </div>
-          <p className="mt-[2px] text-[15px] tracking-[0.01em] text-[#8c9b83]">{totalLabel}</p>
+          <p className="mt-[2px] text-[15px] tracking-[0.01em] text-[#a8896f]">{totalLabel}</p>
         </div>
 
         <button
@@ -358,7 +410,7 @@ export function WalletBalance({
           onClick={toggle}
           aria-pressed={isVisible}
           aria-label={isVisible ? "Hide balances" : "Show balances"}
-          className="absolute flex h-[56px] w-[56px] items-center justify-center rounded-full outline-none transition-transform duration-150 ease-out [-webkit-tap-highlight-color:transparent] active:scale-[0.92] focus-visible:ring-2 focus-visible:ring-[#a4d37e]/70"
+          className="absolute flex h-[56px] w-[56px] items-center justify-center rounded-full outline-none transition-transform duration-150 ease-out [-webkit-tap-highlight-color:transparent] active:scale-[0.92] focus-visible:ring-2 focus-visible:ring-[#ffb877]/70"
           style={{ left: STAGE_W / 2 - 28, top: 306, zIndex: 12 }}
         >
           <EyeIcon open={isVisible} />
@@ -376,7 +428,7 @@ export function WalletBalance({
 
 export function WalletBalanceDemo() {
   return (
-    <div className="flex min-h-dvh items-center justify-center bg-gradient-to-br from-[#eef2d9] via-[#f3f4ee] to-[#f1f1f1] p-6">
+    <div className="flex min-h-dvh items-center justify-center bg-gradient-to-br from-[#fbefe2] via-[#f6f1ea] to-[#efebe6] p-6">
       <WalletBalance className="max-w-[360px]" />
     </div>
   );

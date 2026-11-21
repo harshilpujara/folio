@@ -16,6 +16,9 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 /*  anywhere to put it back.                                                   */
 /*                                                                             */
 /*  Deps: react 19, framer-motion, tailwindcss. Nothing else.                  */
+/*                                                                             */
+/*  Adapted from EasyUI by Suraj Maurya (MIT, see ./EASYUI-LICENSE): charcoal  */
+/*  glass cover, white card-stock box, English titles and desk photographs.    */
 /*  <PhotoBox />   or   <PhotoBox prints={[{ id, title, caption, src }]} />    */
 /* -------------------------------------------------------------------------- */
 
@@ -74,77 +77,27 @@ const metrics = (compact: boolean) =>
     : { H: 440, oy: 0, sExp: 2.05, cy: 172 };
 
 const EASE_OUT = [0.23, 1, 0.32, 1] as const;
-const JP = '"Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",system-ui,sans-serif';
+const DISPLAY = 'var(--font-display, "Averia Serif Libre", Georgia, serif)';
+const ORANGE = "#ff7a00";
 
 /* ---------------------------------- Art ------------------------------------ */
+// Desk cut-outs from the portfolio, set on a paper tone inside each print.
 
-function SeaArt() {
-  const id = useId().replace(/:/g, "");
-  return (
-    <svg viewBox="0 0 106 104" preserveAspectRatio="xMidYMid slice" className="h-full w-full" aria-hidden>
-      <defs>
-        <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#f7b76b" />
-          <stop offset="55%" stopColor="#f48a7b" />
-          <stop offset="100%" stopColor="#d9647f" />
-        </linearGradient>
-      </defs>
-      <rect width="106" height="104" fill={`url(#${id})`} />
-      <circle cx="64" cy="54" r="15" fill="#ffd9a3" opacity=".92" />
-      <rect y="55" width="106" height="49" fill="#27335e" />
-      <g stroke="#f3a27a" strokeOpacity=".6" strokeWidth="1.6" strokeLinecap="round">
-        <path d="M18 63h32M60 69h36M28 78h42M10 90h28M62 92h32" />
-      </g>
-    </svg>
-  );
-}
+/** Where the default prints load from, relative to the page. */
+export const PRINT_BASE = "../img/desk/";
 
-function CatArt() {
+function DeskPhoto({ file, tone, pad = "10%" }: { file: string; tone: string; pad?: string }) {
   return (
-    <svg viewBox="0 0 106 104" preserveAspectRatio="xMidYMid slice" className="h-full w-full" aria-hidden>
-      <rect width="106" height="104" fill="#bfe0d1" />
-      <rect x="66" y="8" width="30" height="34" rx="4" fill="#d9f0e5" stroke="#a7cbb9" strokeWidth="2" />
-      <path d="M81 8v34M66 25h30" stroke="#a7cbb9" strokeWidth="2" />
-      <path d="M22 104V70c0-10 4-16 8-20l-2-20 14 12c6-2 16-2 22 0l14-12-2 20c4 4 8 10 8 20v34Z" fill="#45414f" />
-      <g fill="#f2c230">
-        <circle cx="40" cy="62" r="6.2" />
-        <circle cx="66" cy="62" r="6.2" />
-      </g>
-      <g fill="#1c1a22">
-        <ellipse cx="40" cy="62" rx="1.6" ry="4.2" />
-        <ellipse cx="66" cy="62" rx="1.6" ry="4.2" />
-      </g>
-      <path d="M50 73l3 3.2 3-3.2Z" fill="#f19aa8" />
-      <g stroke="#fff" strokeOpacity=".65" strokeWidth=".9" strokeLinecap="round">
-        <path d="M31 75 14 72M31 79 14 81M75 75l17-3M75 79l17 2" />
-      </g>
-    </svg>
-  );
-}
-
-function ToriiArt() {
-  return (
-    <svg viewBox="0 0 106 104" preserveAspectRatio="xMidYMid slice" className="h-full w-full" aria-hidden>
-      <rect width="106" height="104" fill="#8fbfee" />
-      <ellipse cx="26" cy="22" rx="14" ry="6" fill="#fff" />
-      <ellipse cx="84" cy="14" rx="10" ry="4.5" fill="#fff" />
-      <path d="M0 84C20 66 46 62 70 66c16 2 28 8 36 14v24H0Z" fill="#3f7d46" />
-      <g fill="#d4382b">
-        <rect x="34" y="44" width="7" height="46" />
-        <rect x="65" y="44" width="7" height="46" />
-        <rect x="28" y="54" width="50" height="6" />
-        <rect x="24" y="40" width="58" height="6" rx="1" />
-      </g>
-      <path d="M19 34q34 5 68 0l1 4q-35 5-70 0Z" fill="#25201f" />
-      <path d="M0 94c30-12 70-12 106-2v12H0Z" fill="#33693b" />
-    </svg>
+    <span className="grid h-full w-full place-items-center" style={{ background: tone, padding: pad }}>
+      <img src={PRINT_BASE + file} alt="" draggable={false} className="h-full w-full object-contain drop-shadow-[0_4px_6px_rgba(0,0,0,0.22)]" />
+    </span>
   );
 }
 
 export const DEFAULT_PRINTS: PhotoPrint[] = [
-  { id: "sea", title: "朝の海", caption: "The sea at first light", art: <SeaArt /> },
-  { id: "cat", title: "ねこ", caption: "The cat at the window", art: <CatArt /> },
-  { id: "torii", title: "旅", caption: "A torii on the way", art: <ToriiArt /> },
+  { id: "coffee", title: "First coffee", caption: "Every morning starts here", art: <DeskPhoto file="coffee.webp" tone="#efe3d3" pad="8%" /> },
+  { id: "wireframes", title: "Wireframes", caption: "Pen first, Figma second", art: <DeskPhoto file="sketch1.webp" tone="#dcd8d0" pad="6%" /> },
+  { id: "notebook", title: "Notebook", caption: "Where the ideas wait their turn", art: <DeskPhoto file="notebook.webp" tone="#ffd9b8" pad="9%" /> },
 ];
 
 /* --------------------------------- Pieces ---------------------------------- */
@@ -167,8 +120,8 @@ function Polaroid({ print }: { print: PhotoPrint }) {
         )}
       </span>
       <span
-        className="mt-[11px] block text-center text-[15px] font-medium leading-none text-neutral-600"
-        style={{ fontFamily: JP }}
+        className="mt-[10px] block text-center text-[15px] italic leading-none text-neutral-700"
+        style={{ fontFamily: DISPLAY }}
       >
         {print.title}
       </span>
@@ -193,7 +146,7 @@ function useMedia(query: string) {
 
 export function PhotoBox({
   prints = DEFAULT_PRINTS,
-  title = "写真箱",
+  title = "Snapshots",
   subtitle,
   className = "",
   open: controlledOpen,
@@ -203,7 +156,7 @@ export function PhotoBox({
   const reduce = useReducedMotion();
   const coarse = useMedia("(pointer: coarse)");
   const list = prints.slice(0, 3);
-  const sub = subtitle ?? `Photo Box · ${list.length} prints`;
+  const sub = subtitle ?? `From the desk · ${list.length} prints`;
 
   const wrapRef = useRef<HTMLDivElement>(null);
   const layerRef = useRef<HTMLDivElement>(null);
@@ -323,7 +276,7 @@ export function PhotoBox({
       ? { ...spring(0, 0.1), opacity: fade, filter: fade }
       : { ...spring(open ? i * 0.04 : (list.length - 1 - i) * 0.03, 0.24), opacity: fade, filter: fade };
 
-  const hairline = "block h-px bg-white/30";
+  const hairline = "block h-px bg-[#ff7a00]/45";
   const captionTop = (expCy + (PRINT.h * sExp) / 2 + 16) * scale;
   const hint = coarse ? "Tap anywhere to put it back" : "Click anywhere to put it back";
 
@@ -365,7 +318,7 @@ export function PhotoBox({
             width: BOX.w,
             height: BOX.bottom - BOX.backTop,
             zIndex: 2,
-            background: "linear-gradient(180deg,#bba67c 0%,#ad9669 100%)",
+            background: "linear-gradient(180deg,#d6d2c9 0%,#c6c1b6 100%)",
             boxShadow: "inset 0 1px 0 rgba(255,255,255,0.25)",
           }}
           initial={false}
@@ -394,7 +347,7 @@ export function PhotoBox({
               onAnimationComplete={() => {
                 if (!selected && lifted === p.id) setLifted(null);
               }}
-              className="absolute rounded-[4px] outline-none focus-visible:ring-2 focus-visible:ring-[#e8742f] focus-visible:ring-offset-2"
+              className="absolute rounded-[4px] outline-none focus-visible:ring-2 focus-visible:ring-[#ff7a00] focus-visible:ring-offset-2"
               style={{
                 left: BOX.left + idle.cx - PRINT.w / 2,
                 top: idle.cy + oy - PRINT.h / 2,
@@ -425,8 +378,8 @@ export function PhotoBox({
             width: BOX.w,
             height: BOX.bottom - BOX.lipTop,
             zIndex: 6,
-            background: "linear-gradient(180deg,#ecdcb9 0%,#e3d1a9 100%)",
-            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.55), 0 10px 16px -8px rgba(90,60,20,0.35)",
+            background: "linear-gradient(180deg,#f7f5f0 0%,#ebe7df 100%)",
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.9), 0 10px 16px -8px rgba(30,30,40,0.3)",
           }}
           initial={false}
           animate={boxAnim}
@@ -434,11 +387,11 @@ export function PhotoBox({
         >
           <span
             className="absolute left-1/2 top-[-3px] h-[30px] w-[30px] -translate-x-1/2 rounded-full"
-            style={{ background: "#cdb584", boxShadow: "inset 0 2px 3px rgba(90,60,20,0.25)" }}
+            style={{ background: "#dcd8cf", boxShadow: "inset 0 2px 3px rgba(30,30,40,0.18)" }}
           />
           <span
             className="absolute inset-x-0 bottom-[13px] text-center text-[9px] font-medium uppercase tracking-[0.24em]"
-            style={{ color: "rgba(110,90,55,0.6)" }}
+            style={{ color: "rgba(40,40,48,0.5)" }}
           >
             Prints · {list.length}
           </span>
@@ -452,8 +405,8 @@ export function PhotoBox({
             width: 18,
             height: 38,
             zIndex: 6,
-            background: "linear-gradient(180deg,#d1522a 0%,#bd4320 100%)",
-            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.25), 0 4px 8px -3px rgba(120,40,10,0.4)",
+            background: `linear-gradient(180deg,${ORANGE} 0%,#e05f00 100%)`,
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.3), 0 4px 8px -3px rgba(150,60,0,0.4)",
           }}
           initial={false}
           animate={boxAnim}
@@ -466,7 +419,7 @@ export function PhotoBox({
           onClick={onTap}
           aria-expanded={open}
           aria-label={`${title}, ${sub}. ${pinned ? "Close" : "Open"} the box`}
-          className="absolute rounded-[14px] text-left outline-none focus-visible:ring-2 focus-visible:ring-[#e8742f] focus-visible:ring-offset-2"
+          className="absolute rounded-[14px] text-left outline-none focus-visible:ring-2 focus-visible:ring-[#ff7a00] focus-visible:ring-offset-2"
           style={{
             left: COVER.x,
             top: COVER.y + oy,
@@ -474,7 +427,7 @@ export function PhotoBox({
             height: COVER.h,
             zIndex: 20,
             WebkitTapHighlightColor: "transparent",
-            boxShadow: "0 22px 30px -14px rgba(160,70,10,0.5), 0 4px 8px rgba(160,70,10,0.18)",
+            boxShadow: "0 22px 30px -14px rgba(10,10,14,0.55), 0 4px 8px rgba(10,10,14,0.2)",
           }}
           initial={false}
           animate={away ? "away" : "idle"}
@@ -486,10 +439,10 @@ export function PhotoBox({
             variants={{ idle: { opacity: 1 }, away: { opacity: 0.14 } }}
             transition={fade}
             style={{
-              background: "linear-gradient(135deg,rgba(242,142,84,0.94) 0%,rgba(232,116,47,0.92) 55%,rgba(226,106,36,0.92) 100%)",
+              background: "linear-gradient(135deg,rgba(52,52,62,0.9) 0%,rgba(30,30,38,0.9) 55%,rgba(20,20,26,0.92) 100%)",
               backdropFilter: "blur(8px)",
               WebkitBackdropFilter: "blur(8px)",
-              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.4)",
+              boxShadow: "inset 0 1px 0 rgba(255,255,255,0.22), inset 0 0 0 1px rgba(255,255,255,0.06)",
             }}
           />
           {/* frosted strip where prints pass behind the cover */}
@@ -499,7 +452,7 @@ export function PhotoBox({
             variants={{ idle: { opacity: 1 }, away: { opacity: 0.14 } }}
             transition={fade}
             style={{
-              background: "linear-gradient(90deg,rgba(255,236,220,0) 0%,rgba(255,236,220,0.3) 100%)",
+              background: "linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0.14) 100%)",
               backdropFilter: "blur(12px)",
               WebkitBackdropFilter: "blur(12px)",
               maskImage: "linear-gradient(90deg,transparent 0%,#000 75%)",
@@ -511,10 +464,10 @@ export function PhotoBox({
             variants={{ idle: { opacity: 1 }, away: { opacity: 0.14 } }}
             transition={fade}
           >
-            <span className="block text-[23px] font-medium leading-none tracking-[0.02em] text-white" style={{ fontFamily: JP }}>
+            <span className="block text-[26px] italic leading-none tracking-[-0.01em] text-white" style={{ fontFamily: DISPLAY }}>
               {title}
             </span>
-            <span className="mt-[7px] block text-[13px] leading-none text-white/75">{sub}</span>
+            <span className="mt-[8px] block text-[13px] leading-none text-white/60">{sub}</span>
             <span className={`${hairline} mt-[9px]`} />
             <span className={`${hairline} mt-[5px]`} />
           </motion.span>
@@ -551,7 +504,7 @@ export function PhotoBox({
               initial={{ opacity: 0, y: reduce ? 0 : 8 }}
               animate={{ opacity: 1, y: 0, transition: { delay: reduce ? 0 : 0.2, duration: reduce ? 0 : 0.3, ease: EASE_OUT } }}
             >
-              <p className="text-[17px] font-medium leading-tight text-neutral-800" style={{ fontFamily: JP }}>
+              <p className="text-[19px] italic leading-tight text-neutral-900" style={{ fontFamily: DISPLAY }}>
                 {selectedPrint.title}
               </p>
               <p className="mt-1 text-[14px] leading-snug text-neutral-500">{selectedPrint.caption}</p>
@@ -568,7 +521,7 @@ export function PhotoBox({
 
 export function PhotoBoxDemo() {
   return (
-    <div className="flex min-h-dvh items-center justify-center bg-gradient-to-b from-[#f1f1f1] via-[#ececec] to-[#d9d9d9] p-4 sm:p-8">
+    <div className="flex min-h-dvh items-center justify-center bg-gradient-to-b from-[#f6f1ea] via-[#f1ece4] to-[#e4ddd2] p-4 sm:p-8">
       <PhotoBox />
     </div>
   );

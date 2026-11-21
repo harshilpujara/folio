@@ -5,6 +5,7 @@
 
 @theme {
   --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "Averia Serif Libre", Georgia, serif;
 }
 
 :root { color-scheme: dark; }

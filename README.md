@@ -14,9 +14,9 @@ Fonts load from Google Fonts (Averia Serif Libre, Geist, Geist Mono) and smooth 
 Four EasyUI components (Wave Transition, Wallet Balance, Photo Box, Not Found), each full screen for recording. React 19, Tailwind v4 and Framer Motion.
 
 - `interaction-kit/`: the source (Vite). Not deployed.
-  - `src/components/ui/`, `src/lib/utils.ts`: the EasyUI components, verbatim from the `Surajmaurya1/easyui` repository.
+  - `src/components/ui/`, `src/lib/utils.ts`: the EasyUI components from the `Surajmaurya1/easyui` repository. Wallet Balance, Photo Box and Not Found are restyled (each file's header says how); Wave Transition is unchanged and styled through its props. MIT, see `src/components/ui/EASYUI-LICENSE`.
   - `src/demos/`: one full-screen demo per component.
-- `kit/index.html`: the build, one self-contained file, served at `/kit`.
+- `kit/index.html`: the build, one self-contained file, served at `/kit`. Photo Box loads its prints from `../img/desk/`, so they show on the deployed site and the built file, not in `npm run dev`.
 
 ```
 cd interaction-kit && npm install
