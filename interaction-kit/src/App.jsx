@@ -1,20 +1,16 @@
 import { useCallback, useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import BottomSheet from './demos/BottomSheet.jsx'
-import GlassToggle from './demos/GlassToggle.jsx'
-import SharedMorph from './demos/SharedMorph.jsx'
-import ReorderList from './demos/ReorderList.jsx'
-import SkeletonCards from './demos/SkeletonCards.jsx'
-import Customizer from './demos/Customizer.jsx'
+import WaveDemo from './demos/WaveDemo.jsx'
+import WalletDemo from './demos/WalletDemo.jsx'
+import PhotoBoxDemo from './demos/PhotoBoxDemo.jsx'
+import NotFoundDemo from './demos/NotFoundDemo.jsx'
 import { ArrowLeft, Arrow, Eye, Replay } from './icons.jsx'
 
 export const DEMOS = [
-  { slug: 'sheet', title: 'Frosted glass bottom sheet', note: 'Spring overshoot, background blurs and recedes, drag to dismiss.', Component: BottomSheet },
-  { slug: 'toggle', title: 'Liquid glass segmented toggle', note: 'One shared pill that stretches mid-flight, then settles.', Component: GlassToggle },
-  { slug: 'morph', title: 'Shared-element morph', note: 'The same element reshapes from grid tile to hero.', Component: SharedMorph },
-  { slug: 'reorder', title: 'Drag-to-reorder, fluid reflow', note: 'Lift, drag, and the list flows out of the way.', Component: ReorderList },
-  { slug: 'skeleton', title: 'Shimmer skeleton, staggered reveal', note: 'Image, title, price land one beat apart, card by card.', Component: SkeletonCards },
-  { slug: 'customizer', title: 'Product customizer', note: 'Always-floating object, radial colour wipe from the swatch.', Component: Customizer },
+  { slug: 'wave', title: 'Wave Transition', note: 'A soft rainbow light wave carries one view into the next, from the button.', Component: WaveDemo },
+  { slug: 'wallet', title: 'Wallet Balance', note: 'Cards tuck into a leather pouch; the eye masks and reveals balances.', Component: WalletDemo },
+  { slug: 'photo-box', title: 'Photo Box', note: 'Frosted cover, sliding paper box, fanning polaroids, full-bleed zoom.', Component: PhotoBoxDemo },
+  { slug: 'not-found', title: 'Not Found', note: 'A frosted-glass 404 with pointer parallax and recovery actions.', Component: NotFoundDemo },
 ]
 
 const readRoute = () => {
@@ -48,7 +44,8 @@ export default function App() {
       else if (k === 'r') setRun((r) => r + 1)
       else if (e.key === 'ArrowRight') go(index + 1)
       else if (e.key === 'ArrowLeft') go(index - 1)
-      else if (e.key === 'Escape') go(-1)
+      // Escape belongs to the demo while something in it has focus (Photo Box uses it).
+      else if (e.key === 'Escape' && document.activeElement === document.body) go(-1)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
@@ -106,9 +103,9 @@ function Index() {
   return (
     <main className="mx-auto min-h-full max-w-3xl px-4 py-12 sm:py-20">
       <p className="text-[13px] text-white/40">Interaction Kit</p>
-      <h1 className="mt-2 text-3xl font-medium tracking-tight sm:text-4xl">Six motion studies</h1>
+      <h1 className="mt-2 text-3xl font-medium tracking-tight sm:text-4xl">EasyUI motion components</h1>
       <p className="mt-3 max-w-lg text-[15px] leading-relaxed text-white/55">
-        Physics-based motion and real glass, nothing that just snaps into place. Each one runs full screen so it can be recorded as its own clip.
+        Four EasyUI components, each running full screen so it can be recorded as its own clip.
       </p>
       <ol className="mt-10 grid gap-2 sm:grid-cols-2">
         {DEMOS.map((d, i) => (
