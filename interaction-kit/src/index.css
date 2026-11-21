@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+/* Class-based dark mode (shadcn convention): `dark:` applies inside a .dark ancestor. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "Averia Serif Libre", Georgia, serif;
+}
+
+:root { color-scheme: dark; }
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  background: #0b0b0d;
+  color: #f4f4f5;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+button { cursor: pointer; }
+
+/* Skeleton shimmer: a lighter band at ~20deg off vertical sweeping left to right,
+   one pass every 1.5s, by moving background-position. */
+.shimmer {
+  background-color: #222228;
+  background-image: linear-gradient(110deg, transparent 35%, rgba(255,255,255,.09) 50%, transparent 65%);
+  background-size: 250% 100%;
+  background-repeat: no-repeat;
+  animation: shimmer 1.5s linear infinite;
+}
+@keyframes shimmer {
+  from { background-position: 130% 0; }
+  to { background-position: -30% 0; }
+}
